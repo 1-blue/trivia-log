@@ -1,6 +1,11 @@
+import { getAllPostMetadata } from "#/libs";
+
 import ThemeDropdown from "#/components/ThemeDropdown";
+import KeyBar from "#/components/KeyBar";
 
 const Header: React.FC = () => {
+  const postMetadatas = getAllPostMetadata();
+
   return (
     <header className="navbar bg-base-100">
       <div className="flex-1">
@@ -8,10 +13,11 @@ const Header: React.FC = () => {
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">
-          <input
-            type="text"
-            placeholder="Search"
-            className="input input-bordered w-24 md:w-auto"
+          <KeyBar
+            keyBarPosts={postMetadatas.map(({ title, path }) => ({
+              title,
+              path,
+            }))}
           />
         </div>
         <ThemeDropdown />

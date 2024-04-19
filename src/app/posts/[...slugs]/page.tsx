@@ -1,7 +1,7 @@
 import type { Metadata, NextPage } from "next";
 import dynamic from "next/dynamic";
 
-import { parsedPostMetadata } from "#/libs";
+import { getPostMetadata } from "#/libs";
 
 interface Props {
   params: {
@@ -13,7 +13,7 @@ export const generateMetadata = async ({
   params: { slugs },
 }: Props): Promise<Metadata> => {
   const BASE_URL = `${slugs.join("/")}`;
-  const { title, description } = parsedPostMetadata(BASE_URL);
+  const { title, description } = getPostMetadata(BASE_URL);
 
   return {
     title,
