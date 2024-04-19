@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'prism-night-owl.css';
+@import 'prose.css';
+/** 코드 블럭 */
+@import 'rehype-prism-plus.css';
