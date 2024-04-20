@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import CommandPalette, {
   filterItems,
   getItemIndex,
@@ -10,7 +11,7 @@ import { useTheme } from "next-themes";
 
 import "react-cmdk/dist/cmdk.css";
 
-import { THEMES } from "#/contants";
+import { ROUTES, THEMES } from "#/contants";
 import type { PostMetadata } from "#/types";
 
 type KeyBarPost = Pick<PostMetadata, "title" | "path">;
@@ -23,6 +24,7 @@ interface Props {
 const INITIAL_POST_LIMIT = 5;
 
 const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
+  const pathname = usePathname();
   const { setTheme } = useTheme();
   const [page] = useState<"root">("root");
   const [open, setOpen] = useState(false);
@@ -63,6 +65,17 @@ const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
           children: post.title,
           icon: "DocumentTextIcon",
           href: post.path,
+        })),
+      },
+      // 페이지
+      {
+        id: "pages",
+        heading: "페이지",
+        items: ROUTES.map((route) => ({
+          id: route.path,
+          children: route.label,
+          icon: route.path === pathname ? route.Solid : route.Outline,
+          href: route.path,
         })),
       },
       // 테마
@@ -109,7 +122,7 @@ const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
     <>
       <button
         type="button"
-        className="btn btn-ghost border border-current space-x-2"
+        className="btn btn-ghost space-x-2"
         onClick={() => setOpen((prev) => !prev)}
       >
         <span className="text-sm">검색 ...</span>
