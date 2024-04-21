@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/** 코드 블럭 테마 */
 @import 'prism-night-owl.css';
-@import 'prose.css';
-/** 코드 블럭 */
+/** 코드 블럭 특정 옵션 ( 강조, 추가, 제거 등 ) */
 @import 'rehype-prism-plus.css';
+
+p {
+  line-height: 1.5;
+}

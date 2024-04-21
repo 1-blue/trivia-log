@@ -8,7 +8,7 @@ const Header: React.FC = () => {
   const postMetadatas = getAllPostMetadata();
 
   return (
-    <header className="navbar shadow-xl rounded-box bg-base-100">
+    <header className="navbar shadow-xl rounded-box bg-base-100 max-w-7xl mx-auto">
       <Nav />
       <div className="flex-none gap-2">
         <KeyBar

@@ -41,11 +41,7 @@ const Page: NextPage<Props> = ({ params: { slugs } }) => {
   const BASE_URL = `${slugs.join("/")}`;
   const Post = dynamic(() => import(`#/_posts/${BASE_URL}.mdx`));
 
-  return (
-    <>
-      <Post />
-    </>
-  );
+  return <Post />;
 };
 
 export default Page;
