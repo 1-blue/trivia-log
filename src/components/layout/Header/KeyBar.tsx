@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import CommandPalette, {
   filterItems,
   getItemIndex,
@@ -25,6 +25,7 @@ const INITIAL_POST_LIMIT = 5;
 
 const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
   const pathname = usePathname();
+  const router = useRouter();
   const { setTheme } = useTheme();
   const [page] = useState<"root">("root");
   const [open, setOpen] = useState(false);
@@ -50,9 +51,11 @@ const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
     if (keyword.trim().length === 0) return resetSearchPosts();
 
     setPosts(
-      keyBarPosts.filter((keyBarPosts) => keyBarPosts.title.includes(keyword))
+      keyBarPosts.filter((keyBarPosts) => keyBarPosts.title.includes(keyword)),
     );
   };
+
+  const githubLinkRef = useRef<null | HTMLAnchorElement>(null);
 
   const filteredItems = filterItems(
     [
@@ -64,7 +67,7 @@ const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
           id: post.title,
           children: post.title,
           icon: "DocumentTextIcon",
-          href: post.path,
+          onClick: () => router.push(post.path),
         })),
       },
       // 페이지
@@ -75,7 +78,7 @@ const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
           id: route.path,
           children: route.label,
           icon: route.path === pathname ? route.Solid : route.Outline,
-          href: route.path,
+          onClick: () => router.push(route.path),
         })),
       },
       // 테마
@@ -98,7 +101,7 @@ const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
             id: "github",
             children: "깃허브 ( 1-blue )",
             icon: "CodeBracketIcon",
-            href: "https://github.com/1-blue",
+            onClick: () => githubLinkRef.current?.click(),
           },
           {
             id: "email",
@@ -115,11 +118,20 @@ const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
         ],
       },
     ],
-    search
+    search,
   );
 
   return (
     <>
+      <a
+        href="https://github.com/1-blue"
+        target="_blank"
+        rel="noreferrer noopener"
+        className="hidden"
+        tabIndex={0}
+        ref={githubLinkRef}
+      />
+
       <button
         type="button"
         className="btn btn-ghost space-x-2"

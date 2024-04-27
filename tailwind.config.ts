@@ -1,7 +1,9 @@
 import type { Config } from "tailwindcss";
-import { spacing } from "tailwindcss/defaultTheme";
+import twColors from "tailwindcss/colors";
 import daisyUI from "daisyui";
 import daisyUITheme from "daisyui/src/theming/themes";
+
+const mainColor = twColors.blue;
 
 const config: Config = {
   content: [
@@ -10,19 +12,29 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./mdx-components.tsx",
   ],
-  // theme: {
-  //   extend: {
-  //     typography: () => ({
-  //       DEFAULT: {
-  //         css: {
-  //           "h1,h2,h3,h4": {
-  //             "scroll-margin-top": spacing[32],
-  //           },
-  //         },
-  //       },
-  //     }),
-  //   },
-  // },
+  theme: {
+    extend: {
+      colors: {
+        main: {
+          50: "#eff6ff",
+          100: "#dbeafe",
+          200: "#bfdbfe",
+          300: "#93c5fd",
+          400: "#60a5fa",
+          500: "#3b82f6",
+          600: "#2563eb",
+          700: "#1d4ed8",
+          800: "#1e40af",
+          900: "#1e3a8a",
+          950: "#172554",
+        },
+      },
+      backgroundColor: {
+        // `dark`와 `light` 상관없이 사용할 수 있는 배경색
+        all: "#87837826",
+      },
+    },
+  },
   plugins: [daisyUI],
   daisyui: {
     // dark와 light만 사용
@@ -33,12 +45,20 @@ const config: Config = {
           // `<code>`
           ".my-code": {
             "background-color": "#87837826",
-            color: "#60a5fa",
+            color: mainColor["400"],
           },
           // `<h1>` > `<a>`
-          ".my-anchor": {
+          ".my-anchor-block": {
             "background-color": "#87837826",
-            color: "#60a5fa",
+            color: mainColor["400"],
+          },
+          // tag
+          ".my-tag": {
+            "background-color": mainColor["100"],
+            color: mainColor["500"],
+          },
+          ".my-tag:hover": {
+            "background-color": mainColor["200"],
           },
         },
         dark: {
@@ -46,12 +66,20 @@ const config: Config = {
           // `<code>`
           ".my-code": {
             "background-color": "#87837826",
-            color: "#3b82f6",
+            color: mainColor["500"],
           },
-          // `<h1>` > `<a>`
-          ".my-anchor": {
+          // `<h*>` > `<a>`
+          ".my-anchor-block": {
             "background-color": "#87837826",
-            color: "#60a5fa",
+            color: mainColor["400"],
+          },
+          // tag
+          ".my-tag": {
+            "background-color": mainColor["200"],
+            color: mainColor["600"],
+          },
+          ".my-tag:hover": {
+            "background-color": mainColor["300"],
           },
         },
       },

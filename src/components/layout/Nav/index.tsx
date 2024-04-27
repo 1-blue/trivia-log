@@ -11,11 +11,11 @@ const Nav: React.FC = () => {
   return (
     <nav className="flex-1">
       {/* sm 이하인 경우 */}
-      <div className="dropdown dropdown-start sm:hidden">
+      <div className="dropdown-start dropdown sm:hidden">
         <button type="button" className="btn btn-ghost text-xl">
           <Bars3Icon className="h-8 w-8 text-current" />
         </button>
-        <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mt-1">
+        <ul className="menu dropdown-content z-[1] mt-1 w-52 rounded-box bg-base-100 p-2 shadow">
           {ROUTES.map(({ path, label, Outline, Solid }) => (
             <li key={path}>
               <Link href={path}>
@@ -39,8 +39,8 @@ const Nav: React.FC = () => {
             key={path}
             href={path}
             className={twMerge(
-              "relative btn btn-ghost",
-              path === "/" && "text-xl"
+              "btn btn-ghost relative",
+              path === "/" && "text-xl",
             )}
           >
             <NavIcon

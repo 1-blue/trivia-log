@@ -13,8 +13,8 @@ export const metadata: Metadata = {};
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <html lang="ko">
-      <body className="p-4">
+    <html lang="ko" className="scroll-smooth">
+      <body className="scroll-smooth p-4">
         <CustomThemeProvider>
           <Header />
           <main>{children}</main>

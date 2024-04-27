@@ -31,7 +31,7 @@ const CodeBlockClipBoardButton = () => {
     <button
       ref={buttonRef}
       type="button"
-      className="btn btn-square w-10 h-10 min-h-10 border-none bg-gray-500 hover:bg-gray-600 text-gray-100 opacity-50 relative top-2 right-2"
+      className="btn btn-square relative right-2 top-2 h-10 min-h-10 w-10 border-none bg-gray-500 text-gray-100 opacity-50 hover:bg-gray-600"
       onClick={onClipboard}
     >
       {copied ? (

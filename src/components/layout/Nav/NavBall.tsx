@@ -18,8 +18,8 @@ const NavBall: React.FC<Props> = ({ path, greaterThanSmall }) => {
     <motion.div
       layoutId={greaterThanSmall ? "gt-nav-ball" : "nav-ball"}
       className={twMerge(
-        "w-2 h-2 rounded-full bg-current",
-        greaterThanSmall && "absolute -top-1"
+        "h-2 w-2 rounded-full bg-current",
+        greaterThanSmall && "absolute -top-1",
       )}
     />
   );

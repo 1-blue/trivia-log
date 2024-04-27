@@ -1,20 +1,32 @@
+import Link from "next/link";
 import Image, { type ImageProps } from "next/image";
 import type { MDXComponents } from "mdx/types";
+import { twMerge } from "tailwind-merge";
 
 import Pre from "#/components/mdx/Pre";
 import Blockquote from "#/components/mdx/Blockquote";
-import { twMerge } from "tailwind-merge";
 import Heading from "#/components/mdx/Heading";
 
 /** 모든 `.mdx`에 적용 ( `next.js`에서 약속된 이름 ) */
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    h1: (props) => <Heading.H1 {...props} />,
-    h2: (props) => <Heading.H2 {...props} />,
-    h3: (props) => <Heading.H3 {...props} />,
-    h4: (props) => <Heading.H4 {...props} />,
-    h5: (props) => <Heading.H5 {...props} />,
-    h6: (props) => <Heading.H6 {...props} />,
+    h1: (props) => <Heading.H1 {...props} id={props.children as string} />,
+    h2: (props) => {
+      const { children } = props;
+
+      // 존재하지 않는 경우 ( `TS`라서 예외처리 )
+      if (typeof children !== "string") return;
+
+      // metadata를 없앨수가 없어서 강제로 렌더링하지 않음
+      // ( 이유는 모르겠지만 h2로 변환됨 )
+      if (children.includes("changefreq: ")) return;
+
+      return <Heading.H2 {...props} id={props.children as string} />;
+    },
+    h3: (props) => <Heading.H3 {...props} id={props.children as string} />,
+    h4: (props) => <Heading.H4 {...props} id={props.children as string} />,
+    h5: (props) => <Heading.H5 {...props} id={props.children as string} />,
+    h6: (props) => <Heading.H6 {...props} id={props.children as string} />,
     img: (props) => (
       <Image
         sizes="100vw"
@@ -31,8 +43,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {...restProps}
         className={twMerge(
           typeof children === "string" &&
-            "my-code px-[5px] py-0.5 rounded-sm text-sm font-semibold",
-          className
+            "my-code rounded-sm px-[5px] py-0.5 text-sm font-semibold",
+          className,
         )}
       >
         {children}
@@ -40,29 +52,32 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     /** 리스트 */
     ol: ({ children, ...restProps }) => (
-      <ol {...restProps} className="list-decimal pl-10 mt-4 mb-2 space-y-1">
+      <ol {...restProps} className="mb-2 mt-4 list-decimal space-y-1 pl-10">
         {children}
       </ol>
     ),
     /** 리스트 */
     ul: ({ children, ...restProps }) => (
-      <ul {...restProps} className="list-disc pl-10 mt-4 mb-2 space-y-1">
+      <ul {...restProps} className="mb-2 mt-4 list-disc space-y-1 pl-10">
         {children}
       </ul>
     ),
     /** 링크 */
-    a: ({ children, className, ...restProps }) => (
-      <a
+    a: ({ href, children, className, ...restProps }) => (
+      <Link
         {...restProps}
+        href={href!}
         target="_blank"
         rel="noreferrer noopener"
-        className="underline underline-offset-2 font-semibold"
+        className="font-semibold text-main-500 underline underline-offset-2 transition-colors hover:text-main-600"
       >
         {children}
-      </a>
+      </Link>
     ),
     /** 인용 블럭 */
     blockquote: (props) => <Blockquote {...props} />,
+    /** 수평라인 ( 메타데이터를 사용하는 부분과 문법이 같은데 파싱할때 제외가 안되어서 아예 제거 `---` ) */
+    hr: () => null,
     ...components,
   };
 }

@@ -48,3 +48,11 @@ export interface PostMetadata {
   /** 게시글 경로 */
   path: string;
 }
+
+/** 필요한 데이터를 추가한 게시글 메타 데이터 */
+export interface PostMetadataWithETC extends PostMetadata {
+  /** 분량 ( 평균 읽기 시간 ) */
+  readingMinutes: number;
+  /** 단어 개수 */
+  wordCount: number;
+}

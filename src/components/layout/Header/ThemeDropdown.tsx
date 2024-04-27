@@ -16,29 +16,29 @@ const ThemeDropdown: React.FC = () => {
 
   return (
     <div className="dropdown dropdown-end">
-      <button type="button" tabIndex={0} className="btn btn-ghost btn-circle">
-        {theme === "system" && <SCommandLineIcon className="w-7 h-7" />}
-        {theme === "light" && <SSunIcon className="w-7 h-7" />}
-        {theme === "dark" && <SMoonIcon className="w-7 h-7" />}
+      <button type="button" tabIndex={0} className="btn btn-circle btn-ghost">
+        {theme === "system" && <SCommandLineIcon className="h-7 w-7" />}
+        {theme === "light" && <SSunIcon className="h-7 w-7" />}
+        {theme === "dark" && <SMoonIcon className="h-7 w-7" />}
       </button>
       <ul
         tabIndex={0}
-        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mt-1"
+        className="menu dropdown-content z-[1] mt-1 w-52 rounded-box bg-base-100 p-2 shadow"
       >
         {THEMES.map(({ label, value, Icon }) => (
           <li key={value} onClick={() => setTheme(value)}>
             <button type="button">
               <Icon
                 className={twMerge(
-                  "w-5 h-5",
-                  value === theme && "fill-current"
+                  "h-5 w-5",
+                  value === theme && "fill-current",
                 )}
               />
               <span>{label}</span>
               {value === theme && (
                 <motion.div
                   layoutId="theme-ball"
-                  className="w-2 h-2 rounded-full bg-current"
+                  className="h-2 w-2 rounded-full bg-current"
                 />
               )}
             </button>

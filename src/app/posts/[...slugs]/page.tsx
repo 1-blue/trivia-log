@@ -3,6 +3,8 @@ import dynamic from "next/dynamic";
 
 import { getPostMetadata } from "#/libs";
 
+import PostTopSection from "#/app/posts/_components/PostTopSection";
+
 interface Props {
   params: {
     slugs: string[];
@@ -39,9 +41,19 @@ export const generateMetadata = async ({
 
 const Page: NextPage<Props> = ({ params: { slugs } }) => {
   const BASE_URL = `${slugs.join("/")}`;
+  const postMetadata = getPostMetadata(BASE_URL);
+
   const Post = dynamic(() => import(`#/_posts/${BASE_URL}.mdx`));
 
-  return <Post />;
+  return (
+    <>
+      <PostTopSection {...postMetadata} />
+
+      <hr className="mb-8" />
+
+      <Post />
+    </>
+  );
 };
 
 export default Page;
