@@ -1,9 +1,10 @@
 import type { Metadata, NextPage } from "next";
 import dynamic from "next/dynamic";
 
-import { getPostMetadata } from "#/libs";
+import { getPostMetadata, getTableOfContents } from "#/libs";
 
 import PostTopSection from "#/app/posts/_components/PostTopSection";
+import PostSidebar from "../_components/PostSidebar";
 
 interface Props {
   params: {
@@ -43,6 +44,8 @@ const Page: NextPage<Props> = ({ params: { slugs } }) => {
   const BASE_URL = `${slugs.join("/")}`;
   const postMetadata = getPostMetadata(BASE_URL);
 
+  const tableOfContents = getTableOfContents(postMetadata.content);
+
   const Post = dynamic(() => import(`#/_posts/${BASE_URL}.mdx`));
 
   return (
@@ -51,7 +54,10 @@ const Page: NextPage<Props> = ({ params: { slugs } }) => {
 
       <hr className="mb-8" />
 
-      <Post />
+      <div className="relative">
+        <Post />
+        <PostSidebar tableOfContents={tableOfContents} />
+      </div>
     </>
   );
 };

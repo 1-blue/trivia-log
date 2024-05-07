@@ -6,9 +6,12 @@ import {
   ClipboardDocumentIcon,
 } from "@heroicons/react/24/outline";
 
+import useToastStore from "#/store/toast";
+
 const CodeBlockClipBoardButton = () => {
   const buttonRef = useRef<null | HTMLButtonElement>(null);
   const [copied, setCopied] = useState(false);
+  const { openToast } = useToastStore();
 
   /**
    * 클립보드 핸들러
@@ -19,10 +22,17 @@ const CodeBlockClipBoardButton = () => {
     const $pre = buttonRef.current.parentElement?.nextElementSibling;
 
     if (!$pre) return;
-    navigator.clipboard.writeText($pre.textContent as string);
 
-    setCopied(true);
-    setTimeout(() => setCopied(false), 500);
+    try {
+      navigator.clipboard.writeText($pre.textContent as string);
+
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1000);
+
+      openToast({ message: "코드를 복사했습니다.", type: "info" });
+    } catch (error) {
+      openToast({ message: "코드를 복사에 실패했습니다.", type: "error" });
+    }
 
     // TODO: Toast
   };
@@ -32,12 +42,11 @@ const CodeBlockClipBoardButton = () => {
       ref={buttonRef}
       type="button"
       className="btn btn-square relative right-2 top-2 h-10 min-h-10 w-10 border-none bg-gray-500 text-gray-100 opacity-50 hover:bg-gray-600"
-      onClick={onClipboard}
     >
       {copied ? (
-        <ClipboardDocumentCheckIcon className="h-6 w-6" />
+        <ClipboardDocumentCheckIcon className="h-6 w-6 text-green-400" />
       ) : (
-        <ClipboardDocumentIcon className="h-6 w-6" />
+        <ClipboardDocumentIcon className="h-6 w-6" onClick={onClipboard} />
       )}
     </button>
   );

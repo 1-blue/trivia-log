@@ -10,7 +10,12 @@ import Heading from "#/components/mdx/Heading";
 /** 모든 `.mdx`에 적용 ( `next.js`에서 약속된 이름 ) */
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    h1: (props) => <Heading.H1 {...props} id={props.children as string} />,
+    h1: (props) => (
+      <Heading.H1
+        {...props}
+        id={(props.children as string).replaceAll(" ", "-").toLowerCase()}
+      />
+    ),
     h2: (props) => {
       const { children } = props;
 
@@ -21,16 +26,43 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       // ( 이유는 모르겠지만 h2로 변환됨 )
       if (children.includes("changefreq: ")) return;
 
-      return <Heading.H2 {...props} id={props.children as string} />;
+      return (
+        <Heading.H2
+          {...props}
+          id={(props.children as string).replaceAll(" ", "-").toLowerCase()}
+        />
+      );
     },
-    h3: (props) => <Heading.H3 {...props} id={props.children as string} />,
-    h4: (props) => <Heading.H4 {...props} id={props.children as string} />,
-    h5: (props) => <Heading.H5 {...props} id={props.children as string} />,
-    h6: (props) => <Heading.H6 {...props} id={props.children as string} />,
+    h3: (props) => (
+      <Heading.H3
+        {...props}
+        id={(props.children as string).replaceAll(" ", "-").toLowerCase()}
+      />
+    ),
+    h4: (props) => (
+      <Heading.H4
+        {...props}
+        id={(props.children as string).replaceAll(" ", "-").toLowerCase()}
+      />
+    ),
+    h5: (props) => (
+      <Heading.H5
+        {...props}
+        id={(props.children as string).replaceAll(" ", "-").toLowerCase()}
+      />
+    ),
+    h6: (props) => (
+      <Heading.H6
+        {...props}
+        id={(props.children as string).replaceAll(" ", "-").toLowerCase()}
+      />
+    ),
     img: (props) => (
       <Image
         sizes="100vw"
-        style={{ width: "100%", height: "auto" }}
+        // style={{ width: "100%", height: "auto" }}
+        width="100"
+        height="100"
         {...(props as ImageProps)}
         alt={props.alt || "블로그 이미지"}
       />

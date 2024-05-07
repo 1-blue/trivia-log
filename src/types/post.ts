@@ -51,8 +51,23 @@ export interface PostMetadata {
 
 /** 필요한 데이터를 추가한 게시글 메타 데이터 */
 export interface PostMetadataWithETC extends PostMetadata {
+  /** 파싱된 게시글 내용 */
+  content: string;
   /** 분량 ( 평균 읽기 시간 ) */
   readingMinutes: number;
   /** 단어 개수 */
   wordCount: number;
+}
+
+/** 하나의 제목 영역 */
+export interface Section {
+  /** 제목 텍스트 */
+  text: string;
+  /** 제목 경로 ( 텍스트와 유사하지만 특수문자들 특수 처리 ) */
+  link: string;
+}
+
+/** 하나의 TOC */
+export interface TableOfContent extends Section {
+  subSections: Section[];
 }

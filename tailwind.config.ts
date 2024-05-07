@@ -60,6 +60,13 @@ const config: Config = {
           ".my-tag:hover": {
             "background-color": mainColor["200"],
           },
+          // side-button
+          ".my-side-button": {
+            border: "1px solid " + twColors.gray["500"],
+          },
+          ".my-side-button:hover": {
+            "background-color": twColors.gray["200"],
+          },
         },
         dark: {
           ...daisyUITheme["dark"],
@@ -80,6 +87,13 @@ const config: Config = {
           },
           ".my-tag:hover": {
             "background-color": mainColor["300"],
+          },
+          // side-button
+          ".my-side-button": {
+            border: "1px solid " + twColors.gray["500"],
+          },
+          ".my-side-button:hover": {
+            "background-color": twColors.gray["100"],
           },
         },
       },
