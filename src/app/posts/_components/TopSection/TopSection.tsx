@@ -1,21 +1,25 @@
-import Link from "next/link";
 import {
   Bars3BottomLeftIcon,
   CalendarDaysIcon,
   ClockIcon,
+  DocumentIcon,
+  FolderIcon,
 } from "@heroicons/react/24/outline";
 
 import type { PostMetadataWithETC } from "#/types";
 
+import CopyLinkButton from "../CopyLinkButton";
+import ScrollBottomButton from "../ScrollBottomButton";
+
 interface Props extends PostMetadataWithETC {}
 
-const PostTopSection: React.FC<Props> = ({
+const TopSection: React.FC<Props> = ({
   title,
   description,
   date,
   readingMinutes,
   wordCount,
-  tags,
+  breadcrumbs,
 }) => {
   return (
     <section className="mt-6 flex flex-col items-center gap-4">
@@ -35,22 +39,28 @@ const PostTopSection: React.FC<Props> = ({
           <span>단어: {wordCount.toLocaleString()}개</span>
         </div>
       </div>
-      <ul className="mx-2 mb-3 mt-4 flex flex-wrap gap-3 self-start text-sm font-semibold">
-        {tags.map((tag) => (
-          <li key={tag} className="my-tag rounded-sm transition-colors">
-            <Link
-              href={`/archives/tags/${tag}`}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="px-1.5"
-            >
-              {tag}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div className="mt-8 flex w-full justify-between">
+        <div className="breadcrumbs text-sm">
+          <ul className="flex items-center">
+            {breadcrumbs.map((breadcrumb, index) => (
+              <li key={breadcrumb} className="space-x-1">
+                {index === breadcrumbs.length - 1 ? (
+                  <DocumentIcon className="h-4 w-4" />
+                ) : (
+                  <FolderIcon className="h-4 w-4" />
+                )}
+                <span>{breadcrumb}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="flex gap-1.5 self-start">
+          <CopyLinkButton />
+          <ScrollBottomButton />
+        </div>
+      </div>
     </section>
   );
 };
 
-export default PostTopSection;
+export default TopSection;

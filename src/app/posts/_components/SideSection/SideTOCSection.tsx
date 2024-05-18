@@ -5,14 +5,14 @@ import Link from "next/link";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 
-import { useHeadingsObserver } from "../_hooks/useHeadingObserver";
+import { useHeadingsObserver } from "../../_hooks/useHeadingObserver";
 import type { TableOfContent } from "#/types";
 
 interface Props {
   tableOfContents: TableOfContent[];
 }
 
-const PostTOC: React.FC<Props> = ({ tableOfContents }) => {
+const SideTOCSection: React.FC<Props> = ({ tableOfContents }) => {
   const activeId = useHeadingsObserver({
     query: "h2, h3",
     headings: tableOfContents.flatMap(({ link, subSections }) => [
@@ -22,8 +22,15 @@ const PostTOC: React.FC<Props> = ({ tableOfContents }) => {
   });
 
   return (
-    <div className="mb-4 border-l py-2">
-      <div className="mb-1 px-4 font-bold">목차</div>
+    <section className="reverse mb-4 rounded-md py-3">
+      <div className="mx-4 mb-2 flex items-center justify-between">
+        <div className="text-base font-bold">책갈피</div>
+        <div className="flex gap-2">
+          <div className="h-3 w-3 rounded-full bg-red-400" />
+          <div className="h-3 w-3 rounded-full bg-yellow-400" />
+          <div className="h-3 w-3 rounded-full bg-green-400" />
+        </div>
+      </div>
       <ul>
         {tableOfContents.map((toc) => {
           const isIntersecting =
@@ -32,49 +39,49 @@ const PostTOC: React.FC<Props> = ({ tableOfContents }) => {
 
           return (
             <li key={toc.link} className="space-y-1.5 py-1.5 transition">
-              <div className="relative">
+              <div className="relative flex">
                 <Link
                   href={toc.link}
                   className={twMerge(
-                    "px-4 text-sm font-bold hover:text-main-400",
-                    isIntersecting && "font-bold text-main-600",
+                    "px-6 text-sm font-bold hover:text-main-400",
+                    isIntersecting && "font-bold text-main-500",
                   )}
                 >
                   {toc.text}
                 </Link>
-                {toc.link === activeId && <ActiveLine />}
+                {toc.link === activeId && <ActiveBall />}
               </div>
 
-              <ul className="space-y-0.5 text-xs font-semibold">
+              {toc.subSections.length > 0 && <ul className="space-y-0.5 text-xs font-semibold">
                 {toc.subSections.map(({ link, text }) => (
-                  <li key={link}>
+                  <li key={link} className="flex">
                     <Link
                       href={link}
                       className={twMerge(
-                        "relative flex items-center gap-1 rounded-sm py-0.5 pl-6 pr-4 transition-colors hover:text-main-400",
+                        "relative flex items-center gap-1 rounded-sm py-0.5 pl-7 pr-4 transition-colors hover:text-main-400",
                         link === activeId && "text-main-400",
                       )}
                     >
                       <ChevronRightIcon className="h-3 w-3" />
                       <span>{text}</span>
-                      {link === activeId && <ActiveLine />}
+                      {link === activeId && <ActiveBall />}
                     </Link>
                   </li>
                 ))}
-              </ul>
+              </ul>}
             </li>
           );
         })}
       </ul>
-    </div>
+    </section>
   );
 };
 
-export default PostTOC;
+export default SideTOCSection;
 
-const ActiveLine = () => (
+const ActiveBall = () => (
   <motion.div
-    className="absolute -left-[1px] top-0 h-full w-1 bg-main-500"
+    className="absolute left-2 top-1.5 h-2 w-2 rounded-full bg-main-500"
     layoutId="toc-focus-line"
   />
 );

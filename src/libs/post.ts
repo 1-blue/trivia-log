@@ -11,6 +11,41 @@ import type {
   TableOfContent,
 } from "#/types";
 
+/** 같은 맥락을 갖는 게시글들의 메타데이터를 얻는 함수 */
+export const getAllRelatedPostMetadata = (
+  postPath: string,
+): Omit<PostMetadataWithETC, "content">[] => {
+  const PATH = path.join(
+    process.cwd(),
+    "src",
+    "_posts",
+    postPath.slice(0, postPath.lastIndexOf("/")),
+  );
+  const postPaths: string[] = sync(`${PATH}/**/*.mdx`);
+
+  const relatedPosts = postPaths.map((postPath) => {
+    const POST_FILE = fs.readFileSync(postPath, { encoding: "utf8" });
+
+    const { data, content } = matter(POST_FILE);
+    const grayMatter = data as PostMetadata;
+
+    const lastPath = postPath.slice(PATH.length).replace(".mdx", "");
+
+    return {
+      ...grayMatter,
+      tags: grayMatter.tags,
+      date: dayjs(grayMatter.date).format("YYYY-MM-DD"),
+      path: "/posts" + lastPath,
+      thumbnail: "/images/default/" + (grayMatter.thumbnail ?? "thumbnail.png"),
+      breadcrumbs: lastPath.split("/"),
+      readingMinutes: Math.ceil(readingTime(content).minutes),
+      wordCount: content.split(/\s+/gu).length,
+    };
+  });
+
+  return relatedPosts;
+};
+
 /** 특정 게시글의 메타데이터 얻는 함수 */
 export const getPostMetadata = (postPath: string): PostMetadataWithETC => {
   const PATH = path.join(process.cwd(), "src", "_posts", `${postPath}.mdx`);
@@ -26,6 +61,8 @@ export const getPostMetadata = (postPath: string): PostMetadataWithETC => {
     tags: grayMatter.tags,
     date: dayjs(grayMatter.date).format("YYYY년 MM월 DD일"),
     path: "/posts" + PATH.slice(PATH.indexOf("_posts") + 6).replace(".mdx", ""),
+    thumbnail: "/images/default/" + (grayMatter.thumbnail ?? "thumbnail.png"),
+    breadcrumbs: postPath.split("/"),
     readingMinutes: Math.ceil(readingTime(content).minutes),
     wordCount: content.split(/\s+/gu).length,
   };
@@ -42,12 +79,15 @@ export const getAllPostMetadata = (): PostMetadataWithETC[] => {
     const { data, content } = matter(POST_FILE);
     const grayMatter = data as PostMetadata;
 
+    const lastPath = postPath.slice(PATH.length).replace(".mdx", "");
+
     return {
       content,
       ...grayMatter,
       tags: grayMatter.tags,
       date: dayjs(grayMatter.date).format("YYYY-MM-DD"),
-      path: "/posts" + postPath.slice(PATH.length).replace(".mdx", ""),
+      path: "/posts" + lastPath,
+      breadcrumbs: lastPath.split("/"),
       readingMinutes: Math.ceil(readingTime(content).minutes),
       wordCount: content.split(/\s+/gu).length,
     };

@@ -58,14 +58,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       />
     ),
     img: (props) => (
-      <Image
-        sizes="100vw"
-        // style={{ width: "100%", height: "auto" }}
-        width="100"
-        height="100"
-        {...(props as ImageProps)}
-        alt={props.alt || "블로그 이미지"}
-      />
+      <figure className="relative aspect-video rounded-md object-contain">
+        <Image
+          {...(props as ImageProps)}
+          fill
+          alt={props.alt || "블로그 이미지"}
+        />
+      </figure>
     ),
     /** 코드 블럭 */
     pre: (props) => <Pre {...props} />,
@@ -90,7 +89,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     /** 리스트 */
     ul: ({ children, ...restProps }) => (
-      <ul {...restProps} className="mb-2 mt-4 list-disc space-y-1 pl-10">
+      <ul
+        {...restProps}
+        className="mb-2 mt-4 list-disc space-y-1 pl-10 group-has-[ul]:my-0 group-has-[ul]:pl-7"
+      >
         {children}
       </ul>
     ),

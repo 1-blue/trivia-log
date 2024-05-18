@@ -9,7 +9,7 @@ import {
   SunIcon as SSunIcon,
 } from "@heroicons/react/24/solid";
 
-import { THEMES } from "#/contants";
+import { THEMES } from "#/constants";
 
 const ThemeDropdown: React.FC = () => {
   const { theme, setTheme } = useTheme();

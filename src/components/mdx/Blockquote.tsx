@@ -27,7 +27,7 @@ const Blockquote: React.FC<React.PropsWithChildren<Props>> = ({
       {...restProps}
       className={twMerge(
         className,
-        "mb-3 flex flex-col rounded-md border-x-[6px] border-b-2",
+        "group mb-3 flex flex-col rounded-md border-x-[6px] border-b-2",
         type === "info" && "border-orange-500",
         type === "tip" && "border-green-500",
         type === "success" && "border-blue-500",

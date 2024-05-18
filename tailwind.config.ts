@@ -42,6 +42,10 @@ const config: Config = {
       {
         light: {
           ...daisyUITheme["light"],
+          ".reverse": {
+            "background-color": twColors.gray["200"],
+            color: twColors.gray["700"],
+          },
           // `<code>`
           ".my-code": {
             "background-color": "#87837826",
@@ -67,9 +71,17 @@ const config: Config = {
           ".my-side-button:hover": {
             "background-color": twColors.gray["200"],
           },
+          // toc
+          ".my-toc:hover": {
+            "background-color": twColors.gray["200"],
+          },
         },
         dark: {
           ...daisyUITheme["dark"],
+          ".reverse": {
+            "background-color": twColors.gray["700"],
+            color: twColors.gray["200"],
+          },
           // `<code>`
           ".my-code": {
             "background-color": "#87837826",
@@ -94,6 +106,10 @@ const config: Config = {
           },
           ".my-side-button:hover": {
             "background-color": twColors.gray["100"],
+          },
+          // toc
+          ".my-toc:hover": {
+            "background-color": twColors.gray["600"],
           },
         },
       },

@@ -38,7 +38,7 @@ export interface PostMetadata {
   /** 게시글 아이콘 */
   icon: string;
   /** 게시글 썸네일 */
-  image: string;
+  thumbnail: string;
   /** 게시글 생성일 */
   date: string;
   /** 사이트맵 */
@@ -47,6 +47,8 @@ export interface PostMetadata {
   draft: boolean;
   /** 게시글 경로 */
   path: string;
+  /** 게시글 경로 (`/`단위 배열) */
+  breadcrumbs: string[];
 }
 
 /** 필요한 데이터를 추가한 게시글 메타 데이터 */

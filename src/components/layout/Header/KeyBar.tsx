@@ -11,7 +11,7 @@ import { useTheme } from "next-themes";
 
 import "react-cmdk/dist/cmdk.css";
 
-import { ROUTES, THEMES } from "#/contants";
+import { ROUTES, THEMES } from "#/constants";
 import type { PostMetadata } from "#/types";
 
 type KeyBarPost = Pick<PostMetadata, "title" | "path">;

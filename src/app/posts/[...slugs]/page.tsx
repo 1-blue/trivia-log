@@ -3,8 +3,13 @@ import dynamic from "next/dynamic";
 
 import { getPostMetadata, getTableOfContents } from "#/libs";
 
-import PostTopSection from "#/app/posts/_components/PostTopSection";
-import PostSidebar from "../_components/PostSidebar";
+import Thumbnail from "#/app/posts/_components/Thumbnail";
+import TopSection from "#/app/posts/_components/TopSection/TopSection";
+import SideSection from "#/app/posts/_components/SideSection/SideSection";
+import TopTOCSection from "#/app/posts/_components/TopSection/TopTOCSection";
+import ButtomSection from "#/app/posts/_components/BottomSection/BottomSection";
+import SuggestSection from "#/app/posts/_components/SuggestSection/SuggestSection";
+import CommentSection from "#/app/posts/_components/CommentSection/CommentSection";
 
 interface Props {
   params: {
@@ -49,16 +54,34 @@ const Page: NextPage<Props> = ({ params: { slugs } }) => {
   const Post = dynamic(() => import(`#/_posts/${BASE_URL}.mdx`));
 
   return (
-    <>
-      <PostTopSection {...postMetadata} />
+    <div className="relative">
+      <TopSection {...postMetadata} />
 
-      <hr className="mb-8" />
+      <div className="divider mb-6 mt-0" />
 
-      <div className="relative">
-        <Post />
-        <PostSidebar tableOfContents={tableOfContents} />
-      </div>
-    </>
+      <Thumbnail thumbnail={postMetadata.thumbnail} />
+
+      <div className="divider my-6" />
+
+      <TopTOCSection tableOfContents={tableOfContents} />
+      <SideSection tableOfContents={tableOfContents} />
+
+      <div className="divider my-6" />
+
+      <Post />
+
+      <div className="divider my-6" />
+
+      <ButtomSection {...postMetadata} />
+
+      <div className="divider my-6" />
+
+      <SuggestSection baseUrl={BASE_URL} />
+
+      <div className="divider my-6" />
+
+      <CommentSection />
+    </div>
   );
 };
 
