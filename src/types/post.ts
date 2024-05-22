@@ -73,3 +73,10 @@ export interface Section {
 export interface TableOfContent extends Section {
   subSections: Section[];
 }
+
+/** 게시글들 그룹회에 사용할 파일 타입 */
+export type File = string;
+/** 게시글들 그룹화에 사용할 폴더 타입 */
+export interface Folder {
+  [key: string]: Folder | File;
+}

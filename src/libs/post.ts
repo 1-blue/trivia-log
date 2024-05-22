@@ -6,6 +6,7 @@ import readingTime from "reading-time";
 import { sync } from "glob";
 
 import type {
+  Folder,
   PostMetadata,
   PostMetadataWithETC,
   TableOfContent,
@@ -130,4 +131,31 @@ export const getTableOfContents = (content: string) => {
 
       return nac;
     }, []);
+};
+
+/** 같은 맥락의 게시글끼리 그룹화된 형태의 객체 데이터 얻는 함수 */
+export const getGroupedFolder = () => {
+  const PATH = path.join(process.cwd(), "src", "_posts");
+  const postPaths: string[] = sync(`${PATH}/**/*.mdx`);
+
+  const folder: Folder = {};
+
+  postPaths.forEach((postPath) => {
+    const relativePath = postPath.replace(PATH, "").replace(".mdx", "");
+    const parts = relativePath.split("/");
+
+    let currentFolder = folder;
+
+    parts.forEach((part, index) => {
+      if (index === parts.length - 1) {
+        currentFolder[part] = `${relativePath}`;
+      } else {
+        if (!currentFolder[part]) currentFolder[part] = {};
+
+        currentFolder = currentFolder[part] as Folder;
+      }
+    });
+  });
+
+  return folder[""] as Folder;
 };
