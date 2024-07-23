@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 
@@ -17,7 +18,17 @@ export const metadata: Metadata = {};
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <html lang="ko" className="scroll-smooth">
+      <head />
       <body className="scroll-smooth p-4">
+        <Script id="microsoft-clarity" strategy="afterInteractive">
+          {`
+            (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "nbx9pl1nx9");
+          `}
+        </Script>
         <CustomThemeProvider>
           <ToastProvider>
             <Header />
