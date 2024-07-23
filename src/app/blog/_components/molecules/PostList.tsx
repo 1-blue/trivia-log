@@ -17,13 +17,13 @@ interface Props {
 const PostList: React.FC<Props> = ({ post }) => {
   return (
     <li key={post.path} className="flex gap-4">
-      <Link href={post.path}>
-        <figure className="relative h-full w-60 flex-shrink-0 overflow-hidden rounded-xl sm:block">
+      <Link href={post.path} className="inline-block self-center">
+        <figure className="relative aspect-square h-28 overflow-hidden rounded-xl sm:aspect-video sm:h-40">
           <Image
             src={post.thumbnail}
             alt={post.title + " 썸네일"}
             fill
-            className="transition-all hover:scale-x-110 hover:scale-y-105"
+            className="object-cover transition-all hover:scale-x-110 hover:scale-y-105"
           />
         </figure>
       </Link>
@@ -31,15 +31,17 @@ const PostList: React.FC<Props> = ({ post }) => {
         <div className="flex gap-4 text-xs *:flex *:items-center *:gap-1">
           <div>
             <CalendarDaysIcon className="h-5 w-5" />
-            <time>{post.date}</time>
+            <time className="whitespace-nowrap">{post.date}</time>
           </div>
           <div>
             <Bars3BottomLeftIcon className="h-5 w-5" />
-            <span>단어: {post.wordCount.toLocaleString()}개</span>
+            <span className="whitespace-nowrap">
+              단어: {post.wordCount.toLocaleString()}개
+            </span>
           </div>
           <div>
             <ClockIcon className="h-5 w-5" />
-            <span>{post.readingMinutes}분</span>
+            <span className="whitespace-nowrap">{post.readingMinutes}분</span>
           </div>
         </div>
         <Link href={post.path} className="underline-offset-2 hover:underline">
