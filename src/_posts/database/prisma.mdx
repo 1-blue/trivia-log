@@ -1,0 +1,389 @@
+---
+title: prisma ( ORM )
+description: prisma에 대해서 정리한 글
+tags: [database, orm, prisma]
+icon: ''
+image: ''
+date: 2024-04-27 13:13:00
+sitemap:
+  lastmod: 2024-04-27
+  changefreq: monthly
+  priority: 0.5
+draft: false
+---
+
+> 해당 포스트는 `ORM`인 `prisma`에 대한 개념과 기본적인 사용법을 정리한 게시글입니다.<br />
+
+# 📝 용어 정리
+1. `ORM`: `Object Relational Mapping`으로 `JavaScript`의 객체를 `DB`의 `table`과 맵핑시켜주는 것을 의미
+2. `schema.prisma`: 코드상으로 모델 생성 및 관계 설정을 하는 파일
+3. `draft migration file`: 현재 작성된 `schema.prisma`를 기준으로 생성된 `.sql`
+4. `_prisma_migrations`: `prisma`에서 `migrate` 기록을 확인하기 위해 `DB`에 저장한 `table`
+
+# ⚙️ 기본 세팅
+> `mysql`을 기준으로 작성했습니다.<br />
+
+## 0️⃣ 설치
+```bash
+npm i prisma @prisma/client
+```
+
+추가로 `VSCode`를 사용한다면 `Prisma`라는 Extension을 설치하면 `schema.prisma`에서 모델을 정의할 때 도움이 됩니다.
+
+## 1️⃣ 초기화
+```bash
+npx prisma init
+```
+ 
+## 2️⃣ 기본 제공 파일 수정
+### 1. schema.prisma 수정
+```txt
+generator client {
+  provider = "prisma-client-js"
+}
+
+// "postgresql" -> "mysql"로 바꾸기
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+```
+
+### 2. .env 수정
+```txt
+DATABASE_URL="mysql://<유저명>:<비밀번호>@localhost:3306/<DB이름>”
+```
+
+# 🗃️ 모델 ( 관계 설정 )
+아래 예시에서 1번을 기준으로 `@relation()`에 대해 살펴보겠습니다.<br />
+`fields`는 `Post`에서 참조할 `User`의 식별자의 이름을 정하는 것입니다.<br />
+`references`는 `Foreign Key`로 사용할 것을 지정합니다.<br />
+`onUpdate`/`onDelete`는 `DB`에서 사용하는 것과 같은 의미입니다. ( `Cascade`는 참조 대상이 사라지면 본인도 제거하라는 의미죠 )<br />
+`User`의 `idx`컬럼을 `Foreign Key`로 사용하되 `Post`에서는 `userIdx`라고 부르겠다는 의미입니다.<br />
+
+## 0️⃣ 모델 정의
+```txt
+model User {
+  idx Int @id @default(autoincrement())
+
+  // "User"와 "Profile" ( 1 : 1 )
+  profile Profile?
+
+  // "User"와 "Post" ( 1 : N )
+  posts Post[]
+
+  // "User"와 "Job" ( N : M ) ( 중간 테이블을 안만들면 prisma에서 알아서 이름을 지정해서 생성 ( "_jobtouser"라는 테이블 생성 ) )
+  jobs Job[]
+
+  // "User"와 "User" ( 자기참조 N : M ) ( 중간 테이블을 명시적으로 만들었기 때문에 "follows"라는 테이블이 생성 )
+  follower Follows[] @relation("follower")
+  following Follows[] @relation("following")
+}
+
+// 1 : 1
+model Profile {
+  idx Int @id @default(autoincrement())
+  name String @db.VarChar(30)
+  email String @unique @db.VarChar(50)
+
+  // "User"와 "Profile" ( 1 : 1 ) ( 1 : 1이기 때문에 User측에서 아래 내용을 작성해도 됩니다. )
+  user User @relation(fields: [userIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+  userIdx Int @unique
+}
+
+// 1 : N
+model Post {
+  idx Int @id @default(autoincrement())
+  title String
+  description String @db.VarChar(500)
+
+  // "User"와 "Post" ( 1 : N ) ( >> 1번 << )
+  user User @relation(fields: [userIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+  userIdx Int
+}
+
+// N : M
+model Job {
+  idx Int @id @default(autoincrement())
+  name String @db.VarChar(100)
+
+  users User[]
+}
+
+// 자기참조 N : M ( 중간 테이블 )
+model Follows {
+  follower    User @relation("follower", fields: [followerIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+  followerIdx  Int
+  following   User @relation("following", fields: [followingIdx], references: [idx], onUpdate: Cascade, onDelete: Cascade)
+  followingIdx Int
+
+  @@id([followerIdx, followingIdx])
+}
+```
+
+## 1️⃣ migrate로 생성된 SQL
+```sql
+-- CreateTable
+CREATE TABLE `User` (
+    `idx` INTEGER NOT NULL AUTO_INCREMENT,
+
+    PRIMARY KEY (`idx`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Profile` (
+    `idx` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(30) NOT NULL,
+    `email` VARCHAR(50) NOT NULL,
+    `userIdx` INTEGER NOT NULL,
+
+    UNIQUE INDEX `Profile_email_key`(`email`),
+    UNIQUE INDEX `Profile_userIdx_key`(`userIdx`),
+    PRIMARY KEY (`idx`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Post` (
+    `idx` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(500) NOT NULL,
+    `userIdx` INTEGER NOT NULL,
+
+    PRIMARY KEY (`idx`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Job` (
+    `idx` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+
+    PRIMARY KEY (`idx`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Follows` (
+    `followerIdx` INTEGER NOT NULL,
+    `followingIdx` INTEGER NOT NULL,
+
+    PRIMARY KEY (`followerIdx`, `followingIdx`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `_JobToUser` (
+    `A` INTEGER NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_JobToUser_AB_unique`(`A`, `B`),
+    INDEX `_JobToUser_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Profile` ADD CONSTRAINT `Profile_userIdx_fkey` FOREIGN KEY (`userIdx`) REFERENCES `User`(`idx`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Post` ADD CONSTRAINT `Post_userIdx_fkey` FOREIGN KEY (`userIdx`) REFERENCES `User`(`idx`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Follows` ADD CONSTRAINT `Follows_followerIdx_fkey` FOREIGN KEY (`followerIdx`) REFERENCES `User`(`idx`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Follows` ADD CONSTRAINT `Follows_followingIdx_fkey` FOREIGN KEY (`followingIdx`) REFERENCES `User`(`idx`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_JobToUser` ADD CONSTRAINT `_JobToUser_A_fkey` FOREIGN KEY (`A`) REFERENCES `Job`(`idx`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_JobToUser` ADD CONSTRAINT `_JobToUser_B_fkey` FOREIGN KEY (`B`) REFERENCES `User`(`idx`) ON DELETE CASCADE ON UPDATE CASCADE;
+```
+
+# ✍️ 마이그레이션
+> 해당 내용은 [Prisma migrate 블로그](https://pyh.netlify.app/prisma/prisma_migrate)를 참고해서 요약한 내용이기 때문에 해당 블로그를 보시는 것을 추천합니다.<br />
+
+위 모델을 그대로 선언하고 [명령어](/posts/database/prisma/#2%EF%B8%8F⃣-명령어)들을 순서대로 실행하면서 변화 과정을 테스트해보시면 이해에 도움이 됩니다.<br />
+`_prisma_migrations`를 바탕으로 기존에 했던 `migrate`는 실행하지 않고 변경된 명령만 수행합니다.<br />
+
+## 0️⃣ migrate란
+`DB`의 `schema`(`table`)를 변경할 수 있는 툴<br />
+
+## 1️⃣ 동작 흐름
+1. `draft migration file` 생성
+2. `draft migration file`을 `DB`의 `schema`에 적용 및 `_prisma_migrations`에 추가
+3. `generate artifacts` 적용 ( 코드상으로 `Type`이 만들어지고 적용되는 과정 )
+
+## 2️⃣ 명령어
+1. `npx prisma migrate dev --create-only`: `draft migration file`만 생성 ( 즉, `/prisma/migrations/생성시간_이름/migration.sql` 생성 )
+2. `npx prisma migrate deploy`: `DB`에 적용 및 `_prisma_migrations` 업데이트
+3. `npx prisma generate`: `prisma client` 생성 ( 즉, 타입을 만들고 코드에 적용 )
+1. `npx prisma migrate dev`: 위 3가지 명령어 순차적으로 실행 ( 즉, `.sql` 만들고 `DB`에 적용하고 코드에 적용 )
+
+# 📌 코드로 사용하는 방법
+이 부분은 사용할 수 있는 방법이 너무 많아서 생략하겠습니다.<br />
+앞으로 사용해보면서 이런 내용은 추가할만하다라고 느껴지면 추가하겠습니다.<br />
+
+# 🌱 seed
+기본 데이터들을 데이터 베이스에 넣는 방법입니다.<br />
+
+## 0️⃣ 세팅
+```bash
+# ts 코드를 실행해야 하기 때문에 설치합니다.
+npm i ts-node
+```
+
++ `package.json` 수정
+
+```json
+{
+  // ... 생략
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed/index.ts"
+  },
+}
+```
+
+```bash
+# 아래 코드로 seed를 생성합니다.
+npx prisma db seed
+
+# 혹은 리셋시키면 자동으로 seed가 추가됩니다. ( 단, 이전에 넣었던 모든 데이터가 날아가고 seed만 남습니다. )
+npx prisma migrate reset
+```
+
+## 1️⃣ seed 코드 작성 예시
+아래 코드는 [위의 예시](/posts/database/prisma/#0%EF%B8%8F⃣-모델-정의)의 `Profile`을 예로 `seed`를 만들어봤습니다.<br />
+즉, 1번 유저의 프로필을 30개 만든 것입니다.<br />
+아마 1번 유저가 없다면 오류가 나겠죠<br />
+
+```ts
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
+// type
+import type { Prisma } from "@prisma/client";
+
+// 가짜 profile 30개 반환하는 함수
+const getDummyProfile = (): Prisma.ProfileCreateManyInput[] =>
+  Array(30)
+    .fill(null)
+    .map((v, i) => ({
+      name: "test" + i,
+      email: "test" + i + "@naver.com",
+      userIdx: 1,
+    }));
+
+async function main() {
+  prisma.profile.createMany({
+    skipDuplicates: true,
+    data: getDummyProfile(),
+  });
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    // process.exit(1);
+  });
+```
+
+# 😮 유용한 prisma 명령어들
+1. `npx prisma studio`: `DB`를 쉽게 관리할 수 있도록 웹 브라우저로 `UI` 제공 ( `CRUD` 가능 )
+2. `npx prisma migrate dev`: `magration` 수행
+3. `npx prisma migrate reset`: 기존 `DB`의 데이터 모두 삭제하고 모든 마이그레이션 실행 후 `seed` 실행
+4. `npx prisma db pull`: 데이터 베이스의 테이블을 `prisma`에 적용
+5. `npx prisma db push`: `magration` 없이 `DB`에 적용
+
+# 😶 소소한 팁
+## 0️⃣ 타입이 바로 적용 안되는 경우
+`npx prisma generate` 혹은 `npx prisma migrate dev`를 실행한 후 타입이 적용이 안된다면 prisma 타입 정의된 파일에 들어갔다가 다시 나오면 됩니다.<br />
+
+## 1️⃣ 만들어진 타입 사용하기
+`model`을 생성하고 적용했다면 그에 맞는 타입이 만들어집니다.<br />
+
+[위의 예시](/posts/database/prisma/#0%EF%B8%8F⃣-모델-정의)의 `Profile`을 예로 들어보겠습니다.
+
++ 생성된 타입 형태
+
+```ts
+// 이런 타입이 생성되었고, "export"기 때문에 그대로 가져다 사용하면 됩니다.
+export type Profile = {
+  idx: number
+  name: string
+  email: string
+  userIdx: number
+}
+```
+
++ 타입 수정 방법
+
+```ts
+// 혹시 타입을 쓰다가 타입을 조금씩 바꿔서 쓰고 싶다면 typescript utility를 사용하면 됩니다.
+import type { Profile } from "@prisma/client";
+
+// 만약 userIdx를 안 받는다면 아래와 같이 수정해서 사용하면 되겠죠
+// 그러면 Proflie 자체를 수정하더라도 아래 타입을 그대로 사용하기만 하면 됩니다. 굳이 수정할 필요가 없어지죠
+export type SimpleProfile = Omit<Profile, "userIdx">;
+```
+
++ `express` 사용 예시
+
+```ts
+import express from "express";
+
+// type
+import type { Request, Response, NextFunction } from "express";
+import type { Profile } from "@prisma/client";
+
+router.get(
+  "/",
+  async (
+    req: Request<{}, {}, {}, { name: string }>,
+    res: Response<{ message: string; profile: Profile }>,
+    next: NextFunction
+  ) => {
+    try {
+      const { name } = req.query;
+
+      const profile = await prisma.profile.findFirst({ name });
+
+      return res.json({
+        message: `"${name}"님의 프로필을 찾았습니다.`,
+        profile
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+```
+
+## cursor 사용하기
+> [`prisma`의 `pagination`](https://www.prisma.io/docs/concepts/components/prisma-client/pagination)을 참고해주세요!<br />
+
+특정 데이터를 기준으로 데이터들을 가져오는 경우 `cursor`를 사용하면 쉽게 가져올 수 있습니다.<br />
+( 제 기준에서는 무한 스크롤링에 주로 사용합니다. )<br />
+
+```ts
+// 임의로 값 부여
+const take = 10;
+const lastIdx = 5; // 기본 값 "-1" ( 즉, 첫 패치 )
+
+const posts = await prisma.post.findMany({
+  where: {},
+  // 가져올 개수
+  take,
+  // cursor 기준으로 무시할 개수 ( 기본 값이 아니면 첫 번째 값 무시 ( 중복 제거 ) )
+  skip: lastIdx === -1 ? 0 : 1,
+  // 첫 패치가 아니라면 커서 이동 ( 커서를 기준으로 시작 )
+  ...(lastIdx !== -1 && { cursor: { idx: lastIdx } }),
+  // 최신순 정렬
+  orderBy: { createdAt: "desc" },
+});
+```
+
+# 📮 레퍼런스
+1. [pyh - Prisma migrate](https://pyh.netlify.app/prisma/prisma_migrate)
+2. [prisma - Relations](https://www.prisma.io/docs/concepts/components/prisma-schema/relations)
+3. [prisma - pagination](https://www.prisma.io/docs/concepts/components/prisma-client/pagination)
