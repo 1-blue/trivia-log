@@ -5,7 +5,8 @@ import { ME } from "#/constants";
 
 import CopyLinkButton from "../CopyLinkButton";
 import ScrollTopButton from "../ScrollTopButton";
-import Tag from "./Tag";
+
+import Tag from "#/app/blog/_components/atoms/Tag";
 
 interface Props extends PostMetadataWithETC {}
 

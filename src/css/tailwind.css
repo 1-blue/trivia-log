@@ -10,3 +10,7 @@
 
 /** 코드 블럭 특정 옵션 ( 강조, 추가, 제거 등 ) */
 @import 'rehype-prism-plus.css';
+
+body {
+  font-family: 'Noto Sans Variable', sans-serif;
+}

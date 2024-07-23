@@ -11,7 +11,7 @@ import { useTheme } from "next-themes";
 
 import "react-cmdk/dist/cmdk.css";
 
-import { ROUTES, THEMES } from "#/constants";
+import { ME, ROUTES, THEMES } from "#/constants";
 import type { PostMetadata } from "#/types";
 
 type KeyBarPost = Pick<PostMetadata, "title" | "path">;
@@ -105,15 +105,15 @@ const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
           },
           {
             id: "email",
-            children: "이메일 ( 1-blue98@naver.com )",
+            children: `이메일 ( ${ME.EMAIL} )`,
             icon: "EnvelopeOpenIcon",
-            href: "mailto:1-blue98@naver.com",
+            href: `mailto:${ME.EMAIL}`,
           },
           {
             id: "phone",
-            children: "휴대폰 번호 ( 010-2103-8259 )",
+            children: `휴대폰 번호 ( ${ME.PHONE} )`,
             icon: "PhoneIcon",
-            href: "tel:010-2103-8259",
+            href: `tel:${ME.PHONE}`,
           },
         ],
       },
@@ -124,7 +124,7 @@ const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
   return (
     <>
       <a
-        href="https://github.com/1-blue"
+        href={ME.GITHUB_URL}
         target="_blank"
         rel="noreferrer noopener"
         className="hidden"

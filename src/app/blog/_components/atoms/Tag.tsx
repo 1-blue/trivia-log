@@ -9,7 +9,7 @@ const Tag: React.FC<Props> = ({ tag }) => {
   return (
     <li className="my-tag rounded-sm transition-colors">
       <Link
-        href={`/archives/tags/${tag}`}
+        href={`/blog/archives/tags/${tag}`}
         target="_blank"
         rel="noreferrer noopener"
         className="inline-flex items-center gap-1.5 px-2 py-1"

@@ -1,7 +1,11 @@
 import type { NextPage } from "next";
 
 const Page: NextPage = () => {
-  return <>Archives</>;
+  return (
+    <>
+      <span>구현 예정</span>
+    </>
+  );
 };
 
 export default Page;

@@ -33,8 +33,6 @@ const CodeBlockClipBoardButton = () => {
     } catch (error) {
       openToast({ message: "코드를 복사에 실패했습니다.", type: "error" });
     }
-
-    // TODO: Toast
   };
 
   return (

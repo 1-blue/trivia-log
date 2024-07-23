@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 
+// Supports weights 100-900
+import "@fontsource-variable/noto-sans";
 import "#/css/tailwind.css";
 
 import CustomThemeProvider from "#/providers/CustomThemeProvider";

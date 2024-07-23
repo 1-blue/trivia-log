@@ -12,8 +12,12 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./mdx-components.tsx",
   ],
+  safelist: [{ pattern: /^pl-/ }],
   theme: {
     extend: {
+      screens: {
+        xs: "400px",
+      },
       colors: {
         main: {
           50: "#eff6ff",
@@ -36,6 +40,7 @@ const config: Config = {
     },
   },
   plugins: [daisyUI],
+  darkMode: ["class", '[data-theme="dark"]'],
   daisyui: {
     // dark와 light만 사용
     themes: [

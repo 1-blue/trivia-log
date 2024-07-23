@@ -3,13 +3,13 @@ import dynamic from "next/dynamic";
 
 import { getPostMetadata, getTableOfContents } from "#/libs";
 
-import Thumbnail from "#/app/posts/_components/Thumbnail";
-import TopSection from "#/app/posts/_components/TopSection/TopSection";
-import SideSection from "#/app/posts/_components/SideSection/SideSection";
-import TopTOCSection from "#/app/posts/_components/TopSection/TopTOCSection";
-import ButtomSection from "#/app/posts/_components/BottomSection/BottomSection";
-import SuggestSection from "#/app/posts/_components/SuggestSection/SuggestSection";
-import CommentSection from "#/app/posts/_components/CommentSection/CommentSection";
+import Thumbnail from "#/app/blog/posts/_components/Thumbnail";
+import TopSection from "#/app/blog/posts/_components/TopSection/TopSection";
+import SideSection from "#/app/blog/posts/_components/SideSection/SideSection";
+import TopTOCSection from "#/app/blog/posts/_components/TopSection/TopTOCSection";
+import ButtomSection from "#/app/blog/posts/_components/BottomSection/BottomSection";
+import SuggestSection from "#/app/blog/posts/_components/SuggestSection/SuggestSection";
+import CommentSection from "#/app/blog/posts/_components/CommentSection/CommentSection";
 
 interface Props {
   params: {
