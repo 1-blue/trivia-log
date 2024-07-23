@@ -26,9 +26,9 @@ draft: false
 함수에서 `any`를 사용한다면 최대한 좁게 그리고 반환 타입에는 `any`를 사용하지 않도록 해야합니다.<br />
 `any`를 반환하면 외부의 코드에 `any`가 퍼지기 때문에 타입 체커의 이점을 활용할 수 없습니다.<br />
 
-```tsx
-type Foo = { name: string };
-type Bar = { age: number };
+```tsx showLineNumbers
++ type Foo = { name: string };
+- type Bar = { age: number };
 
 declare function expressionReturnFoo(): Foo;
 declare function processBar(b: Bar): void;
@@ -82,7 +82,7 @@ const g = () => {
 객체에서 `any`를 사용할 때도 전체에 사용하기 보다는 필요한 부분에만 사용하는 것이 좋습니다.<br />
 잘못 사용하면 객체 전체의 타입 체크를 무시하게 됩니다.<br />
 
-```ts
+```ts showLineNumbers
 type Foo = { name: string };
 type Config = {
   a: number;
@@ -136,7 +136,7 @@ const config3: Config = {
 ( `unknown`은 모든 값을 받을 수 있지만 사용하는 경우 타입 에러를 발생시킴 )<br />
 TODO: `unknown` 경로 추가
 
-```ts
+```ts showLineNumbers
 // (1) (arr: any) => any
 const getLengthBad = (arr: any) => arr.length;
 
@@ -158,7 +158,7 @@ type F2 = (...args: any[]) => any; // "Function"타입과 같은 타입
 하지만 `index signature`는 모두 가능합니다.<br />
 ( 그래도 `(4)`를 통해서 확인했는데 접근이 불가능 한것은 조금 이상하게 느껴지네요.. 🥲 )<br />
 
-```ts
+```ts showLineNumbers
 // "any" 타입 사용
 const hasTwelveLetterKey0 = (obj: any) => {
   for (const key in obj) {
@@ -209,7 +209,7 @@ const hasTwelveLetterKey2 = (obj: { [key: string]: any }) => {
 따라서 앞의 코드로 오류가 날 수 없는 코드임을 확신했기 때문에 `(b as any)[key]`를 사용했습니다.<br />
 ( `any`를 사용하는 타입 단언문의 좋은 예시인 것 같습니다. )<br />
 
-```ts
+```ts showLineNumbers
 const shallowEqual = <T extends object>(a: T, b: T): boolean => {
   for (const [key, value] of Object.entries(a)) {
     // (1) "b[key]"처럼 사용하면 타입 오류 발생 ( 'string' 형식의 식을 '{}' 인덱스 형식에 사용할 수 없으므로 요소에 암시적으로 'any' 형식이 있습니다. )
@@ -234,7 +234,7 @@ const shallowEqual = <T extends object>(a: T, b: T): boolean => {
 
 아래 예시는 함수 내부에서 `any`를 활용하고 타입 단언문을 사용하는 것의 좋은 예시인 것 같습니다.<br />
 
-```ts
+```ts showLineNumbers
 const cacheLast = <T extends Function>(fn: T): T => {
   let lastArgs: any[] | null = null;
   let lastResult: any;
@@ -266,7 +266,7 @@ const cacheLast = <T extends Function>(fn: T): T => {
 변수 선언에서 초기화하지 않거나 배열 선언에서 빈 배열을 선언하면 `any`, `any[]`로 추론됩니다. ( 암시적 )<br />
 변수 선언 시 직접적으로 `any`를 할당하면 명시적인 `any`이기 때문에 진화가 발생하지 않습니다.<br />
 
-```ts
+```ts showLineNumbers
 // () => (string | number)[]
 const func = () => {
   const out = []; // any[]
@@ -311,7 +311,7 @@ const func3 = () => {
 암시적 `any`를 사용하는 경우 타입 에러가 발생합니다.<br />
 또한 배열 고차함수 메서드들을 이용해서는 타입 추론에 영향을 끼치지 못합니다.<br />
 
-```ts
+```ts showLineNumbers
 const func4 = () => {
   // Error: 'arr' 변수는 형식을 확인할 수 없는 경우 일부 위치에서 암시적으로 'any[]' 형식입니다.
   let arr = [];
@@ -357,7 +357,7 @@ const func5 = () => {
 하지만 `unknown`을 사용하기 위해서는 타입을 변환시켜줘야 합니다.<br />
 따라서 개발자에 의해서 적절한 타입으로 강제로 변환시켜서 사용하기 때문에 비교적 안전합니다.<br />
 
-```ts
+```ts showLineNumbers
 type Book = {
   title: string;
   author: string;
@@ -380,7 +380,7 @@ book2.title; // Error: 'book2'은(는) 'unknown' 형식입니다.
 
 그리고 강제로 타입 변환을 하지 않아도 타입 체커에게 `unknown`이 무엇인지 알려주는 방법이 몇 가지 있습니다.<br />
 
-```ts
+```ts showLineNumbers
 interface Book {
   name: string;
 }
@@ -432,7 +432,7 @@ const odd = [1,2,3,4,5].oddFilter();
 ## 0️⃣ 몽키 패치 사용 예시
 강제로 `any`로 변환시켜서 넣을 수 있습니다.<br />
 
-```ts
+```ts showLineNumbers
 // Error: 'Document' 형식에 'monkey' 속성이 없습니다.
 document.monkey = "m";
 
@@ -444,7 +444,7 @@ document.monkey = "m";
 
 혹은 [`interface`의 보강](/posts/%EC%9D%B4%ED%8E%99%ED%8B%B0%EB%B8%8C-%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-2%EC%9E%A5/#1%EF%B8%8F%E2%83%A3-%EB%B3%B4%EA%B0%95%EA%B3%BC-%EC%84%A0%EC%96%B8-%EB%B3%91%ED%95%A9)을 이용해서 더 안전하게 사용할 수 있습니다.<br />
 
-```ts
+```ts showLineNumbers
 // (2) 보강
 interface Document {
   monkey: string;
@@ -456,7 +456,7 @@ document.monkey = "m"; // 정상 동작
 
 아래처럼 구체적인 타입을 새로 만들어서 타입 단언을 사용하는 것도 좋은 방법입니다.<br />
 
-```ts
+```ts showLineNumbers
 // (3) 구체적인 타입 단언
 interface MonkeyDocument extends Document {
   monkey: string;

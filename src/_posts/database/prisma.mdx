@@ -62,7 +62,7 @@ DATABASE_URL="mysql://<유저명>:<비밀번호>@localhost:3306/<DB이름>”
 `User`의 `idx`컬럼을 `Foreign Key`로 사용하되 `Post`에서는 `userIdx`라고 부르겠다는 의미입니다.<br />
 
 ## 0️⃣ 모델 정의
-```txt
+```txt showLineNumbers
 model User {
   idx Int @id @default(autoincrement())
 
@@ -122,7 +122,7 @@ model Follows {
 ```
 
 ## 1️⃣ migrate로 생성된 SQL
-```sql
+```sql showLineNumbers
 -- CreateTable
 CREATE TABLE `User` (
     `idx` INTEGER NOT NULL AUTO_INCREMENT,
@@ -253,7 +253,7 @@ npx prisma migrate reset
 즉, 1번 유저의 프로필을 30개 만든 것입니다.<br />
 아마 1번 유저가 없다면 오류가 나겠죠<br />
 
-```ts
+```ts showLineNumbers
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -306,7 +306,7 @@ main()
 
 + 생성된 타입 형태
 
-```ts
+```ts showLineNumbers
 // 이런 타입이 생성되었고, "export"기 때문에 그대로 가져다 사용하면 됩니다.
 export type Profile = {
   idx: number
@@ -318,7 +318,7 @@ export type Profile = {
 
 + 타입 수정 방법
 
-```ts
+```ts showLineNumbers
 // 혹시 타입을 쓰다가 타입을 조금씩 바꿔서 쓰고 싶다면 typescript utility를 사용하면 됩니다.
 import type { Profile } from "@prisma/client";
 
@@ -329,7 +329,7 @@ export type SimpleProfile = Omit<Profile, "userIdx">;
 
 + `express` 사용 예시
 
-```ts
+```ts showLineNumbers
 import express from "express";
 
 // type
@@ -365,7 +365,7 @@ router.get(
 특정 데이터를 기준으로 데이터들을 가져오는 경우 `cursor`를 사용하면 쉽게 가져올 수 있습니다.<br />
 ( 제 기준에서는 무한 스크롤링에 주로 사용합니다. )<br />
 
-```ts
+```ts showLineNumbers
 // 임의로 값 부여
 const take = 10;
 const lastIdx = 5; // 기본 값 "-1" ( 즉, 첫 패치 )

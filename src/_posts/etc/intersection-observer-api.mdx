@@ -19,7 +19,7 @@ draft: false
 즉, 쉽게 말해서 특정 `element`가 뷰포트(화면)에 들어왔는지, 혹은 들어오는 시점을 알려주는 `API`입니다.<br />
 
 ## 기본 형태
-```ts
+```ts showLineNumbers
 const callback = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
   entries.forEach(entry => {
     // // 타겟 요소가 루트 요소와 교차하는 점이 없으면 콜백을 호출했으되, 조기에 탈출한다.
@@ -73,7 +73,7 @@ let observer = new IntersectionObserver(callback, options)
 > `reflow`는 렌더트리의 노드들의 정확한 크기와 위치를 다시 계산하는 과정을 말합니다.
 
 ## 0️⃣ React에서 Intersection Observer를 이용한 무한 스크롤링 예시 ( feat. TS )
-```tsx
+```tsx showLineNumbers
 import { useCallback, useEffect } from "react";
 
 type Props = {

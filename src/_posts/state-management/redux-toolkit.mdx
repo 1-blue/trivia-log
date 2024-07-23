@@ -25,7 +25,7 @@ npm install -D @types/react-redux
 ## 0️⃣ createAction ( redux-action )
 쉽게 `Action`을 만들어주는 헬퍼 함수입니다.
 
-```ts
+```ts showLineNumbers
 import { createAction } from "@reduxjs/toolkit";
 
 // 액션 크리에이터 생성
@@ -43,7 +43,7 @@ console.log(actionCreator(1)); // {type: 'MYACTION', payload: 1}
 `TODO`를 입력하는 간단한 리듀서입니다.
 ( `TODO`는 `string[]` )
 
-```ts
+```ts showLineNumbers
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import type { AnyAction, PayloadAction } from "@reduxjs/toolkit";
 
@@ -92,7 +92,7 @@ export default todoReducer;
 ## 2️⃣ combineReducers
 여러 `Reducer`를 합치는 헬퍼 함수입니다.
 
-```ts
+```ts showLineNumbers
 import { combineReducers } from "@reduxjs/toolkit";
 
 // 모든 "Reducer"가 있다고 가정
@@ -121,7 +121,7 @@ export default rootReducer;
 아직 `immer`에 대해 제대로 알지는 못하기 때문에 설명은 여기까지만 적겠습니다.
 일단은 내부적으로 사용하기 때문에 `Redux-Toolkit`에서는 원본을 마음대로 변경해도 된다고 생각하면 될 것 같습니다.
 
-```ts
+```ts showLineNumbers
 import produce from "immer";
 
 const [state, setState] = useState({ count: 1 });
@@ -150,7 +150,7 @@ console.log(increase); // { count: 2 }
 
 그리고 미들웨어를 직접 만들 때는 `Middleware` 타입을 이용하고 아래와 같은 형태로 사용하면 됩니다.
 
-```ts
+```ts showLineNumbers
 import { configureStore, MiddlewareArray } from "@reduxjs/toolkit";
 import type { Middleware } from "@reduxjs/toolkit";
 
@@ -187,7 +187,7 @@ export { store };
 `useSelector()`는 기본적으로 렌더링마다 실행되기 때문에 최적화를 해주면 성능 향상이 될 수 있습니다.
 `createSelector()`를 이용하면 `useSelector(callback)`의 매개변수로 전달되는 값이 바뀌지 않으면 `memoization`한 값을 그대로 사용합니다.
 
-```ts
+```ts showLineNumbers
 import { createSelector } from "@reduxjs/toolkit";
 import store from "../configureStore";
 
@@ -212,7 +212,7 @@ const { todos } = useSelector(getTodoList);
 일반적인 `useDispatch()`, `useSelector()`를 사용하면 `TypeScript`에서 `Redux`의 타입을 추론하지 못합니다.
 따라서 아래와 같은 방법을 적용한 `useAppSelector()`와 `useAppDispatch()`를 사용하면 타입을 적용한 채로 사용할 수 있습니다.
 
-```ts
+```ts showLineNumbers
 import { useDispatch, useSelector } from "react-redux";
 
 // store
@@ -237,7 +237,7 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 ## 7️⃣ createSlice
 위에서 공부했던 `createAction`, `createReducer`, `createSelector`, `immer`를 한 번에 처리해주는 헬퍼 함수입니다.
 
-```ts
+```ts showLineNumbers
 import { createSlice } from "@reduxjs/toolkit";
 
 // type
@@ -282,7 +282,7 @@ export default counterSlice.reducer;
 `Redux`에서 비동기를 처리할 때 `createAsyncThunk()`를 사용합니다.
 `createAsyncThunk<성공반환타입, 매개변수타입, 옵션타입(실패반환타입)>` 형태로 타입을 지정할 수 있습니다.
 
-```ts
+```ts showLineNumbers
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // =================== type ===================

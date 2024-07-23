@@ -48,7 +48,7 @@ draft: false
 ## 0️⃣ store
 저장소 역할을 하는 큰 객체입니다.<br />
 
-```ts
+```ts showLineNumbers
 import { createStore } from 'redux'
 
 const store = createStore(/* reducer */);
@@ -61,7 +61,7 @@ const store = createStore(/* reducer */);
 + `type`: 어떤 상태를 변경하는지에 사용
 + `payload`: 상태를 어떻게 변경하는지에 사용
 
-```ts
+```ts showLineNumbers
 // 액션
 const fetchUserAction = {
   type: "fetch/user",
@@ -79,7 +79,7 @@ const fetchUser () => ({
 상태 변경을 요청하는 메서드입니다.<br />
 `action`을 인수로 넣어줍니다.<br />
 
-```ts
+```ts showLineNumbers
 // 액션 사용
 store.dispatch(fetchUserAction);
 
@@ -92,7 +92,7 @@ store.dispatch(fetchUser());
 내부 구조는 마음대로 작성하되 반드시 **새로운 상태 객체를 반환**해야 합니다. ( 불변성 )<br />
 기존 `state`(상태)와 전달받은 `action`을 통해서 새로운 `state`(상태)를 반환하는 순수 함수입니다.<br />
 
-```ts
+```ts showLineNumbers
 // "state"는 기존 상태
 // "action"은 "dispatch()"로 전달받은 "action"
 // 자동으로 값이 들어옵니다. ( "addEventListener(type, callback)"에서 "callback(event)"의 매개변수로 "event" 객체가 들어오는 것처럼 내부적으로 처리 )
@@ -120,7 +120,7 @@ const userReducer = (state, action) => {
 `dispatch()`를 통한 `action` 전달으로만 `store`를 변경할 수 있습니다.<br />
 전달된 `action`은 `reducer`를 통해서 새로운 `state`를 만들어냅니다.<br />
 
-```ts
+```ts showLineNumbers
 import { createStore } from 'redux'
 
 // 액션 크리에이터 ( 액션을 생성해주는 함수 )
@@ -153,4 +153,4 @@ store.dispatch(fetchUser());
 store.getState();
 ```
 
-> 이후에 읽어볼만한 포스트 ( [`Redux-Toolkit`](/posts/Redux-Toolkit/) )
+> 이후에 읽어볼만한 포스트 ( [`Redux-Toolkit`](/state-management/redux-toolkit) )
