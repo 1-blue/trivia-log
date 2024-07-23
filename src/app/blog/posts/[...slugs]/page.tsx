@@ -51,7 +51,8 @@ const Page: NextPage<Props> = ({ params: { slugs } }) => {
 
   const tableOfContents = getTableOfContents(postMetadata.content);
 
-  const Post = dynamic(() => import(`#/_posts/${BASE_URL}.mdx`));
+  // vercel에서 빌드 시 에러 발생으로 인해 `process.cwd()` 사용
+  const Post = dynamic(() => import(`${process.cwd()}/_posts/${BASE_URL}.mdx`));
 
   return (
     <div className="relative">
