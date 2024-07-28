@@ -24,8 +24,6 @@ export const generateMetadata = async ({
   const { title, description, thumbnail, date, tags, path } =
     getPostMetadata(BASE_URL);
 
-  console.log("🚀 process >> ", process.env);
-
   return {
     title,
     description,
@@ -35,7 +33,7 @@ export const generateMetadata = async ({
       description,
       type: "article",
       publishedTime: date,
-      url: path,
+      url: process.env.NEXT_PUBLIC_CLIENT_URL + path,
       siteName: `개발 블로그 - ${title}`,
       images: [thumbnail],
     },
