@@ -10,6 +10,7 @@ import "#/css/tailwind.css";
 import CustomThemeProvider from "#/providers/CustomThemeProvider";
 import ToastProvider from "#/providers/ToastProvider";
 import Header from "#/components/layout/Header";
+import ScrollProgressbar from "#/components/layout/ScrollProgressbar";
 
 dayjs.locale("ko");
 
@@ -18,8 +19,7 @@ export const metadata: Metadata = {};
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <html lang="ko" className="scroll-smooth">
-      <head />
-      <body className="scroll-smooth p-4">
+      <head>
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`
             (function(c,l,a,r,i,t,y){
@@ -29,6 +29,10 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
             })(window, document, "clarity", "script", "nbx9pl1nx9");
           `}
         </Script>
+      </head>
+      <body className="scroll-smooth p-4">
+        <ScrollProgressbar />
+
         <CustomThemeProvider>
           <ToastProvider>
             <Header />
