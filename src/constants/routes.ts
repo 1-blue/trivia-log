@@ -5,6 +5,7 @@ import {
   NewspaperIcon as ONewspaperIcon,
   PuzzlePieceIcon as OPuzzlePieceIcon,
   RectangleStackIcon as ORectangleStackIcon,
+  FireIcon as OFireIcon,
 } from "@heroicons/react/24/outline";
 import {
   ArchiveBoxIcon as SArchiveBoxIcon,
@@ -12,6 +13,7 @@ import {
   NewspaperIcon as SNewspaperIcon,
   PuzzlePieceIcon as SPuzzlePieceIcon,
   RectangleStackIcon as SRectangleStackIcon,
+  FireIcon as SFireIcon,
 } from "@heroicons/react/24/solid";
 
 /** 전체 경로 */
@@ -46,7 +48,13 @@ export const ROUTES: Route[] = [
       },
     ],
   },
-
+  {
+    path: "/portfolio",
+    Outline: OFireIcon,
+    Solid: SFireIcon,
+    label: "포트폴리오",
+    hidden: false,
+  },
   {
     path: "/canary",
     Outline: OPuzzlePieceIcon,
