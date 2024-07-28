@@ -50,6 +50,8 @@ export const getAllPostMetadata = (): PostMetadataWithETC[] => {
 export const getAllRelatedPostMetadata = (
   postPath: string,
 ): Omit<PostMetadataWithETC, "content">[] => {
+  const DIVISION_PATH = "_posts";
+
   const PATH = path.join(
     process.cwd(),
     "src",
@@ -68,15 +70,17 @@ export const getAllRelatedPostMetadata = (
     const grayMatter = data as PostMetadata;
 
     /** 마지막 `/`에서 확장자를 제외한 경로 */
-    const lastPath = postPath.slice(PATH.length).replace(".mdx", "");
+    const path = postPath
+      .slice(postPath.indexOf(DIVISION_PATH) + DIVISION_PATH.length)
+      .replace(".mdx", "");
 
     return {
       ...grayMatter,
       tags: grayMatter.tags,
       date: dayjs(grayMatter.date).format("YYYY-MM-DD"),
-      path: "/posts" + lastPath,
+      path: "/blog/posts" + path,
       thumbnail: grayMatter.thumbnail ?? "/images/default/thumbnail.png",
-      breadcrumbs: lastPath.split("/"),
+      breadcrumbs: path.split("/"),
       readingMinutes: Math.ceil(readingTime(content).minutes),
       wordCount: content.split(/\s+/gu).length,
     };

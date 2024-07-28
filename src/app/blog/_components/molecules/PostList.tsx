@@ -11,7 +11,7 @@ import Tag from "../atoms/Tag";
 import Link from "next/link";
 
 interface Props {
-  post: PostMetadataWithETC;
+  post: Omit<PostMetadataWithETC, "content">;
 }
 
 const PostList: React.FC<Props> = ({ post }) => {
