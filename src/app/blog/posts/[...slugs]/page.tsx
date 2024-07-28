@@ -21,26 +21,29 @@ export const generateMetadata = async ({
   params: { slugs },
 }: Props): Promise<Metadata> => {
   const BASE_URL = `${slugs.join("/")}`;
-  const { title, description } = getPostMetadata(BASE_URL);
+  const { title, description, thumbnail, date, tags, path } =
+    getPostMetadata(BASE_URL);
+
+  console.log("🚀 process >> ", process.env);
 
   return {
     title,
     description,
-    keywords: [],
+    keywords: tags,
     openGraph: {
       title,
       description,
       type: "article",
-      publishedTime: "",
-      url: "",
-      siteName: "",
-      images: [],
+      publishedTime: date,
+      url: path,
+      siteName: `개발 블로그 - ${title}`,
+      images: [thumbnail],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [],
+      images: [thumbnail],
     },
   };
 };

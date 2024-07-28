@@ -9,7 +9,7 @@ import { ROUTES } from "#/constants";
 
 const BLOG_ROUTE = ROUTES.find((route) => route.path === "/blog")!;
 const BLOG_SUB_ROUTES = BLOG_ROUTE.subRoutes!;
-const NAV_ROUTES = [{ ...BLOG_ROUTE, label: "포스팅" }, ...BLOG_SUB_ROUTES];
+const NAV_ROUTES = [{ ...BLOG_ROUTE, label: "최신" }, ...BLOG_SUB_ROUTES];
 
 const Navigation: React.FC = () => {
   const pathname = usePathname();
