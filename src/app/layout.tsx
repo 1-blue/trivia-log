@@ -29,6 +29,11 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
             })(window, document, "clarity", "script", "nbx9pl1nx9");
           `}
         </Script>
+
+        <meta
+          name="google-site-verification"
+          content="ZsUkDIeJbE8ELv4H-4HzPfxOSutkq_1_0dtGv6JqW1k"
+        />
       </head>
       <body className="scroll-smooth p-4">
         <ScrollProgressbar />
