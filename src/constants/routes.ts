@@ -1,4 +1,3 @@
-import { Route } from "#/types";
 import {
   ArchiveBoxIcon as OArchiveBoxIcon,
   CubeIcon as OCubeIcon,
@@ -16,6 +15,14 @@ import {
   FireIcon as SFireIcon,
 } from "@heroicons/react/24/solid";
 
+import type { Route, Sitemap } from "#/types";
+
+const DEFAULT_SITEMAP: Sitemap = {
+  priority: 0.7,
+  lastmod: new Date().toISOString(),
+  changefreq: "weekly",
+};
+
 /** 전체 경로 */
 export const ROUTES: Route[] = [
   {
@@ -24,6 +31,7 @@ export const ROUTES: Route[] = [
     Solid: SCubeIcon,
     label: "메인",
     hidden: false,
+    sitemap: DEFAULT_SITEMAP,
   },
   {
     path: "/blog",
@@ -31,6 +39,7 @@ export const ROUTES: Route[] = [
     Solid: SRectangleStackIcon,
     label: "블로그",
     hidden: false,
+    sitemap: DEFAULT_SITEMAP,
     subRoutes: [
       {
         path: "/blog/series",
@@ -38,6 +47,7 @@ export const ROUTES: Route[] = [
         Solid: SNewspaperIcon,
         label: "시리즈",
         hidden: false,
+        sitemap: DEFAULT_SITEMAP,
       },
       {
         path: "/blog/archives",
@@ -45,6 +55,7 @@ export const ROUTES: Route[] = [
         Solid: SArchiveBoxIcon,
         label: "아카이브",
         hidden: false,
+        sitemap: DEFAULT_SITEMAP,
       },
     ],
   },
@@ -54,6 +65,7 @@ export const ROUTES: Route[] = [
     Solid: SFireIcon,
     label: "포트폴리오",
     hidden: false,
+    sitemap: DEFAULT_SITEMAP,
   },
   {
     path: "/canary",
@@ -61,5 +73,6 @@ export const ROUTES: Route[] = [
     Solid: SPuzzlePieceIcon,
     label: "실험적",
     hidden: false,
+    sitemap: DEFAULT_SITEMAP,
   },
 ];

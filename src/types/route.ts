@@ -1,6 +1,8 @@
 import { PlayIcon as OPlayIcon } from "@heroicons/react/24/outline";
 import { PlayIcon as SPlayIcon } from "@heroicons/react/24/solid";
 
+import type { Sitemap } from "#/types/post";
+
 /** 경로에 대한 타입 */
 export interface Route {
   /** 실제 경로 */
@@ -15,4 +17,6 @@ export interface Route {
   hidden: boolean;
   /** 하위 경로 */
   subRoutes?: Route[];
+  /** 사이트맵 설정 */
+  sitemap?: Sitemap;
 }
