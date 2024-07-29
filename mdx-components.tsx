@@ -58,7 +58,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       />
     ),
     img: (props) => (
-      <figure className="relative mb-2 aspect-video rounded-md object-contain">
+      <figure className="relative my-2 aspect-video rounded-md object-contain">
         <Image
           {...(props as ImageProps)}
           fill
