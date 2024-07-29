@@ -30,9 +30,16 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
           `}
         </Script>
 
+        {/* 구글 애널리틱스 */}
         <meta
           name="google-site-verification"
           content="ZsUkDIeJbE8ELv4H-4HzPfxOSutkq_1_0dtGv6JqW1k"
+        />
+
+        {/* 네이버 웹마스터 */}
+        <meta
+          name="naver-site-verification"
+          content="00720ce5c121eb17183f33f938f4adb71a6ae553"
         />
       </head>
       <body className="scroll-smooth p-4">
