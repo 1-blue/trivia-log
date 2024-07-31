@@ -30,6 +30,7 @@ export const getSharedMetadata = ({
   keywords = sharedKeywords,
   images = sharedImages,
 }: GetSharedMetadataArgs = {}): Metadata => ({
+  metadataBase: new URL(process.env.NEXT_PUBLIC_CLIENT_URL),
   title,
   description,
   keywords: [...new Set([...sharedKeywords, ...keywords])],
