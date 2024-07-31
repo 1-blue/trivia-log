@@ -32,7 +32,7 @@ const Navigation: React.FC = () => {
               )}
               <span
                 className={twMerge(
-                  "font-semibold",
+                  "text-xs font-semibold sm:text-base",
                   isCurrentPath && "font-bold text-main-600",
                 )}
               >

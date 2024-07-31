@@ -1,18 +1,22 @@
-import Link from "next/link";
+import Link, { type LinkProps } from "next/link";
 import { TagIcon } from "@heroicons/react/24/solid";
+import { twMerge } from "tailwind-merge";
 
-interface Props {
+interface Props extends Partial<LinkProps> {
   tag: string;
+  className?: string;
 }
 
-const Tag: React.FC<Props> = ({ tag }) => {
+const Tag: React.FC<Props> = ({ tag, href, className, ...props }) => {
   return (
-    <li className="my-tag rounded-sm transition-colors">
+    <li className="my-tag overflow-hidden rounded-sm transition-colors">
       <Link
-        href={`/blog/archives/tags/${tag}`}
-        target="_blank"
-        rel="noreferrer noopener"
-        className="inline-flex items-center gap-1.5 px-2 py-1"
+        href={href ?? `/blog/tags?tag=${tag}`}
+        className={twMerge(
+          "inline-flex items-center gap-1.5 whitespace-nowrap px-2 py-1",
+          className,
+        )}
+        {...props}
       >
         <TagIcon className="h-3.5 w-3.5" />
         <span>{tag}</span>

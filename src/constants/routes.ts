@@ -5,6 +5,7 @@ import {
   PuzzlePieceIcon as OPuzzlePieceIcon,
   RectangleStackIcon as ORectangleStackIcon,
   FireIcon as OFireIcon,
+  TagIcon as OTagIcon,
 } from "@heroicons/react/24/outline";
 import {
   ArchiveBoxIcon as SArchiveBoxIcon,
@@ -13,6 +14,7 @@ import {
   PuzzlePieceIcon as SPuzzlePieceIcon,
   RectangleStackIcon as SRectangleStackIcon,
   FireIcon as SFireIcon,
+  TagIcon as STagIcon,
 } from "@heroicons/react/24/solid";
 
 import type { Route, Sitemap } from "#/types";
@@ -54,6 +56,14 @@ export const ROUTES: Route[] = [
         Outline: OArchiveBoxIcon,
         Solid: SArchiveBoxIcon,
         label: "아카이브",
+        hidden: false,
+        sitemap: DEFAULT_SITEMAP,
+      },
+      {
+        path: "/blog/tags",
+        Outline: OTagIcon,
+        Solid: STagIcon,
+        label: "태그",
         hidden: false,
         sitemap: DEFAULT_SITEMAP,
       },
