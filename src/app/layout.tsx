@@ -11,10 +11,11 @@ import CustomThemeProvider from "#/providers/CustomThemeProvider";
 import ToastProvider from "#/providers/ToastProvider";
 import Header from "#/components/layout/Header";
 import ScrollProgressbar from "#/components/layout/ScrollProgressbar";
+import { sharedMetadata } from "#/constants/sharedMetadata";
 
 dayjs.locale("ko");
 
-export const metadata: Metadata = {};
+export const metadata: Metadata = sharedMetadata;
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
