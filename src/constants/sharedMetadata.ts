@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
-const title: Metadata["title"] = {
+const sharedTitle: Metadata["title"] = {
   template: "%s | 잡학사전",
   default: "잡학사전",
 };
-const description = "프론트엔드 개발자 박상은의 잡학사전입니다.";
-const keywords = [
+const sharedDescription = "프론트엔드 개발자 박상은의 잡학사전입니다.";
+const sharedKeywords = [
   "프론트엔드",
   "개발자",
   "박상은",
@@ -14,15 +14,27 @@ const keywords = [
   "포트폴리오",
   "이력서",
 ];
-const images = ["/images/default/preview.jpg"];
+const sharedImages = ["/images/default/preview.jpg"];
+
+interface GetSharedMetadataArgs {
+  title?: Metadata["title"];
+  description?: string;
+  keywords?: string[];
+  images?: string[];
+}
 
 /** 공용으로 사용할 메타데이터 */
-export const sharedMetadata: Metadata = {
+export const getSharedMetadata = ({
+  title = sharedTitle,
+  description = sharedDescription,
+  keywords = sharedKeywords,
+  images = sharedImages,
+}: GetSharedMetadataArgs = {}): Metadata => ({
   title,
   description,
-  keywords,
+  keywords: [...new Set([...sharedKeywords, ...keywords])],
   openGraph: {
-    title,
+    title: title ?? sharedTitle,
     description,
     images,
     type: "website",
@@ -33,8 +45,8 @@ export const sharedMetadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title,
+    title: title ?? sharedTitle,
     description,
     images,
   },
-};
+});

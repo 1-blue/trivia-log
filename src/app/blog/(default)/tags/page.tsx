@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import type { Metadata, NextPage } from "next";
 
 import { getAllPostMetadata } from "#/libs";
-import { sharedMetadata } from "#/constants/sharedMetadata";
+import { getSharedMetadata } from "#/constants/sharedMetadata";
 
 import PostList from "#/app/blog/_components/molecules/PostList";
 import SearchInputByTag from "./_components/SearchInputByTag";
@@ -16,14 +16,10 @@ export const generateMetadata = async ({
   searchParams: { tag },
 }: Props): Promise<Metadata> => {
   if (!tag) {
-    return {
-      ...sharedMetadata,
+    return getSharedMetadata({
       title: "블로그 태그",
       description: "프론트엔드 개발자 박상은의 블로그 태그입니다.",
-      openGraph: {
-        ...sharedMetadata.openGraph,
-      },
-    };
+    });
   }
 
   const postMetadatas = getAllPostMetadata();
@@ -31,24 +27,19 @@ export const generateMetadata = async ({
     metadata.tags.includes(tag),
   );
 
-  if (!firstPostWithTag) return { ...sharedMetadata };
-
+  if (!firstPostWithTag) {
+    return getSharedMetadata({
+      title: "블로그 태그",
+      description: "프론트엔드 개발자 박상은의 블로그 태그입니다.",
+    });
+  }
   return {
-    ...sharedMetadata,
-    title: `블로그 태그 - ${tag}`,
-    description: `프론트엔드 개발자 박상은의 블로그 "${tag}"를 가진 게시글들 입니다.`,
-    openGraph: {
-      ...sharedMetadata.openGraph,
+    ...getSharedMetadata({
       title: `블로그 태그 - ${tag}`,
       description: `프론트엔드 개발자 박상은의 블로그 "${tag}"를 가진 게시글들 입니다.`,
+      keywords: [tag],
       images: [firstPostWithTag.thumbnail],
-    },
-    twitter: {
-      ...sharedMetadata.twitter,
-      title: `블로그 태그 - ${tag}`,
-      description: `프론트엔드 개발자 박상은의 블로그 "${tag}"를 가진 게시글들 입니다.`,
-      images: [firstPostWithTag.thumbnail],
-    },
+    }),
   };
 };
 
