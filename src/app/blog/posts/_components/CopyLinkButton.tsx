@@ -26,7 +26,7 @@ const CopyLinkButton = () => {
   return (
     <LinkIcon
       role="button"
-      className="my-side-button h-8 w-8 rounded-md p-1.5 transition-colors"
+      className="h-8 w-8 rounded-md border border-gray-500 p-1.5 transition-colors hover:border-gray-200 dark:hover:border-gray-100"
       onClick={copyLink}
     />
   );

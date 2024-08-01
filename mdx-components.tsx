@@ -74,7 +74,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {...restProps}
         className={twMerge(
           typeof children === "string" &&
-            "my-code rounded-sm px-[5px] py-0.5 text-sm font-semibold",
+            "bg-custom-less rounded-sm px-[5px] py-0.5 text-sm font-semibold text-main-400 dark:text-main-500",
           className,
         )}
       >

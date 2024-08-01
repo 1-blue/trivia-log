@@ -9,7 +9,7 @@ interface Props extends Partial<LinkProps> {
 
 const Tag: React.FC<Props> = ({ tag, href, className, ...props }) => {
   return (
-    <li className="my-tag overflow-hidden rounded-sm transition-colors">
+    <li className="overflow-hidden rounded-sm bg-main-100 text-main-500 transition-colors hover:bg-main-200 dark:bg-main-200 dark:text-main-600 dark:hover:bg-main-300">
       <Link
         href={href ?? `/blog/tags?tag=${tag}`}
         className={twMerge(

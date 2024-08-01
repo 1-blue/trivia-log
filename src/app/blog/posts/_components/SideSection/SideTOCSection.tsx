@@ -22,7 +22,7 @@ const SideTOCSection: React.FC<Props> = ({ tableOfContents }) => {
   });
 
   return (
-    <section className="reverse mb-4 rounded-md py-3">
+    <section className="mb-4 rounded-md bg-gray-200 py-3 text-gray-700 dark:bg-gray-700 dark:text-gray-200">
       <div className="mx-4 mb-2 flex items-center justify-between">
         <div className="text-base font-bold">책갈피</div>
         <div className="flex gap-2">

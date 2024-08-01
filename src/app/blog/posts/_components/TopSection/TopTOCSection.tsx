@@ -17,7 +17,7 @@ const TopTOCSection: React.FC<Props> = ({ tableOfContents }) => {
           <li key={link} className="border-t-2 first:border-t-0">
             <Link
               href={link}
-              className="my-toc inline-block w-full px-4 py-4 transition-colors"
+              className="inline-block w-full px-4 py-4 transition-colors hover:bg-gray-200 dark:hover:bg-gray-600"
             >
               {superIndex + 1}. {text}
             </Link>
@@ -27,7 +27,7 @@ const TopTOCSection: React.FC<Props> = ({ tableOfContents }) => {
                 <li key={link} className="border-t-2">
                   <Link
                     href={link}
-                    className="my-toc inline-block w-full px-2 py-4 pl-8 transition-colors"
+                    className="inline-block w-full px-2 py-4 pl-8 transition-colors hover:bg-gray-200 dark:hover:bg-gray-600"
                   >
                     {superIndex + 1}.{subIndex + 1}. {text}
                   </Link>

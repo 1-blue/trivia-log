@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const anchorClassName =
-  "hover:after:visible after:invisible lg:after:absolute after:top-0 lg:after:right-full after:ml-2 lg:after:mr-2 after:px-2 after:my-anchor-block after:rounded-md after:content-['#']";
+  "hover:after:visible after:invisible lg:after:absolute after:top-0 lg:after:right-full after:ml-2 lg:after:mr-2 after:px-2 after:bg-custom-less after:text-main-400 dark:after:text-main-500 after:rounded-md after:content-['#']";
 
 interface Props extends React.HTMLAttributes<HTMLHeadingElement> {}
 

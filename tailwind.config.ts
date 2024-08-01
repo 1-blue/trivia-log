@@ -33,6 +33,10 @@ const config: Config = {
           900: "#1e3a8a",
           950: "#172554",
         },
+        custom: {
+          /** 중성적인 무채색 */
+          less: "#87837826",
+        },
       },
       backgroundColor: {
         // `dark`와 `light` 상관없이 사용할 수 있는 배경색
@@ -57,78 +61,8 @@ const config: Config = {
     // dark와 light만 사용
     themes: [
       {
-        light: {
-          ...daisyUITheme["light"],
-          ".reverse": {
-            "background-color": twColors.gray["200"],
-            color: twColors.gray["700"],
-          },
-          // `<code>`
-          ".my-code": {
-            "background-color": "#87837826",
-            color: mainColor["400"],
-          },
-          // `<h1>` > `<a>`
-          ".my-anchor-block": {
-            "background-color": "#87837826",
-            color: mainColor["400"],
-          },
-          // tag
-          ".my-tag": {
-            "background-color": mainColor["100"],
-            color: mainColor["500"],
-          },
-          ".my-tag:hover": {
-            "background-color": mainColor["200"],
-          },
-          // side-button
-          ".my-side-button": {
-            border: "1px solid " + twColors.gray["500"],
-          },
-          ".my-side-button:hover": {
-            "background-color": twColors.gray["200"],
-          },
-          // toc
-          ".my-toc:hover": {
-            "background-color": twColors.gray["200"],
-          },
-        },
-        dark: {
-          ...daisyUITheme["dark"],
-          ".reverse": {
-            "background-color": twColors.gray["700"],
-            color: twColors.gray["200"],
-          },
-          // `<code>`
-          ".my-code": {
-            "background-color": "#87837826",
-            color: mainColor["500"],
-          },
-          // `<h*>` > `<a>`
-          ".my-anchor-block": {
-            "background-color": "#87837826",
-            color: mainColor["400"],
-          },
-          // tag
-          ".my-tag": {
-            "background-color": mainColor["200"],
-            color: mainColor["600"],
-          },
-          ".my-tag:hover": {
-            "background-color": mainColor["300"],
-          },
-          // side-button
-          ".my-side-button": {
-            border: "1px solid " + twColors.gray["500"],
-          },
-          ".my-side-button:hover": {
-            "background-color": twColors.gray["100"],
-          },
-          // toc
-          ".my-toc:hover": {
-            "background-color": twColors.gray["600"],
-          },
-        },
+        light: daisyUITheme["light"],
+        dark: daisyUITheme["dark"],
       },
     ],
   },
