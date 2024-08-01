@@ -10,7 +10,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/solid";
 import { v4 as uuidv4 } from "uuid";
-import type { Toast as ToastType } from "#/types";
+import type { IToast as ToastType } from "#/types";
 
 interface Prop extends ToastType {
   /** 토스트 닫는 함수 ( 메모리에서 제거 ) */

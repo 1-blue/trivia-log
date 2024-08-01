@@ -1,6 +1,6 @@
-import ProfileSection from "./ProfileSection";
-import BioSection from "./BioSection";
-import CalendarSection from "./CalendarSection";
+import ProfileSection from "#/app/blog/(default)/_components/sections/ProfileSection";
+import BioSection from "#/app/blog/(default)/_components/sections/BioSection";
+import CalendarSection from "#/app/blog/(default)/_components/sections/CalendarSection";
 
 interface Props {
   dates: Record<string, number>;

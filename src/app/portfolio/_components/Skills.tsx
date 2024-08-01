@@ -6,8 +6,8 @@ import {
   tools,
 } from "#/constants/skills";
 
-import Accordion from "./Accordion";
-import Skill from "./Skill";
+import Accordion from "#/app/portfolio/_components/Accordion";
+import Skill from "#/app/portfolio/_components/Skill";
 
 const Skills = () => {
   return (

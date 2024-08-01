@@ -5,7 +5,7 @@ import Image from "next/image";
 import { isMobile } from "react-device-detect";
 import { type Variants, motion } from "framer-motion";
 
-import Tooltip from "./Tooltip";
+import Tooltip from "#/app/portfolio/_components/Tooltip";
 
 const variants: Variants = {
   initial: { opacity: 0, y: 20 },

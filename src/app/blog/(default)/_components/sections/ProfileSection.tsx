@@ -6,16 +6,13 @@ import {
   LinkIcon,
   MapPinIcon,
 } from "@heroicons/react/24/outline";
-import { twMerge } from "tailwind-merge";
 
 import { ME } from "#/constants";
-
-import { SECTION_STYLE } from "../_constant";
 
 /** 프로필 영역 ( 이미지 및 연락처 정보 ) */
 const ProfileSection: React.FC = () => {
   return (
-    <section className={twMerge(SECTION_STYLE, "flex flex-1 flex-col gap-1.5")}>
+    <section className="section-style flex flex-1 flex-col gap-1.5">
       <figure className="relative mx-auto aspect-square w-full min-w-36 max-w-56 overflow-hidden rounded-full">
         <Image src="/images/default/avatar.jpeg" alt="프로필 이미지" fill />
       </figure>

@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { getAllPosts } from "#/libs";
 import { getSharedMetadata } from "#/constants/sharedMetadata";
 
-import PostSection from "./_sections/PostSection";
+import PostSection from "#/app/blog/(default)/_components/sections/PostSection";
 
 export const metadata: Metadata = getSharedMetadata({
   title: "박상은 블로그",

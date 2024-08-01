@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 import twColors from "tailwindcss/colors";
 import daisyUI from "daisyui";
 import daisyUITheme from "daisyui/src/theming/themes";
@@ -39,7 +40,18 @@ const config: Config = {
       },
     },
   },
-  plugins: [daisyUI],
+  plugins: [
+    daisyUI,
+    // 커스텀 스타일
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        ".section-style": {
+          "@apply rounded-lg border px-6 py-8 border-gray-300 dark:border-gray-700":
+            "",
+        },
+      });
+    }),
+  ],
   darkMode: ["class", '[data-theme="dark"]'],
   daisyui: {
     // dark와 light만 사용

@@ -1,15 +1,6 @@
-import { twMerge } from "tailwind-merge";
-
-import { SECTION_STYLE } from "../_constant";
-
 const BioSection: React.FC = () => {
   return (
-    <section
-      className={twMerge(
-        SECTION_STYLE,
-        "flex flex-1 flex-col justify-center gap-4 bg-gray-200 dark:bg-gray-700/20",
-      )}
-    >
+    <section className="section-style flex flex-1 flex-col justify-center gap-4 bg-gray-200 dark:bg-gray-700/20">
       <h2 className="text-2xl font-black">프론트엔드 개발자 『박상은』</h2>
       <p>
         TypeScript와 TailwindCss를 좋아하는 프론트엔드 개발자 박상은입니다.

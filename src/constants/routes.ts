@@ -17,7 +17,7 @@ import {
   TagIcon as STagIcon,
 } from "@heroicons/react/24/solid";
 
-import type { Route, ISitemap } from "#/types";
+import type { IRoute, ISitemap } from "#/types";
 
 const DEFAULT_SITEMAP: ISitemap = {
   priority: 0.7,
@@ -26,7 +26,7 @@ const DEFAULT_SITEMAP: ISitemap = {
 };
 
 /** 전체 경로 */
-export const ROUTES: Route[] = [
+export const ROUTES: IRoute[] = [
   {
     path: "/",
     Outline: OCubeIcon,

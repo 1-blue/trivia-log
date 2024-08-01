@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 import type { IPostWithETC } from "#/types";
 
-import GridView from "../../_components/organisms/GridView";
-import ListView from "../../_components/organisms/ListView";
+import GridView from "#/app/blog/_components/organisms/GridView";
+import ListView from "#/app/blog/_components/organisms/ListView";
 
 type PostSectionLayout = "grid" | "list";
 

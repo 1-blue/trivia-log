@@ -2,9 +2,9 @@ import dayjs from "dayjs";
 
 import { getAllPosts } from "#/libs";
 
-import InfoSection from "./_sections/InfoSection";
-import Navigation from "./_components/Navigation";
-import SelectedPostSection from "./_components/SelectedPostSection";
+import InfoSection from "#/app/blog/(default)/_components/sections/InfoSection";
+import Navigation from "#/app/blog/(default)/_components/Navigation";
+import SelectedPostSection from "#/app/blog/(default)/_components/SelectedPostSection";
 
 const allPosts = getAllPosts();
 const dates = allPosts.reduce<Record<string, number>>((prev, curr) => {

@@ -8,7 +8,9 @@ import ActivityCalendar, {
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useTheme } from "next-themes";
 import twColors from "tailwindcss/colors";
+
 import "react-tooltip/dist/react-tooltip.css";
+
 import useCalendarStore from "#/store/calendar";
 
 const LABELS = {

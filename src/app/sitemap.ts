@@ -2,13 +2,13 @@ import type { MetadataRoute } from "next";
 
 import { getAllPosts } from "#/libs";
 import { ROUTES } from "#/constants";
-import type { Route } from "#/types";
+import type { IRoute } from "#/types";
 
 const allPosts = getAllPosts();
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    ...ROUTES.filter((route): route is Required<Route> => !!route.sitemap).map(
+    ...ROUTES.filter((route): route is Required<IRoute> => !!route.sitemap).map(
       ({ path, sitemap }) => ({
         url: `${process.env.NEXT_PUBLIC_CLIENT_URL}${path}`,
         priority: sitemap.priority,

@@ -1,6 +1,6 @@
 import type { IPostWithETC } from "#/types";
 
-import PostCard from "../molecules/PostCard";
+import PostCard from "#/app/blog/_components/molecules/PostCard";
 
 interface Props {
   posts: IPostWithETC[];

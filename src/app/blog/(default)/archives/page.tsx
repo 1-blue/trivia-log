@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { getAllPosts } from "#/libs";
 import { getSharedMetadata } from "#/constants/sharedMetadata";
 
-import Timeline from "./_components/Timeline";
+import Timeline from "#/app/blog/(default)/archives/_components/Timeline";
 
 const allPosts = getAllPosts();
 const latestSortedPosts = allPosts.sort(

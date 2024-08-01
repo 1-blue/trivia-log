@@ -5,8 +5,8 @@ import { getAllPosts } from "#/libs";
 import { getSharedMetadata } from "#/constants/sharedMetadata";
 
 import PostList from "#/app/blog/_components/molecules/PostList";
-import SearchInputByTag from "./_components/SearchInputByTag";
-import AllTag from "./_components/AllTag";
+import SearchInputByTag from "#/app/blog/(default)/tags/_components/SearchInputByTag";
+import AllTag from "#/app/blog/(default)/tags/_components/AllTag";
 
 interface Props {
   searchParams: { tag?: string };
