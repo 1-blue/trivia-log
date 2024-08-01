@@ -1,20 +1,16 @@
-import { PostMetadata } from "#/types";
+import { IPost } from "#/types";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import { useTheme } from "next-themes";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 
 interface Props {
-  sortedPostMetadata: Pick<
-    PostMetadata,
-    "title" | "description" | "date" | "path"
-  >[];
+  latestSortedPosts: Pick<IPost, "title" | "description" | "date" | "path">[];
 }
 
-const Timeline: React.FC<Props> = ({ sortedPostMetadata }) => {
+const Timeline: React.FC<Props> = ({ latestSortedPosts }) => {
   return (
     <ul className="timeline timeline-vertical timeline-snap-icon max-md:timeline-compact">
-      {sortedPostMetadata.map(({ date, title, description, path }, index) => (
+      {latestSortedPosts.map(({ date, title, description, path }, index) => (
         <li key={title} className="max-w-4xl md:mx-auto">
           <hr />
           <div className="timeline-middle">

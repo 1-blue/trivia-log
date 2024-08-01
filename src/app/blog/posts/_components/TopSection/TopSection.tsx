@@ -6,12 +6,12 @@ import {
   FolderIcon,
 } from "@heroicons/react/24/outline";
 
-import type { PostMetadataWithETC } from "#/types";
+import type { IPostWithETC } from "#/types";
 
 import CopyLinkButton from "../CopyLinkButton";
 import ScrollBottomButton from "../ScrollBottomButton";
 
-interface Props extends PostMetadataWithETC {}
+interface Props extends IPostWithETC {}
 
 const TopSection: React.FC<Props> = ({
   title,

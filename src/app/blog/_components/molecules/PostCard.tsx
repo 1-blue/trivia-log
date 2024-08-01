@@ -5,13 +5,13 @@ import {
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
-import type { PostMetadataWithETC } from "#/types";
+import type { IPostWithETC } from "#/types";
 
 import Tag from "../atoms/Tag";
 import Link from "next/link";
 
 interface Props {
-  post: PostMetadataWithETC;
+  post: IPostWithETC;
 }
 
 const PostCard: React.FC<Props> = ({ post }) => {

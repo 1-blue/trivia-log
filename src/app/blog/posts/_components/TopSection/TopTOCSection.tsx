@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import type { TableOfContent } from "#/types";
+import type { ITableOfContent } from "#/types";
 
 interface Props {
-  tableOfContents: TableOfContent[];
+  tableOfContents: ITableOfContent[];
 }
 
 const TopTOCSection: React.FC<Props> = ({ tableOfContents }) => {

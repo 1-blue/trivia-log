@@ -1,7 +1,7 @@
 import type { Metadata, NextPage } from "next";
 import dynamic from "next/dynamic";
 
-import { getPostMetadata, getTableOfContents } from "#/libs";
+import { getAllPosts, getTableOfContents } from "#/libs";
 
 import Thumbnail from "#/app/blog/posts/_components/Thumbnail";
 import TopSection from "#/app/blog/posts/_components/TopSection/TopSection";
@@ -10,6 +10,9 @@ import TopTOCSection from "#/app/blog/posts/_components/TopSection/TopTOCSection
 import ButtomSection from "#/app/blog/posts/_components/BottomSection/BottomSection";
 import SuggestSection from "#/app/blog/posts/_components/SuggestSection/SuggestSection";
 import CommentSection from "#/app/blog/posts/_components/CommentSection/CommentSection";
+import { cache } from "react";
+import { notFound } from "next/navigation";
+import { getSharedMetadata } from "#/constants/sharedMetadata";
 
 interface Props {
   params: {
@@ -17,51 +20,45 @@ interface Props {
   };
 }
 
+const allPosts = getAllPosts();
+const getTargetPost = cache((baseURL: string) =>
+  allPosts.find(({ path }) => path.includes(baseURL)),
+);
+
 export const generateMetadata = async ({
   params: { slugs },
 }: Props): Promise<Metadata> => {
-  const BASE_URL = `${slugs.join("/")}`;
-  const { title, description, thumbnail, date, tags, path } =
-    getPostMetadata(BASE_URL);
+  const baseURL = `${slugs.join("/")}`;
+  const targetPost = getTargetPost(baseURL);
+  if (!targetPost) return notFound();
 
-  return {
+  const { title, description, thumbnail, tags } = targetPost;
+
+  return getSharedMetadata({
     title,
     description,
     keywords: tags,
-    openGraph: {
-      title,
-      description,
-      type: "article",
-      publishedTime: date,
-      url: process.env.NEXT_PUBLIC_CLIENT_URL + path,
-      siteName: `개발 블로그 - ${title}`,
-      images: [thumbnail],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [thumbnail],
-    },
-  };
+    images: [thumbnail],
+  });
 };
 
 const Page: NextPage<Props> = ({ params: { slugs } }) => {
-  const BASE_URL = `${slugs.join("/")}`;
-  const postMetadata = getPostMetadata(BASE_URL);
+  const baseURL = `${slugs.join("/")}`;
+  const targetPost = getTargetPost(baseURL);
+  if (!targetPost) return notFound();
 
-  const tableOfContents = getTableOfContents(postMetadata.content);
+  const tableOfContents = getTableOfContents(targetPost.content);
 
   // Vercel 빌드 시 에러 발생으로 인해 상대경로 사용
-  const Post = dynamic(() => import(`../../../../_posts/${BASE_URL}.mdx`));
+  const Post = dynamic(() => import(`../../../../_posts/${baseURL}.mdx`));
 
   return (
     <div className="relative">
-      <TopSection {...postMetadata} />
+      <TopSection {...targetPost} />
 
       <div className="divider mb-6 mt-0" />
 
-      <Thumbnail thumbnail={postMetadata.thumbnail} />
+      <Thumbnail thumbnail={targetPost.thumbnail} />
 
       <div className="divider my-6" />
 
@@ -74,11 +71,11 @@ const Page: NextPage<Props> = ({ params: { slugs } }) => {
 
       <div className="divider my-6" />
 
-      <ButtomSection {...postMetadata} />
+      <ButtomSection {...targetPost} />
 
       <div className="divider my-6" />
 
-      <SuggestSection baseUrl={BASE_URL} />
+      <SuggestSection baseURL={baseURL} />
 
       <div className="divider my-6" />
 

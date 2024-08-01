@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { Metadata, NextPage } from "next";
 
-import { getAllPostMetadata } from "#/libs";
+import { getAllPosts } from "#/libs";
 import { getSharedMetadata } from "#/constants/sharedMetadata";
 
 import PostList from "#/app/blog/_components/molecules/PostList";
@@ -11,6 +11,8 @@ import AllTag from "./_components/AllTag";
 interface Props {
   searchParams: { tag?: string };
 }
+
+const allPosts = getAllPosts();
 
 export const generateMetadata = async ({
   searchParams: { tag },
@@ -22,8 +24,7 @@ export const generateMetadata = async ({
     });
   }
 
-  const postMetadatas = getAllPostMetadata();
-  const firstPostWithTag = postMetadatas.find((metadata) =>
+  const firstPostWithTag = allPosts.find((metadata) =>
     metadata.tags.includes(tag),
   );
 
@@ -44,22 +45,18 @@ export const generateMetadata = async ({
 };
 
 const Page: NextPage<Props> = ({ searchParams: { tag } }) => {
-  const postMetadatas = getAllPostMetadata();
-  const duplicatedTags = postMetadatas.map((metadata) => metadata.tags).flat();
-  const tags = duplicatedTags.reduce(
-    (prev, acc) => {
-      if (acc in prev) prev[acc] += 1;
-      else prev[acc] = 1;
+  const duplicatedTags = allPosts.map((metadata) => metadata.tags).flat();
+  const tags = duplicatedTags.reduce<Record<string, number>>((prev, acc) => {
+    if (acc in prev) prev[acc] += 1;
+    else prev[acc] = 1;
 
-      return prev;
-    },
-    {} as Record<string, number>,
-  );
+    return prev;
+  }, {});
 
   const filteredPosts = useMemo(() => {
     if (!tag) return [];
-    return postMetadatas.filter((metadata) => metadata.tags.includes(tag));
-  }, [postMetadatas, tag]);
+    return allPosts.filter((metadata) => metadata.tags.includes(tag));
+  }, [tag]);
 
   return (
     <article>

@@ -1,14 +1,12 @@
 import type { MetadataRoute } from "next";
 
-import { getAllPostMetadata } from "#/libs";
+import { getAllPosts } from "#/libs";
 import { ROUTES } from "#/constants";
 import type { Route } from "#/types";
 
-// TODO: 태그에 대한 동적 사이트맵도 추가하기
+const allPosts = getAllPosts();
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const postMetadatas = getAllPostMetadata();
-
   return [
     ...ROUTES.filter((route): route is Required<Route> => !!route.sitemap).map(
       ({ path, sitemap }) => ({
@@ -18,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         changeFrequency: sitemap.changefreq,
       }),
     ),
-    ...postMetadatas.map((postMetadata) => ({
+    ...allPosts.map((postMetadata) => ({
       url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/${postMetadata.path}`,
       priority: postMetadata.sitemap.priority,
       lastModified: postMetadata.sitemap.lastmod,

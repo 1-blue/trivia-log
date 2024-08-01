@@ -1,4 +1,4 @@
-import type { PostMetadataWithETC } from "#/types";
+import type { IPostWithETC } from "#/types";
 import Image from "next/image";
 
 import { ME } from "#/constants";
@@ -8,7 +8,7 @@ import ScrollTopButton from "../ScrollTopButton";
 
 import Tag from "#/app/blog/_components/atoms/Tag";
 
-interface Props extends PostMetadataWithETC {}
+interface Props extends IPostWithETC {}
 
 const ButtomSection: React.FC<Props> = ({ tags }) => {
   return (

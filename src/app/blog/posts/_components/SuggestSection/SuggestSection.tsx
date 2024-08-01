@@ -1,27 +1,36 @@
-import { getAllRelatedPostMetadata } from "#/libs";
+import { getAllPosts } from "#/libs";
 
 import ListView from "#/app/blog/_components/organisms/ListView";
+import { useMemo } from "react";
 
 interface Props {
-  baseUrl: string;
+  baseURL: string;
 }
 
-const DIVISION_PATH = "/blog/posts";
+const allPosts = getAllPosts();
 
-const SuggestSection: React.FC<Props> = ({ baseUrl }) => {
-  const relatedPostMetadatas = getAllRelatedPostMetadata(baseUrl);
+/** 게시글 기본 경로 */
+const DEFAULT_PATH = "/blog/posts";
 
-  const filteredPostMetadatas = relatedPostMetadatas.filter(({ path }) => {
-    const targetPath = path.slice(
-      path.indexOf(DIVISION_PATH) + DIVISION_PATH.length,
-    );
+const SuggestSection: React.FC<Props> = ({ baseURL }) => {
+  /** 관련 게시글 */
+  const relatedPosts = useMemo(
+    () =>
+      allPosts.filter(({ path }) => {
+        if (path.includes(baseURL)) return false;
 
-    return targetPath !== `/${baseUrl}`;
-  });
+        const firstBreadcrumb = path
+          .slice(DEFAULT_PATH.length + 1)
+          .split("/")[0];
+
+        return baseURL.includes(firstBreadcrumb);
+      }),
+    [baseURL],
+  );
 
   return (
     <section>
-      <ListView posts={filteredPostMetadatas} />
+      <ListView posts={relatedPosts} />
     </section>
   );
 };

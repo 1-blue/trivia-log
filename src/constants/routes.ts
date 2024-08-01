@@ -17,9 +17,9 @@ import {
   TagIcon as STagIcon,
 } from "@heroicons/react/24/solid";
 
-import type { Route, Sitemap } from "#/types";
+import type { Route, ISitemap } from "#/types";
 
-const DEFAULT_SITEMAP: Sitemap = {
+const DEFAULT_SITEMAP: ISitemap = {
   priority: 0.7,
   lastmod: new Date().toISOString(),
   changefreq: "weekly",

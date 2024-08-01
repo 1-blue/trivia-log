@@ -1,4 +1,4 @@
-import type { TableOfContent } from "#/types";
+import type { ITableOfContent } from "#/types";
 
 import SideTOCSection from "./SideTOCSection";
 import CopyLinkButton from "../CopyLinkButton";
@@ -6,7 +6,7 @@ import ScrollCommentButton from "../ScrollCommentButton";
 import ScrollTopButton from "../ScrollTopButton";
 
 interface Props {
-  tableOfContents: TableOfContent[];
+  tableOfContents: ITableOfContent[];
 }
 
 const SideSection: React.FC<Props> = ({ tableOfContents }) => {

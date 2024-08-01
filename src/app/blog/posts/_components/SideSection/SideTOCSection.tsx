@@ -6,10 +6,10 @@ import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 
 import { useHeadingsObserver } from "../../_hooks/useHeadingObserver";
-import type { TableOfContent } from "#/types";
+import type { ITableOfContent } from "#/types";
 
 interface Props {
-  tableOfContents: TableOfContent[];
+  tableOfContents: ITableOfContent[];
 }
 
 const SideTOCSection: React.FC<Props> = ({ tableOfContents }) => {
@@ -52,23 +52,25 @@ const SideTOCSection: React.FC<Props> = ({ tableOfContents }) => {
                 {toc.link === activeId && <ActiveBall />}
               </div>
 
-              {toc.subSections.length > 0 && <ul className="space-y-0.5 text-xs font-semibold">
-                {toc.subSections.map(({ link, text }) => (
-                  <li key={link} className="flex">
-                    <Link
-                      href={link}
-                      className={twMerge(
-                        "relative flex items-center gap-1 rounded-sm py-0.5 pl-7 pr-4 transition-colors hover:text-main-400",
-                        link === activeId && "text-main-400",
-                      )}
-                    >
-                      <ChevronRightIcon className="h-3 w-3" />
-                      <span>{text}</span>
-                      {link === activeId && <ActiveBall />}
-                    </Link>
-                  </li>
-                ))}
-              </ul>}
+              {toc.subSections.length > 0 && (
+                <ul className="space-y-0.5 text-xs font-semibold">
+                  {toc.subSections.map(({ link, text }) => (
+                    <li key={link} className="flex">
+                      <Link
+                        href={link}
+                        className={twMerge(
+                          "relative flex items-center gap-1 rounded-sm py-0.5 pl-7 pr-4 transition-colors hover:text-main-400",
+                          link === activeId && "text-main-400",
+                        )}
+                      >
+                        <ChevronRightIcon className="h-3 w-3" />
+                        <span>{text}</span>
+                        {link === activeId && <ActiveBall />}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           );
         })}

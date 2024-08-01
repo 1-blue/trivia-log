@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import type { PostMetadataWithETC } from "#/types";
+import type { IPostWithETC } from "#/types";
 
 import GridView from "../../_components/organisms/GridView";
 import ListView from "../../_components/organisms/ListView";
@@ -11,12 +11,14 @@ type PostSectionLayout = "grid" | "list";
 
 interface Props {
   title: string;
-  posts: PostMetadataWithETC[];
+  posts: IPostWithETC[];
   fixedLayout?: PostSectionLayout;
 }
 
 const PostSection: React.FC<Props> = ({ title, posts, fixedLayout }) => {
-  const [layout, setLayout] = useState<PostSectionLayout>(fixedLayout || "grid");
+  const [layout, setLayout] = useState<PostSectionLayout>(
+    fixedLayout || "grid",
+  );
 
   useEffect(() => {
     if (fixedLayout) return;

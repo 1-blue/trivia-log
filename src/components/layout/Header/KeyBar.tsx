@@ -12,9 +12,9 @@ import { useTheme } from "next-themes";
 import "react-cmdk/dist/cmdk.css";
 
 import { ME, ROUTES, THEMES } from "#/constants";
-import type { PostMetadata } from "#/types";
+import type { IPost } from "#/types";
 
-type KeyBarPost = Pick<PostMetadata, "title" | "path">;
+type KeyBarPost = Pick<IPost, "title" | "path">;
 
 interface Props {
   keyBarPosts: KeyBarPost[];

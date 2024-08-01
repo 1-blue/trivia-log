@@ -1,7 +1,7 @@
 "use client";
 
 import useCalendarStore from "#/store/calendar";
-import { PostMetadataWithETC } from "#/types";
+import { IPostWithETC } from "#/types";
 import dayjs from "dayjs";
 import PostSection from "../_sections/PostSection";
 import { twMerge } from "tailwind-merge";
@@ -10,7 +10,7 @@ import { SECTION_STYLE } from "../_constant";
 const ARTICLE_STYLE = `mx-auto my-8 max-w-7xl`;
 
 interface Props {
-  posts: PostMetadataWithETC[];
+  posts: IPostWithETC[];
 }
 
 const SelectedPostSection: React.FC<Props> = ({ posts }) => {

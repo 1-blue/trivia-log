@@ -1,9 +1,9 @@
-import type { PostMetadataWithETC } from "#/types";
+import type { IPostWithETC } from "#/types";
 
 import PostList from "../molecules/PostList";
 
 interface Props {
-  posts: Omit<PostMetadataWithETC, "content">[];
+  posts: Omit<IPostWithETC, "content">[];
 }
 
 const ListView: React.FC<Props> = ({ posts }) => {

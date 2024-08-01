@@ -1,9 +1,9 @@
-import type { PostMetadataWithETC } from "#/types";
+import type { IPostWithETC } from "#/types";
 
 import PostCard from "../molecules/PostCard";
 
 interface Props {
-  posts: PostMetadataWithETC[];
+  posts: IPostWithETC[];
 }
 
 const GridView: React.FC<Props> = ({ posts }) => {
