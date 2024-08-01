@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
 const sharedTitle: Metadata["title"] = {
-  template: "%s | 잡학사전",
-  default: "잡학사전",
+  template: "%s | 잡학일지",
+  default: "잡학일지",
 };
-const sharedDescription = "프론트엔드 개발자 박상은의 잡학사전입니다.";
+const sharedDescription = "프론트엔드 개발자 박상은의 잡학일지입니다.";
 const sharedKeywords = [
   "프론트엔드",
   "개발자",
   "박상은",
-  "잡학사전",
+  "잡학일지",
   "블로그",
   "포트폴리오",
   "이력서",
@@ -40,7 +40,7 @@ export const getSharedMetadata = ({
     images,
     type: "website",
     url: process.env.NEXT_PUBLIC_CLIENT_URL,
-    siteName: "프론트엔드 개발자 박상은의 잡학사전",
+    siteName: "프론트엔드 개발자 박상은의 잡학일지",
     locale: "ko_KR",
     countryName: "Korea",
   },
