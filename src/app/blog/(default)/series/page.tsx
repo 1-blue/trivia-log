@@ -1,6 +1,11 @@
 import type { Metadata, NextPage } from "next";
 
 import { getSharedMetadata } from "#/constants/sharedMetadata";
+import { getAllPosts } from "#/libs";
+
+import SeriesAccordion from "#/app/blog/(default)/series/_components/SeriesAccordion";
+
+const allPosts = getAllPosts();
 
 export const metadata: Metadata = getSharedMetadata({
   title: "블로그 시리즈",
@@ -10,7 +15,7 @@ export const metadata: Metadata = getSharedMetadata({
 const Page: NextPage = () => {
   return (
     <>
-      <span>구현 예정</span>
+      <SeriesAccordion allPosts={allPosts} />
     </>
   );
 };

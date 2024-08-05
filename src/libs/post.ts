@@ -39,7 +39,7 @@ export const getAllPosts = cache((): IPostWithETC[] => {
       date: dayjs(metadata.date).format("YYYY-MM-DD"),
       path: DEFAULT_PATH + relativePostPath,
       thumbnail: metadata.thumbnail ?? DEFAULT_THUMBNAIL,
-      breadcrumbs: relativePostPath.split("/"),
+      breadcrumbs: relativePostPath.split("/").filter((v) => v !== ""),
       readingMinutes: Math.ceil(readingTime(content).minutes),
       wordCount: content.split(/\s+/g).length,
     };

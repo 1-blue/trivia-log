@@ -1,15 +1,17 @@
+import Link from "next/link";
 import {
   Bars3BottomLeftIcon,
   CalendarDaysIcon,
   ClockIcon,
   DocumentIcon,
-  FolderIcon,
+  FolderIcon as OFolderIcon,
 } from "@heroicons/react/24/outline";
+import { FolderIcon as SFolderIcon } from "@heroicons/react/24/solid";
 
 import type { IPostWithETC } from "#/types";
 
-import CopyLinkButton from "../CopyLinkButton";
-import ScrollBottomButton from "../ScrollBottomButton";
+import CopyLinkButton from "#/app/blog/posts/_components/CopyLinkButton";
+import ScrollBottomButton from "#/app/blog/posts/_components/ScrollBottomButton";
 
 interface Props extends IPostWithETC {}
 
@@ -21,6 +23,21 @@ const TopSection: React.FC<Props> = ({
   wordCount,
   breadcrumbs,
 }) => {
+  const getFileOrFolderIcon = (index: number) => {
+    // 파일인 경우
+    if (index === breadcrumbs.length - 1) {
+      return <DocumentIcon className="h-4 w-4" />;
+    }
+    // 첫폴더 경우
+    if (index === 0) {
+      return (
+        <SFolderIcon className="h-4 w-4 text-main-600 dark:text-main-500" />
+      );
+    }
+    // 중간 폴더인 경우
+    return <OFolderIcon className="h-4 w-4" />;
+  };
+
   return (
     <section className="mt-6 flex flex-col items-center gap-4">
       <h1 className="text-5xl font-bold">{title}</h1>
@@ -44,12 +61,17 @@ const TopSection: React.FC<Props> = ({
           <ul className="flex items-center">
             {breadcrumbs.map((breadcrumb, index) => (
               <li key={breadcrumb} className="space-x-1">
-                {index === breadcrumbs.length - 1 ? (
-                  <DocumentIcon className="h-4 w-4" />
+                {getFileOrFolderIcon(index)}
+                {index === 0 ? (
+                  <Link
+                    href={`/blog/series?series=${breadcrumb}`}
+                    className="font-semibold text-main-600 underline-offset-4 dark:text-main-500"
+                  >
+                    {breadcrumb}
+                  </Link>
                 ) : (
-                  <FolderIcon className="h-4 w-4" />
+                  <span>{breadcrumb}</span>
                 )}
-                <span>{breadcrumb}</span>
               </li>
             ))}
           </ul>

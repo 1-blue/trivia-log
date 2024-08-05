@@ -1,7 +1,10 @@
+import { cache } from "react";
+import { notFound } from "next/navigation";
 import type { Metadata, NextPage } from "next";
 import dynamic from "next/dynamic";
 
 import { getAllPosts, getTableOfContents } from "#/libs";
+import { getSharedMetadata } from "#/constants/sharedMetadata";
 
 import Thumbnail from "#/app/blog/posts/_components/Thumbnail";
 import TopSection from "#/app/blog/posts/_components/TopSection/TopSection";
@@ -10,9 +13,6 @@ import TopTOCSection from "#/app/blog/posts/_components/TopSection/TopTOCSection
 import ButtomSection from "#/app/blog/posts/_components/BottomSection/BottomSection";
 import SuggestSection from "#/app/blog/posts/_components/SuggestSection/SuggestSection";
 import CommentSection from "#/app/blog/posts/_components/CommentSection/CommentSection";
-import { cache } from "react";
-import { notFound } from "next/navigation";
-import { getSharedMetadata } from "#/constants/sharedMetadata";
 
 interface Props {
   params: {
