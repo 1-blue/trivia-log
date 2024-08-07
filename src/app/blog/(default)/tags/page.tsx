@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { redirect } from "next/navigation";
 import type { Metadata, NextPage } from "next";
 
 import { getAllPosts } from "#/libs";
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const allPosts = getAllPosts();
+const DEFAULT_TAG = allPosts[0].tags[0];
 
 export const generateMetadata = async ({
   searchParams: { tag },
@@ -52,11 +54,12 @@ const Page: NextPage<Props> = ({ searchParams: { tag } }) => {
 
     return prev;
   }, {});
-
   const filteredPosts = useMemo(() => {
     if (!tag) return [];
     return allPosts.filter((metadata) => metadata.tags.includes(tag));
   }, [tag]);
+
+  if (!tag) return redirect(`/blog/tags?tag=${DEFAULT_TAG}`);
 
   return (
     <article>
