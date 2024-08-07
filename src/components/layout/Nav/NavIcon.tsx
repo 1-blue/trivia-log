@@ -2,6 +2,8 @@
 
 import { usePathname } from "next/navigation";
 
+import { isPathMatching } from "#/libs/nav";
+
 interface Props {
   path: string;
   outline: JSX.Element;
@@ -11,7 +13,7 @@ interface Props {
 const NavIcon: React.FC<Props> = ({ path, outline, solid }) => {
   const pathname = usePathname();
 
-  if (path === pathname) return solid;
+  if (isPathMatching(pathname, path)) return solid;
   else return outline;
 };
 

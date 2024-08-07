@@ -7,6 +7,9 @@ import { ROUTES } from "#/constants";
 import NavBall from "#/components/layout/Nav/NavBall";
 import NavIcon from "#/components/layout/Nav/NavIcon";
 
+const ROOT_PATHNAME = "/";
+const isRootPathname = (path: string) => path === ROOT_PATHNAME;
+
 const Nav: React.FC = () => {
   return (
     <nav className="flex-1">
@@ -25,7 +28,7 @@ const Nav: React.FC = () => {
                   solid={<Solid className="h-5 w-5" />}
                 />
                 <span>{label}</span>
-                <NavBall path={path} />
+                <NavBall path={path} position="horizontal" />
               </Link>
             </li>
           ))}
@@ -35,29 +38,22 @@ const Nav: React.FC = () => {
       {/* sm 이상인 경우 */}
       <div className="hidden sm:flex">
         {ROUTES.map(({ path, label, Outline, Solid }) => (
-          <Link
-            key={path}
-            href={path}
-            className={twMerge(
-              "btn btn-ghost relative",
-              path === "/" && "text-xl",
-            )}
-          >
+          <Link key={path} href={path} className="btn btn-ghost relative">
             <NavIcon
               path={path}
               outline={
                 <Outline
-                  className={path === "/" ? "h-8 w-8 text-xl" : "h-5 w-5"}
+                  className={isRootPathname(path) ? "h-8 w-8" : "h-5 w-5"}
                 />
               }
               solid={
                 <Solid
-                  className={path === "/" ? "h-8 w-8 text-xl" : "h-5 w-5"}
+                  className={isRootPathname(path) ? "h-8 w-8" : "h-5 w-5"}
                 />
               }
             />
-            {path !== "/" && <span>{label}</span>}
-            <NavBall path={path} greaterThanSmall />
+            {!isRootPathname(path) && <span>{label}</span>}
+            <NavBall path={path} />
           </Link>
         ))}
       </div>
