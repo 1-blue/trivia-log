@@ -14,13 +14,13 @@ const DEFAULT_THUMBNAIL = "/images/default/thumbnail.jpg";
 const DEFAULT_PATH = "/blog/posts";
 
 /** 모든 게시글의 메타데이터 및 내용 얻는 함수 */
-export const getAllPosts = cache((): IPostWithETC[] => {
+export const getAllPosts = cache((publishedOnly = true): IPostWithETC[] => {
   /** 모든 게시글들이 저장되어있는 폴더 경로 ( `src/_posts` ) */
   const postFolderPath = path.join(process.cwd(), "src", "_posts");
   /** 모든 게시글들의 경로들 ( `/Users/openknowl/MyWorkspace/trivia-log/src/_posts/state-management/redux.mdx` ) */
   const allPostPaths = sync(`${postFolderPath}/**/*.mdx`);
 
-  return allPostPaths.map((postPath) => {
+  const allPosts = allPostPaths.map((postPath) => {
     /** 특정 게시글 파일 데이터 */
     const postFileData = fs.readFileSync(postPath, { encoding: "utf8" });
 
@@ -44,6 +44,9 @@ export const getAllPosts = cache((): IPostWithETC[] => {
       wordCount: content.split(/\s+/g).length,
     };
   });
+
+  if (publishedOnly) return allPosts.filter(({ draft }) => !draft);
+  return allPosts;
 });
 
 // ======================================================================================
