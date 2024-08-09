@@ -52,7 +52,7 @@ export const getAllPosts = cache((publishedOnly = true): IPostWithETC[] => {
 // ======================================================================================
 
 /** 특정 게시글의 `<h1>` ~ `<h3>` 태그만 읽는 함수 */
-export const getTableOfContents = (content: string) => {
+export const getTableOfContents = cache((content: string) => {
   return content
     .split("\n")
     .filter((line) => line.match(/(^#{2,3})\s/))
@@ -70,7 +70,7 @@ export const getTableOfContents = (content: string) => {
           removeMdx
             .trim()
             .toLowerCase()
-            .replace(/[^a-z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣 -]/g, "")
+            .replace(/[^a-z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣 -\.]/g, "")
             .replace(/\s/g, "-"),
         text: removeMdx,
       };
@@ -85,4 +85,4 @@ export const getTableOfContents = (content: string) => {
 
       return nac;
     }, []);
-};
+});

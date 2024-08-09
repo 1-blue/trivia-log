@@ -19,21 +19,19 @@ export const useHeadingsObserver = ({ query, headings }: Props) => {
 
     const handleObserver: IntersectionObserverCallback = (entries) => {
       entries.forEach((entry) => {
-        const targetId = `#${entry.target.id}`;
+        if (!(entry.target instanceof HTMLElement)) return;
 
-        // 헤딩 태그가 뷰포트에 들어온 경우
-        if (entry.isIntersecting) {
-          // 스크롤 방향이 위인 경우
-          // 특정 제목이 들어오는 순간 이전 제목 포커스
-          if (direction === "up") {
-            const targetIndex = headings.findIndex((v) => v === targetId);
-            setActiveId(headings[targetIndex - 1]);
-          }
-          // 스크롤 방향이 아래인 경우
-          // 특정 제목에서 나가는 순간 다음 제목 포커스
-          else {
-            setActiveId(targetId);
-          }
+        const targetId = `#${entry.target.id}`;
+        const isObserved = entry.target.dataset.observed === "true";
+
+        // 헤딩 태그가 처음으로 뷰포트에 들어오는 경우
+        if (entry.isIntersecting && !isObserved) {
+          setActiveId(targetId);
+          entry.target.dataset.observed = "true";
+        }
+        // 헤딩 태그가 뷰포트에서 나가는 경우
+        else if (!entry.isIntersecting && isObserved) {
+          entry.target.dataset.observed = "false";
         }
       });
     };

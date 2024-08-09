@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 
-import { useHeadingsObserver } from "../../_hooks/useHeadingObserver";
+import { useHeadingsObserver } from "#/app/blog/posts/_hooks/useHeadingObserver";
 import type { ITableOfContent } from "#/types";
 
 interface Props {

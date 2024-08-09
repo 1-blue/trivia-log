@@ -17,7 +17,8 @@ const SuggestSection: React.FC<Props> = ({ baseURL }) => {
   const relatedPosts = useMemo(
     () =>
       allPosts.filter(({ path }) => {
-        if (path.includes(baseURL)) return false;
+        const isSamePath = path === `${DEFAULT_PATH}/${baseURL}`;
+        if (isSamePath) return false;
 
         const firstBreadcrumb = path
           .slice(DEFAULT_PATH.length + 1)
@@ -30,6 +31,7 @@ const SuggestSection: React.FC<Props> = ({ baseURL }) => {
 
   return (
     <section>
+      <h6 className="mb-4 text-xl font-semibold">연관된 포스트</h6>
       <ListView posts={relatedPosts} />
     </section>
   );
