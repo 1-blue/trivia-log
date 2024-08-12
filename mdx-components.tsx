@@ -67,14 +67,16 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </figure>
     ),
     /** 코드 블럭 */
-    pre: (props) => <Pre {...props} />,
+    pre: (props) => (
+      <Pre {...props} className={twMerge(props.className, "!mb-4 mt-2")} />
+    ),
     /** 코드 */
     code: ({ children, className, ...restProps }) => (
       <code
         {...restProps}
         className={twMerge(
           typeof children === "string" &&
-            "bg-custom-less rounded-sm px-[5px] py-0.5 text-sm font-semibold text-main-400 dark:text-main-500",
+            "rounded-sm bg-custom-less px-[5px] py-0.5 text-sm font-semibold text-main-400 dark:text-main-500",
           className,
         )}
       >
@@ -112,6 +114,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     blockquote: (props) => <Blockquote {...props} />,
     /** 수평라인 ( 메타데이터를 사용하는 부분과 문법이 같은데 파싱할때 제외가 안되어서 아예 제거 `---` ) */
     hr: () => null,
+    /** 문장 사이의 간격 지정 */
+    p: (props) => (
+      <p {...props} className={twMerge(props.className, "mt- !mb-3")} />
+    ),
     ...components,
   };
 }

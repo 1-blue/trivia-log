@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata, NextPage } from "next";
 import dynamic from "next/dynamic";
 
-import { getAllPosts, getTableOfContents } from "#/libs";
-import { getSharedMetadata } from "#/constants/sharedMetadata";
+import { getAllPosts, getTableOfContents, getSharedMetadata } from "#/libs";
 
 import Thumbnail from "#/app/blog/posts/_components/Thumbnail";
 import TopSection from "#/app/blog/posts/_components/TopSection/TopSection";

@@ -9,9 +9,10 @@ import "#/css/tailwind.css";
 
 import CustomThemeProvider from "#/providers/CustomThemeProvider";
 import ToastProvider from "#/providers/ToastProvider";
+import { getSharedMetadata } from "#/libs";
+
 import Header from "#/components/layout/Header";
 import ScrollProgressbar from "#/components/layout/ScrollProgressbar";
-import { getSharedMetadata } from "#/constants/sharedMetadata";
 
 dayjs.locale("ko");
 

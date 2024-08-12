@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import dayjs from "dayjs";
 
-import { getAllPosts } from "#/libs";
-import { getSharedMetadata } from "#/constants/sharedMetadata";
+import { getAllPosts, getSharedMetadata } from "#/libs";
 
 import PostSection from "#/app/blog/(default)/_components/sections/PostSection";
 

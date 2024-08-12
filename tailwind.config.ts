@@ -1,10 +1,7 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
-import twColors from "tailwindcss/colors";
 import daisyUI from "daisyui";
 import daisyUITheme from "daisyui/src/theming/themes";
-
-const mainColor = twColors.blue;
 
 const config: Config = {
   content: [

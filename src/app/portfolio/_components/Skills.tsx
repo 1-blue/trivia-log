@@ -3,7 +3,7 @@ import {
   etcSkills,
   frontendSkills,
   languages,
-  tools,
+  TOOLS,
 } from "#/constants/skills";
 
 import Accordion from "#/app/portfolio/_components/Accordion";
@@ -21,7 +21,7 @@ const Skills = () => {
 
         {/* Tool */}
         <Accordion title="🪛 도구 🪛">
-          {tools.map((tool) => (
+          {TOOLS.map((tool) => (
             <Skill key={tool.name} {...tool} />
           ))}
         </Accordion>

@@ -7,7 +7,7 @@ export interface Skill {
 }
 
 /** 사용 가능한 도구들 */
-export const tools: Skill[] = [
+export const TOOLS: Skill[] = [
   {
     name: "git",
     color: "#F05032",

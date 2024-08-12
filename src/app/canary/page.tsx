@@ -1,6 +1,6 @@
 import type { Metadata, NextPage } from "next";
 
-import { getSharedMetadata } from "#/constants/sharedMetadata";
+import { getSharedMetadata } from "#/libs";
 
 export const metadata: Metadata = getSharedMetadata({
   title: "실험적",

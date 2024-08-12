@@ -1,8 +1,7 @@
 import type { Metadata, NextPage } from "next";
 import dayjs from "dayjs";
 
-import { getAllPosts } from "#/libs";
-import { getSharedMetadata } from "#/constants/sharedMetadata";
+import { getAllPosts, getSharedMetadata } from "#/libs";
 
 import Timeline from "#/app/blog/(default)/archives/_components/Timeline";
 
