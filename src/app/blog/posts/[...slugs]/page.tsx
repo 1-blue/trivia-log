@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import type { Metadata, NextPage } from "next";
 import dynamic from "next/dynamic";
 
-import { getAllPosts, getTableOfContents, getSharedMetadata } from "#/libs";
+import { getAllPosts, getTableOfContents } from "#/libs/server";
+import { getSharedMetadata } from "#/libs";
 
 import Thumbnail from "#/app/blog/posts/_components/Thumbnail";
 import TopSection from "#/app/blog/posts/_components/TopSection/TopSection";
@@ -78,7 +79,7 @@ const Page: NextPage<Props> = ({ params: { slugs } }) => {
 
       <div className="divider my-6" />
 
-      <CommentSection />
+      <CommentSection postId={targetPost.id} />
     </div>
   );
 };

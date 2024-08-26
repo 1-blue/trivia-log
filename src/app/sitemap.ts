@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { getAllPosts } from "#/libs";
+import { getAllPosts } from "#/libs/server";
 import { ROUTES } from "#/constants";
 import type { IRoute } from "#/types";
 

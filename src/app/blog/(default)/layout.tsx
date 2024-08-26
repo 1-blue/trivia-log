@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { getAllPosts } from "#/libs";
+import { getAllPosts } from "#/libs/server";
 
 import InfoSection from "#/app/blog/(default)/_components/sections/InfoSection";
 import Navigation from "#/app/blog/(default)/_components/Navigation";

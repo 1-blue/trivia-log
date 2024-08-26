@@ -2,7 +2,8 @@ import { useMemo } from "react";
 import { redirect } from "next/navigation";
 import type { Metadata, NextPage } from "next";
 
-import { getAllPosts, getSharedMetadata } from "#/libs";
+import { getAllPosts } from "#/libs/server";
+import { getSharedMetadata } from "#/libs";
 
 import PostList from "#/app/blog/_components/molecules/PostList";
 import SearchInputByTag from "#/app/blog/(default)/tags/_components/SearchInputByTag";

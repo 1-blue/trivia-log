@@ -74,7 +74,7 @@ const Toast: React.FC<Prop> = ({
       {isShow && (
         <motion.div
           className={twMerge(
-            "inline-flex gap-1 rounded-md px-3 py-2 text-white shadow-md",
+            "z-10 inline-flex gap-1 rounded-md px-3 py-2 text-white shadow-md",
             closeOnClick && "cursor-pointer",
             type === "info" && "bg-blue-500",
             type === "success" && "bg-green-500",

@@ -1,4 +1,4 @@
-import { getAllPosts } from "#/libs";
+import { getAllPosts } from "#/libs/server";
 
 import ListView from "#/app/blog/_components/organisms/ListView";
 import { useMemo } from "react";

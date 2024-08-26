@@ -10,15 +10,19 @@ import "#/css/tailwind.css";
 import CustomThemeProvider from "#/providers/CustomThemeProvider";
 import ToastProvider from "#/providers/ToastProvider";
 import { getSharedMetadata } from "#/libs";
+import { getAllPosts } from "#/libs/server";
 
 import Header from "#/components/layout/Header";
 import ScrollProgressbar from "#/components/layout/ScrollProgressbar";
+import GenerateButton from "#/components/layout/GenerateButton";
 
 dayjs.locale("ko");
 
 export const metadata: Metadata = getSharedMetadata();
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const allPosts = getAllPosts();
+
   return (
     <html lang="ko" className="scroll-smooth">
       <head>
@@ -52,6 +56,9 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
           <ToastProvider>
             <Header />
             <main>{children}</main>
+            {process.env.NODE_ENV === "development" && (
+              <GenerateButton allPosts={allPosts} />
+            )}
           </ToastProvider>
         </CustomThemeProvider>
 

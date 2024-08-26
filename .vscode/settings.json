@@ -1,8 +1,13 @@
 {
-  "pasteImage.defaultName": "YYMMDD-HHmmss",
+  "deno.enablePaths": [
+    "supabase/functions"
+  ],
+  "deno.lint": true,
+  "deno.unstable": true,
   "pasteImage.basePath": "${projectRoot}/public",
-  "pasteImage.path": "${projectRoot}/public/images/posts/temporary/${currentFileNameWithoutExt}",
+  "pasteImage.defaultName": "YYMMDD-HHmmss",
   "pasteImage.forceUnixStyleSeparator": true,
   "pasteImage.insertPattern": "![${imageFileNameWithoutExt}](/images/posts/temporary/${currentFileNameWithoutExt}/${imageFileName})",
+  "pasteImage.path": "${projectRoot}/public/images/posts/temporary/${currentFileNameWithoutExt}",
   "pasteImage.prefix": "/"
 }
