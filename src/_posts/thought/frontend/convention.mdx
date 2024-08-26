@@ -1,0 +1,453 @@
+---
+title: 내가 생각하는 프론트엔드 컨벤션
+description: 프론트엔드 컨벤션에 대한 주관적인 생각을 적는 포스트
+tags: [frontend, convention]
+icon: ''
+image: ''
+date: 2024-08-01 22:09:00
+sitemap:
+  lastmod: 2024-08-01 22:09:00
+  changefreq: monthly
+  priority: 0.5
+draft: true
+---
+
+import Blockquote from "#/components/mdx/Blockquote";
+
+> 10개월차 프론트엔드 개발자의 극히 주관적인 의견을 담은 포스트입니다.<br />
+> `Next.js 14`를 기반으로 작성되었습니다.
+
+## 경로
+### 절대경로
+일반적으로 `@`로 절대경로를 사용하지만 저는 `#`을 사용하는 것을 선호합니다.<br />
+가끔 라이브러리를 가져올때 `@`를 사용하는 경우가 있어서 혼동이 올 수 있어서 그런 상황을 방지하기 위해서 `#`을 사용합니다.<br />
+
+### 모든경로는 절대경로 사용
+같은 폴더나 상위 폴더에 존재하는 파일의 경우 상대경로를 이용해서 가져오는 방법이 일반적입니다.<br />
+하지만 저는 경로가 통일되면 좋겠다는 마음과 해당 파일의 위치가 이동될때 수정해야하는 귀찮음을 더 싫어하기 때문에 절대경로를 사용합니다.<br />
+
+```diff-tsx showLineNumbers
+// src/components/atoms/Label.tsx
+// src/components/molecules/Input.tsx
+- import Label from "../atoms/Label";
++ import Label from "#/components/atoms/Label";
+```
+
+`Next.js 14`에서는 [`Route Group`](https://nextjs.org/docs/app/building-your-application/routing/route-groups) 혹은 [`Private Folder`](https://nextjs.org/docs/app/building-your-application/routing/colocation#private-folders) 등 괴상하게 생긴 폴더들이 존재하지만, 저는 크게 이상하게 보이지는 않아서 아래와 같이 절대경로를 사용합니다.<br />
+
+```diff-tsx showLineNumbers
+import PostSection from "#/app/blog/(default)/_components/sections/PostSection";
+```
+
+## 폴더 구조
+[현재 프로젝트](https://github.com/1-blue/trivia-log)에 사용하고 있는 폴더 구조입니다.<br />
+`src`폴더가 있는 것을 선호하기 때문에 `src`폴더를 기준으로 작성하였습니다.
+
+```txt
+├── public
+├── src
+│   ├── @types
+│   ├── app
+│   ├── components
+│   │   ├── atoms
+│   │   ├── molecules
+│   │   └── organisms
+│   ├── constants
+│   ├── css
+│   ├── hooks
+│   ├── libs
+│   ├── providers
+│   ├── store
+│   └── types
+├── .env.development
+├── .env.production
+├── next.config.mjs
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── tailwind.config.ts
+└── tsconfig.json
+```
+
+<Blockquote type="tip">
+저는 상세한 파일으로 각각 분리하고 가져올때 하나의 경로에서 가져오도록 하려고 `index.ts`를 사용합니다.<br />
+`index.ts`에서 `export * from "./post"`와 같이 사용하면 됩니다.<br />
+</Blockquote>
+
++ [`/src/libs/index.ts`](https://github.com/1-blue/trivia-log/blob/master/src/libs/index.ts)
+```ts showLineNumbers
+export * from "./post";
+export * from "./nav";
+export * from "./sharedMetadata";
+```
+
+### @types
+라이브러리의 타입을 오버라이딩할때 사용하는 폴더입니다.<br />
+해당 폴더에 작성된 파일은 모두 `.d.ts`로 작성합니다.
+
+<Blockquote type="tip">
+`오버라이딩(Overriding)`이란 기존 타입을 새로운 타입으로 덮어쓰는 것을 의미합니다.<br />
+`TypeScript`의 `interface`는 동일한 이름의 `interface`가 여러개 존재할 경우 모두 합쳐집니다.
+</Blockquote>
+
+일반적으로 저는 `.env`에 정의된 모든 값을 `TypeScript`에게 도움을 받기 위해 작성해둡니다.<br />
+추가로 `TSDoc`을 이용해서 주석을 작성해두면 미래의 누군가에게 더 도움이 됩니다.
+
+```ts showLineNumbers
+// .env.d.ts
+declare namespace NodeJS {
+  interface ProcessEnv {
+    /** 실행 타입 */
+    NODE_ENV: "development" | "production" | "test";
+
+    /** 배포 `URL` */
+    readonly NEXT_PUBLIC_CLIENT_URL: string;
+  }
+}
+```
+
+### app
+> 이부분은 아래에서 더 자세히 다루겠습니다.
+
+### components
+<Blockquote type="tip">
+[아토믹 패턴](https://yozm.wishket.com/magazine/detail/1531/)으로 폴더 구조를 작성합니다.
+</Blockquote>
+
+인터넷 강의들과 여러 블로그를 참고해서 폴더 구조를 사용해봤는데 결국 각자의 장단점이 있고 정답이라고 느껴지는 구조는 없었습니다.<br />
+아토믹 패턴도 이론상으로는 완벽한 방식인 것 같지만 단점으로 컴포넌트를 구분하는 기준이 애매하다는 점입니다.
+
+그래서 저는 조금 엄격하게 컴포넌트를 구분하기로 했습니다.<br />
+
+1. 최상위 `/src/components`에 있는 컴포넌트는 `props`를 제외하고 외부의 영향을 받지 않는 순수한 컴포넌트
+2. `atoms`: 외부에 값에 영향을 받지 않는 순수한 단일 컴포넌트
+3. `molecules`: 두 개 이상의 `atoms`이 합쳐진 컴포넌트
+4. `organisms`: 두 개 이상의 `atoms` 혹은 `molecules`이 합쳐진 컴포넌트
+
+예를 들어서 `<Label />`이라는 컴포넌트가 있다고 가정해봅시다.<br />
+해당 컴포넌트는 `props`를 제외한 외부 영향을 받지 않기 때문에 `atoms`에 위치합니다.<br />
+
+```tsx showLineNumbers
+// src/components/atoms/Label.tsx
+
+interface Props
+  extends React.PropsWithChildren<
+    React.LabelHTMLAttributes<HTMLLabelElement>
+  > {}
+
+const Label: React.FC<Props> = ({ children, ...props }) => {
+  return <label {...props}>{children}</label>;
+};
+
+export default Label;
+```
+
+그 다음 `<Input />`이라는 컴포넌트가 있다고 가정해봅시다.<br />
+해당 컴포넌트는 내부적으로 `<input />`과 `atoms`인 `<Label />`을 사용하고 있기 때문에 `molecules`에 위치합니다.
+
+```tsx showLineNumbers
+// src/components/molecules/Input.tsx
+
+import Label from "#/components/Label";
+
+interface Props
+  extends React.PropsWithChildren<
+    React.InputHTMLAttributes<HTMLInputElement>
+  > {}
+
+const Input: React.FC<Props> = ({ children, ...props }) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <Label />
+      <input {...props} />
+    </div>
+  );
+};
+
+export default Input;
+```
+
+### constants
+전역 상수들을 모아두는 폴더입니다.<br />
+
+일반적으로 아래처럼 변하지않는 혹은 가끔 변하는 값들이면서 프로젝트 전역적으로 사용하는 데이터를 모아둡니다.<br />
+
++ [`/src/constants/me.ts`](https://github.com/1-blue/trivia-log/blob/master/src/constants/me.ts)
+```ts showLineNumbers
+export const ME = {
+  NAME: "박상은",
+  NICKNAME: "1-blue",
+  EMAIL: "1-blue98@naver.com",
+  PHONE: "010-2103-8259",
+  BIO: "아무것도 하지 않을 거면 죽어버려.",
+  AVATAR_URL: "/images/default/avatar.jpeg",
+  LOCATION: "37.55031, 126.91900",
+  GITHUB_URL: "https://github.com/1-blue",
+  OLD_BLOG_URL: "https://1-blue.github.io",
+} as const;
+```
+
+혹은 아래처럼 경로에 대한 데이터를 모아둡니다.<br />
+
++ [`/src/constants/routes.ts`](https://github.com/1-blue/trivia-log/blob/master/src/constants/routes.ts)
+```ts showLineNumbers
+// 아이콘 import 생략
+
+import type { IRoute, ISitemap } from "#/types";
+
+const DEFAULT_SITEMAP: ISitemap = {
+  priority: 0.7,
+  lastmod: new Date().toISOString(),
+  changefreq: "weekly",
+};
+
+/** 전체 경로 */
+export const ROUTES: IRoute[] = [
+  {
+    path: "/",
+    Outline: OCubeIcon,
+    Solid: SCubeIcon,
+    label: "메인",
+    hidden: false,
+    sitemap: DEFAULT_SITEMAP,
+  },
+  {
+    path: "/blog",
+    Outline: ORectangleStackIcon,
+    Solid: SRectangleStackIcon,
+    label: "블로그",
+    hidden: false,
+    sitemap: DEFAULT_SITEMAP,
+    subRoutes: [
+      {
+        path: "/blog/series",
+        Outline: ONewspaperIcon,
+        Solid: SNewspaperIcon,
+        label: "시리즈",
+        hidden: false,
+        sitemap: DEFAULT_SITEMAP,
+      },
+      {
+        path: "/blog/archives",
+        Outline: OArchiveBoxIcon,
+        Solid: SArchiveBoxIcon,
+        label: "아카이브",
+        hidden: false,
+        sitemap: DEFAULT_SITEMAP,
+      },
+      {
+        path: "/blog/tags",
+        Outline: OTagIcon,
+        Solid: STagIcon,
+        label: "태그",
+        hidden: false,
+        sitemap: DEFAULT_SITEMAP,
+      },
+    ],
+  },
+  {
+    path: "/portfolio",
+    Outline: OFireIcon,
+    Solid: SFireIcon,
+    label: "포트폴리오",
+    hidden: false,
+    sitemap: DEFAULT_SITEMAP,
+  },
+  {
+    path: "/canary",
+    Outline: OPuzzlePieceIcon,
+    Solid: SPuzzlePieceIcon,
+    label: "실험적",
+    hidden: false,
+    sitemap: DEFAULT_SITEMAP,
+  },
+];
+```
+
+
+### css
+`css`파일들을 모아두는 폴더입니다.<br />
+
+1. `Global CSS`
+2. `TailwindCSS`
+3. 특정 라이브러리의 스타일을 수정하는 경우
+
+### hooks
+공용 `Custom Hook`들을 모아두는 폴더입니다.<br />
+중요한 부분은 공용으로 사용하고 외부에 의존하지 않는 순수한 훅들만 모아둡니다.<br />
+
+`useScrollDirection.tsx`, `useUser.tsx`와 같은 전역 훅들은 가능하지만, `usePost.tsx`와 같은 훅은 포함되지 않습니다.<br />
+아래와 같은 훅들은 해당 훅을 사용하는 페이지 내부에서 `Private Folder(_hooks)`로 선언해서 사용합니다.<br />
+
+```diff-tsx showLineNumbers
+- // src/hooks/usePost.tsx
++ // src/app/blog/post/[id]/_hooks/usePost.tsx
+
+import swr from "swr";
+
+const usePost = (id?: string) => {
+  return useSWR(id ? `/api/post/${id}` : null);
+};
+
+export default usePost;
+```
+
+### libs
+유틸리티 함수들을 모아두는 폴더입니다.<br />
+
+### providers
+`Provider`를 모아두는 폴더입니다.<br />
+
+`tanstackQuery`를 예시로 아래처럼 작성합니다.<br />
+내용은 중요하지않고 감싸는 형태의 `Provider`를 따로 나눠서 `layout.ts`에서 사용하는 것만 이해하면 됩니다.<br />
+
+```ts showLineNumbers
+"use client";
+
+import React, { useMemo } from "react";
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import { CustomError } from "#/errors";
+import useToastStore from "#/store/toast";
+
+const ReactQueryProvider: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const { openToast } = useToastStore();
+
+  const queryCache = useMemo(
+    () =>
+      new QueryCache({
+        onError: (error) => {
+          console.error("queryCache >> ", error);
+
+          if (error instanceof CustomError) {
+            openToast({ type: "error", message: error.message });
+          }
+        },
+      }),
+    [openToast],
+  );
+  const mutationCache = useMemo(
+    () =>
+      new MutationCache({
+        onError: (error) => {
+          console.error("mutationCache >> ", error);
+
+          if (error instanceof CustomError) {
+            openToast({ type: "error", message: error.message });
+          }
+        },
+      }),
+    [openToast],
+  );
+  const queryClient = useMemo(
+    () =>
+      new QueryClient({
+        queryCache,
+        mutationCache,
+        defaultOptions: {
+          queries: { retry: false },
+        },
+      }),
+    [queryCache, mutationCache],
+  );
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <ReactQueryDevtools
+        initialIsOpen={process.env.NODE_ENV === "development"}
+        buttonPosition="top-left"
+      />
+    </QueryClientProvider>
+  );
+};
+
+export default ReactQueryProvider;
+```
+
+### store
+전역 상태를 위한 폴더입니다.<br />
+
+`Zustand`를 이용한 예시지만 다른 상태관리를 사용해도 폴더만 구분하면 됩니다.<br />
+
++ [`/src/store/toast.ts`](https://github.com/1-blue/trivia-log/blob/master/src/store/toast.ts)
+```ts showLineNumbers
+import { create } from "zustand";
+import { v4 as uuidv4 } from "uuid";
+import type { IToast } from "#/types";
+
+export interface IToastStore {
+  /** 현재 렌더링중인 토스트들 */
+  toasts: IToast[];
+
+  /** 토스트 열기 함수 */
+  openToast: (args: IToast) => void;
+  /** 토스트 닫기 함수 */
+  closeToast: (id: string) => void;
+}
+
+/** 토스트 관련 처리 훅 ( `zustand` ) */
+const useToastStore = create<IToastStore>()((set) => ({
+  toasts: [],
+  openToast({ id = uuidv4(), message, type = "info", timer = 2000 }) {
+    set((prev) => ({ toasts: [...prev.toasts, { id, message, type, timer }] }));
+  },
+  closeToast(id) {
+    set((prev) => ({ toasts: prev.toasts.filter((toast) => toast.id !== id) }));
+  },
+}));
+
+export default useToastStore;
+```
+
+### types
+공용 타입들을 모아두는 폴더입니다.<br />
+타입은 여러군데에서 사용할 수 있다고 생각해서 페이지에 의존하게 선언하기보다는 `types`에 모아두는 것이 좋다고 생각합니다.<br />
+
++ [`/src/types/route.ts`](https://github.com/1-blue/trivia-log/blob/master/src/types/route.ts)
+```ts showLineNumbers
+import { PlayIcon as OPlayIcon } from "@heroicons/react/24/outline";
+import { PlayIcon as SPlayIcon } from "@heroicons/react/24/solid";
+
+import type { ISitemap } from "#/types/post";
+
+/** 경로에 대한 타입 */
+export interface IRoute {
+  /** 실제 경로 */
+  path: `/${string}`;
+  /** 경로를 표현할 텍스트 */
+  label: string;
+  /** 경로 아이콘 ( 선 ) */
+  Solid: typeof SPlayIcon;
+  /** 경로 아이콘 ( 채워짐 ) */
+  Outline: typeof OPlayIcon;
+  /** 숨길지 여부 */
+  hidden: boolean;
+  /** 하위 경로 */
+  subRoutes?: IRoute[];
+  /** 사이트맵 설정 */
+  sitemap?: ISitemap;
+}
+```
+
+## Next.js 14의 폴더 구조에 대해서
+### a
+
+### b
+
+### c
+
+## 레퍼런스
+1. [Next.js 14 - Route Group](https://nextjs.org/docs/app/building-your-application/routing/route-groups)
+1. [Next.js 14 - Private Folder](https://nextjs.org/docs/app/building-your-application/routing/colocation#private-folders)
+1. [GitHub - 현재 프로젝트](https://github.com/1-blue/trivia-log)
+1. [요즘 IT - 아토믹 패턴](https://yozm.wishket.com/magazine/detail/1531/)
+
