@@ -26,8 +26,8 @@ const LogInDialog = () => {
     if (error) return openToast({ type: "error", message: error.message });
 
     openToast({
-      type: "success",
-      message: `"${provider[0].toUpperCase()}${provider.slice(1)}"로 로그인이 되었습니다.`,
+      type: "info",
+      message: `"${provider[0].toUpperCase()}${provider.slice(1)}" 로그인 요청중입니다.\n잠시만 기다려주세요!`,
     });
   };
 

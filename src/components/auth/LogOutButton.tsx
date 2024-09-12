@@ -2,12 +2,14 @@
 
 import useToastStore from "#/store/toast";
 import { createClientFromClient } from "#/supabase/client";
+import { useRouter } from "next/navigation";
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const LogOutButton: React.FC<Props> = ({ onClick, ...props }) => {
   const supabase = createClientFromClient();
   const { openToast } = useToastStore();
+  const router = useRouter();
 
   const onLogOut = async () => {
     try {
@@ -15,6 +17,7 @@ const LogOutButton: React.FC<Props> = ({ onClick, ...props }) => {
       if (error) return openToast({ type: "error", message: error.message });
 
       openToast({ type: "success", message: "로그아웃이 되었습니다." });
+      router.refresh();
     } catch (error) {
       openToast({
         type: "error",

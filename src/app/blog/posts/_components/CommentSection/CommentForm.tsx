@@ -4,6 +4,9 @@ import { createClientFromClient } from "#/supabase/client";
 import Textarea from "#/components/atoms/Textarea";
 import useToastStore from "#/store/toast";
 import Avatar from "#/components/atoms/Avatar";
+import usePostComments from "#/app/blog/posts/_hooks/usePostComments";
+import { useRef } from "react";
+import apis from "#/apis";
 
 interface Props {
   me: {
@@ -18,6 +21,9 @@ interface Props {
 const CommentForm: React.FC<Props> = ({ me, postId }) => {
   const supabase = createClientFromClient();
   const { openToast } = useToastStore();
+  const { refetch } = usePostComments(postId);
+
+  const formRef = useRef<HTMLFormElement>(null);
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -28,18 +34,18 @@ const CommentForm: React.FC<Props> = ({ me, postId }) => {
       return openToast({ type: "warning", message: "댓글을 작성해주세요." });
     }
 
-    const body = {
-      user_id: me.id,
-      post_id: postId,
-      content,
-    };
-
     try {
-      const { error } = await supabase.from("comments").insert(body);
+      const { error } = await apis.post.comment.post.fn(supabase, {
+        userId: me.id,
+        postId,
+        content,
+      });
 
       if (error) return openToast({ type: "error", message: error.message });
 
+      formRef.current?.reset();
       openToast({ type: "success", message: "댓글을 작성했습니다." });
+      refetch();
     } catch (error) {
       openToast({
         type: "error",
@@ -49,7 +55,7 @@ const CommentForm: React.FC<Props> = ({ me, postId }) => {
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-3">
+    <form ref={formRef} onSubmit={onSubmit} className="flex flex-col gap-3">
       <Textarea
         name="content"
         className="max-h-[200px] flex-1"

@@ -5,7 +5,6 @@ import { createClientFromServer } from "#/supabase/server";
 export const GET = async (request: Request) => {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  // if "next" is in param, use it as the redirect URL
   const next = searchParams.get("next") ?? "/";
 
   if (!code) return NextResponse.redirect(`${origin}/auth/auth-code-error`);

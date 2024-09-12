@@ -4,24 +4,38 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
 import { createClientFromClient } from "#/supabase/client";
 import useToastStore from "#/store/toast";
+import apis from "#/apis";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
+  userId: string;
+  postId: string;
   commentId: string;
 }
 
-const CommentOptionDropdown: React.FC<Props> = ({ commentId }) => {
+const CommentOptionDropdown: React.FC<Props> = ({
+  userId,
+  postId,
+  commentId,
+}) => {
+  const queryClient = useQueryClient();
   const supabase = createClientFromClient();
   const { openToast } = useToastStore();
 
   const onDeleteComment = async (commentId: string) => {
-    const { error } = await supabase
-      .from("comments")
-      .delete()
-      .eq("id", commentId);
+    const { error } = await apis.post.comment.delete.fn(supabase, {
+      userId,
+      postId,
+      commentId,
+    });
 
     if (error) return openToast({ type: "error", message: error.message });
 
     openToast({ type: "success", message: "댓글을 삭제했습니다." });
+
+    queryClient.invalidateQueries({
+      queryKey: apis.post.comment.getMany.key({ postId }),
+    });
   };
 
   return (

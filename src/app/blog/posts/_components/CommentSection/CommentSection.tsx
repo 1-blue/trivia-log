@@ -1,9 +1,16 @@
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+
+import apis from "#/apis";
 import { createClientFromServer } from "#/supabase/server";
 
-import LogInDialog from "#/components/auth/LogInDialog";
-import LogInButton from "#/components/auth/LogInButton";
 import Comments from "#/app/blog/posts/_components/CommentSection/Comments";
 import CommentForm from "#/app/blog/posts/_components/CommentSection/CommentForm";
+import CommentTitle from "./CommentTitle";
+import CommentLogInCTA from "./CommentLogInCTA";
 
 interface Props {
   postId: string;
@@ -14,11 +21,6 @@ const CommentSection: React.FC<Props> = async ({ postId }) => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const isLoggedIn = !!user;
-
-  const { count } = await supabase
-    .from("comments")
-    .select("*", { count: "estimated", head: true });
 
   const me = user && {
     id: user.id,
@@ -27,28 +29,22 @@ const CommentSection: React.FC<Props> = async ({ postId }) => {
     provider: user.app_metadata.provider,
   };
 
-  return (
-    <>
-      <div className="mb-4 flex flex-row items-center gap-1">
-        <span className="text-xl font-semibold">댓글</span>
-        <span>({count}개)</span>
-      </div>
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: apis.post.comment.getMany.key({ postId }),
+    queryFn: () => apis.post.comment.getMany.fn(supabase, { postId }),
+  });
 
-      <Comments postId={postId} />
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <CommentTitle postId={postId} />
+
+      <Comments user={user} postId={postId} />
 
       <div className="mt-4">
-        {isLoggedIn && me ? (
-          <CommentForm me={me} postId={postId} />
-        ) : (
-          <>
-            <LogInButton className="btn btn-outline ml-auto block">
-              로그인 후 댓글 작성
-            </LogInButton>
-            <LogInDialog />
-          </>
-        )}
+        {me ? <CommentForm me={me} postId={postId} /> : <CommentLogInCTA />}
       </div>
-    </>
+    </HydrationBoundary>
   );
 };
 

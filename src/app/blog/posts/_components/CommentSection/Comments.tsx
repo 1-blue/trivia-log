@@ -1,51 +1,27 @@
-import { createClientFromServer } from "#/supabase/server";
+"use client";
+
 import { format } from "date-fns";
+import type { User } from "@supabase/supabase-js";
 
 import Avatar from "#/components/atoms/Avatar";
 import CommentOptionDropdown from "./CommentOptionDropdown";
 import CommentReactionButton from "./CommentReactionButton";
 import CommentReactions from "./CommentReactions";
+import usePostComments from "../../_hooks/usePostComments";
 
 interface Props {
+  user: User | null;
   postId: string;
 }
 
-const Comments: React.FC<Props> = async ({ postId }) => {
-  const supabase = createClientFromServer();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const { data: comments } = await supabase
-    .from("comments")
-    .select(
-      `
-      id,
-      user_id,
-      content,
-      created_at,
-      users (
-        id,
-        name,
-        avatar_url
-      ),
-      recomments (
-        id,
-        user_id,
-        content,
-        created_at
-      ),
-      reactions (
-        reaction
-      )
-    `,
-    )
-    .eq("post_id", postId)
-    .order("created_at", { ascending: true });
+const Comments: React.FC<Props> = ({ user, postId }) => {
+  const { data, isLoading } = usePostComments(postId);
+  const comments = data?.data ?? [];
 
   const isLoggedIn = !!user;
 
-  if (!comments) return <span>댓글을 불러오는 중입니다.</span>;
-  if (comments.length === 0) return <span>댓글이 없습니다.</span>;
+  if (isLoading) return <span>댓글을 불러오는 중입니다.</span>;
+  if (!comments || comments.length === 0) return null;
 
   return (
     <ul className="flex flex-col gap-2">
@@ -75,7 +51,11 @@ const Comments: React.FC<Props> = async ({ postId }) => {
             </div>
 
             {user?.id === comment.user_id && (
-              <CommentOptionDropdown commentId={comment.id} />
+              <CommentOptionDropdown
+                userId={user.id}
+                postId={postId}
+                commentId={comment.id}
+              />
             )}
           </div>
           <p className="whitespace-pre-wrap">{comment.content}</p>
@@ -83,6 +63,7 @@ const Comments: React.FC<Props> = async ({ postId }) => {
             <CommentReactionButton
               isLoggedIn={isLoggedIn}
               userId={user?.id}
+              postId={postId}
               commentId={comment.id}
             />
             <CommentReactions
