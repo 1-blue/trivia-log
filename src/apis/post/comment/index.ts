@@ -1,10 +1,10 @@
-import type { Database } from "#/@types/supabase";
+import type { Tables } from "#/@types/supabase";
 import type { TypedSupabaseClient } from "#/types";
 
 /** 댓글 생성 요청 매개변수 타입 */
 interface PostCommentRequest {
-  userId: Database["public"]["Tables"]["users"]["Row"]["id"];
-  postId: Database["public"]["Tables"]["posts"]["Row"]["id"];
+  userId: Tables<"users">["id"];
+  postId: Tables<"posts">["id"];
   content: string;
 }
 /** 댓글 생성 요청 */
@@ -26,7 +26,7 @@ const postComment = async (
 
 /** 댓글 리스트 조회 요청 매개변수 타입 */
 interface GetPostCommentsRequest {
-  postId: Database["public"]["Tables"]["posts"]["Row"]["id"];
+  postId: Tables<"posts">["id"];
 }
 /** 댓글 리스트 조회 요청 */
 const getPostComments = async (
@@ -46,15 +46,10 @@ const getPostComments = async (
       name,
       avatar_url
     ),
-    recomments (
-      id,
-      user_id,
-      content,
-      created_at
-    ),
     reactions (
       reaction
-    )
+    ),
+    recomments (count)
   `,
     )
     .eq("post_id", body.postId)
@@ -65,7 +60,7 @@ const getPostComments = async (
 
 /** 댓글 개수 조회 요청 매개변수 타입 */
 interface GetPostCommentsCountRequest {
-  postId: Database["public"]["Tables"]["posts"]["Row"]["id"];
+  postId: Tables<"posts">["id"];
 }
 /** 댓글 개수 조회 요청 */
 const getPostCommentsCount = async (
@@ -82,9 +77,9 @@ const getPostCommentsCount = async (
 
 /** 댓글 삭제 요청 매개변수 타입  */
 interface DeleteCommentRequest {
-  userId: Database["public"]["Tables"]["users"]["Row"]["id"];
-  postId: Database["public"]["Tables"]["posts"]["Row"]["id"];
-  commentId: Database["public"]["Tables"]["comments"]["Row"]["id"];
+  userId: Tables<"users">["id"];
+  postId: Tables<"posts">["id"];
+  commentId: Tables<"comments">["id"];
 }
 /** 댓글 삭제 요청 */
 const deleteComment = async (

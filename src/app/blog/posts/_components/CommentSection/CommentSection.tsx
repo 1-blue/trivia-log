@@ -9,8 +9,8 @@ import { createClientFromServer } from "#/supabase/server";
 
 import Comments from "#/app/blog/posts/_components/CommentSection/Comments";
 import CommentForm from "#/app/blog/posts/_components/CommentSection/CommentForm";
-import CommentTitle from "./CommentTitle";
-import CommentLogInCTA from "./CommentLogInCTA";
+import CommentTitle from "#/app/blog/posts/_components/CommentSection/CommentTitle";
+import CommentLogInCTA from "#/app/blog/posts/_components/CommentSection/CommentLogInCTA";
 
 interface Props {
   postId: string;

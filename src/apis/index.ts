@@ -1,13 +1,21 @@
-import { commentApis } from "./post/comment";
-import { reactionApis } from "./post/comment/reaction";
+import { commentApis } from "#/apis/post/comment";
+import { commentReactionApis } from "#/apis/post/comment/reaction";
+import { recommentApis } from "#/apis/post/comment/recomment";
+import { recommentReactionApis } from "#/apis/post/comment/recomment/reaction";
 
 const apis = {
   post: {
     comment: {
       ...commentApis,
-
       reaction: {
-        ...reactionApis,
+        ...commentReactionApis,
+      },
+
+      recomment: {
+        ...recommentApis,
+        reaction: {
+          ...recommentReactionApis,
+        },
       },
     },
   },

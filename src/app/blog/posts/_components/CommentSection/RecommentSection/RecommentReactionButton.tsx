@@ -1,28 +1,29 @@
 "use client";
 
-import React from "react";
-import { CursorArrowRaysIcon } from "@heroicons/react/24/outline";
 import { useQueryClient } from "@tanstack/react-query";
+import { CursorArrowRaysIcon } from "@heroicons/react/24/outline";
 
-import apis from "#/apis";
-import { createClientFromClient } from "#/supabase/client";
 import type { Enums } from "#/@types/supabase";
 import { REACTIONS } from "#/constants";
 import { reactionToImojiMap } from "#/libs";
 import useToastStore from "#/store/toast";
+import { createClientFromClient } from "#/supabase/client";
+import apis from "#/apis";
 
 interface Props {
   isLoggedIn: boolean;
   userId: string;
   postId: string;
   commentId: string;
+  recommentId: string;
 }
 
-const CommentReactionButton: React.FC<Props> = ({
+const RecommentReactionButton: React.FC<Props> = ({
   isLoggedIn,
   userId,
   postId,
   commentId,
+  recommentId,
 }) => {
   const queryClient = useQueryClient();
   const { openToast } = useToastStore();
@@ -31,7 +32,10 @@ const CommentReactionButton: React.FC<Props> = ({
 
   const refetchReaction = () => {
     queryClient.invalidateQueries({
-      queryKey: apis.post.comment.getMany.key({ postId }),
+      queryKey: apis.post.comment.recomment.getMany.key({
+        postId,
+        commentId,
+      }),
     });
   };
 
@@ -42,12 +46,16 @@ const CommentReactionButton: React.FC<Props> = ({
   ) => {
     if (!userId) return;
 
-    const { error } = await apis.post.comment.reaction.delete.fn(supabase, {
-      userId,
-      postId,
-      commentId,
-      reactionId,
-    });
+    const { error } = await apis.post.comment.recomment.reaction.delete.fn(
+      supabase,
+      {
+        userId,
+        postId,
+        commentId,
+        recommentId,
+        reactionId,
+      },
+    );
 
     if (error) {
       return openToast({
@@ -72,13 +80,17 @@ const CommentReactionButton: React.FC<Props> = ({
     if (!userId) return;
 
     // 존재하는 리액션과 다른 리액션을 클릭한 경우 (수정)
-    const { error } = await apis.post.comment.reaction.update.fn(supabase, {
-      userId,
-      postId,
-      commentId,
-      reactionId,
-      reaction: changedReaction,
-    });
+    const { error } = await apis.post.comment.recomment.reaction.update.fn(
+      supabase,
+      {
+        userId,
+        postId,
+        commentId,
+        recommentId,
+        reactionId,
+        reaction: changedReaction,
+      },
+    );
 
     if (error) {
       return openToast({
@@ -99,12 +111,16 @@ const CommentReactionButton: React.FC<Props> = ({
     if (!userId) return;
 
     // 리액션 추가
-    const { error } = await apis.post.comment.reaction.post.fn(supabase, {
-      userId,
-      postId,
-      commentId,
-      reaction,
-    });
+    const { error } = await apis.post.comment.recomment.reaction.post.fn(
+      supabase,
+      {
+        userId,
+        postId,
+        commentId,
+        recommentId,
+        reaction,
+      },
+    );
 
     if (error) {
       return openToast({
@@ -128,10 +144,13 @@ const CommentReactionButton: React.FC<Props> = ({
       });
     }
 
-    const { data: exReaction } = await apis.post.comment.reaction.get.fn(
-      supabase,
-      { userId, postId, commentId },
-    );
+    const { data: exReaction } =
+      await apis.post.comment.recomment.reaction.get.fn(supabase, {
+        userId,
+        postId,
+        commentId,
+        recommentId,
+      });
 
     // 리액션 존재하지 않음 ( 생성 )
     if (!exReaction) return postReaction(reaction);
@@ -175,4 +194,4 @@ const CommentReactionButton: React.FC<Props> = ({
   );
 };
 
-export default React.memo(CommentReactionButton);
+export default RecommentReactionButton;

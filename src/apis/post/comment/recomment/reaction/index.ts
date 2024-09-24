@@ -1,38 +1,41 @@
 import type { Enums, Tables } from "#/@types/supabase";
 import type { TypedSupabaseClient } from "#/types";
 
-/** 댓글 리액션 추가 요청 매개변수 타입 */
-interface PostCommentReactionRequest {
+/** 답글 리액션 추가 요청 매개변수 타입 */
+interface PostRecommentReactionRequest {
   reaction: Enums<"reaction_type">;
   userId: Tables<"users">["id"];
   postId: Tables<"posts">["id"];
   commentId: Tables<"comments">["id"];
+  recommentId: Tables<"recomments">["id"];
 }
-/** 댓글 리액션 추가 요청 */
+/** 답글 리액션 추가 요청 */
 const postCommentReaction = async (
   supabase: TypedSupabaseClient,
-  body: PostCommentReactionRequest,
+  body: PostRecommentReactionRequest,
 ) => {
   return await supabase.from("reactions").insert({
     reaction: body.reaction,
     user_id: body.userId,
     post_id: body.postId,
     comment_id: body.commentId,
+    recomment_id: body.recommentId,
   });
 };
 
 // =========================== 구분선 ===========================
 
-/** 댓글 리액션 조회 요청 매개변수 타입 */
-interface GetCommentReactionRequest {
+/** 답글 리액션 조회 요청 매개변수 타입 */
+interface GetRecommentReactionRequest {
   userId: Tables<"users">["id"];
   postId: Tables<"posts">["id"];
   commentId: Tables<"comments">["id"];
+  recommentId: Tables<"recomments">["id"];
 }
-/** 댓글 리액션 조회 */
+/** 답글 리액션 조회 */
 const getCommentReaction = async (
   supabase: TypedSupabaseClient,
-  body: GetCommentReactionRequest,
+  body: GetRecommentReactionRequest,
 ) => {
   return await supabase
     .from("reactions")
@@ -40,23 +43,25 @@ const getCommentReaction = async (
     .eq("user_id", body.userId)
     .eq("post_id", body.postId)
     .eq("comment_id", body.commentId)
+    .eq("recomment_id", body.recommentId)
     .single();
 };
 
 // =========================== 구분선 ===========================
 
-/** 댓글 리액션 수정 요청 매개변수 타입 */
-interface UpdateCommentReactionRequest {
+/** 답글 리액션 수정 요청 매개변수 타입 */
+interface UpdateRecommentReactionRequest {
   userId: Tables<"users">["id"];
   postId: Tables<"posts">["id"];
   commentId: Tables<"comments">["id"];
+  recommentId: Tables<"recomments">["id"];
   reactionId: Tables<"reactions">["id"];
   reaction: Enums<"reaction_type">;
 }
-/** 댓글 리액션 수정 */
+/** 답글 리액션 수정 */
 const updateCommentReaction = async (
   supabase: TypedSupabaseClient,
-  body: UpdateCommentReactionRequest,
+  body: UpdateRecommentReactionRequest,
 ) => {
   return await supabase
     .from("reactions")
@@ -64,22 +69,24 @@ const updateCommentReaction = async (
     .eq("id", body.reactionId)
     .eq("user_id", body.userId)
     .eq("post_id", body.postId)
-    .eq("comment_id", body.commentId);
+    .eq("comment_id", body.commentId)
+    .eq("recomment_id", body.recommentId);
 };
 
 // =========================== 구분선 ===========================
 
-/** 댓글 리액션 삭제 요청 매개변수 타입 */
-interface DeleteCommentReactionRequest {
+/** 답글 리액션 삭제 요청 매개변수 타입 */
+interface DeleteRecommentReactionRequest {
   userId: Tables<"users">["id"];
   postId: Tables<"posts">["id"];
   commentId: Tables<"comments">["id"];
+  recommentId: Tables<"recomments">["id"];
   reactionId: Tables<"reactions">["id"];
 }
-/** 댓글 리액션 삭제 요청 */
+/** 답글 리액션 삭제 요청 */
 const deleteCommentReaction = async (
   supabase: TypedSupabaseClient,
-  body: DeleteCommentReactionRequest,
+  body: DeleteRecommentReactionRequest,
 ) => {
   return await supabase
     .from("reactions")
@@ -87,69 +94,78 @@ const deleteCommentReaction = async (
     .eq("id", body.reactionId)
     .eq("user_id", body.userId)
     .eq("post_id", body.postId)
-    .eq("comment_id", body.commentId);
+    .eq("comment_id", body.commentId)
+    .eq("recomment_id", body.recommentId);
 };
 
 // =========================== 구분선 ===========================
 
-export const commentReactionApis = {
+export const recommentReactionApis = {
   post: {
-    /** 댓글 리액션 추가 key */
-    key: (body: PostCommentReactionRequest) => [
+    /** 답글 리액션 추가 key */
+    key: (body: PostRecommentReactionRequest) => [
       "post",
       body.userId,
       "post",
       body.postId,
       "comment",
       body.commentId,
+      "recomment",
+      body.recommentId,
       "reaction",
     ],
-    /** 댓글 리액션 추가 함수 */
+    /** 답글 리액션 추가 함수 */
     fn: postCommentReaction,
   },
   get: {
-    /** 댓글 리액션 조회 key */
-    key: (body: GetCommentReactionRequest) => [
+    /** 답글 리액션 조회 key */
+    key: (body: GetRecommentReactionRequest) => [
       "get",
       body.userId,
       "post",
       body.postId,
       "comment",
       body.commentId,
+      "recomment",
+      body.recommentId,
       "reaction",
     ],
-    /** 댓글 리액션 조회 함수 */
+    /** 답글 리액션 조회 함수 */
     fn: getCommentReaction,
   },
   update: {
-    /** 댓글 리액션 수정 key */
-    key: (body: UpdateCommentReactionRequest) => [
+    /** 답글 리액션 수정 key */
+    key: (body: UpdateRecommentReactionRequest) => [
       "update",
       body.userId,
       "post",
       body.postId,
       "comment",
       body.commentId,
+      "recomment",
+      body.recommentId,
       "reaction",
       body.reactionId,
       body.reaction,
     ],
-    /** 댓글 리액션 수정 함수 */
+    /** 답글 리액션 수정 함수 */
     fn: updateCommentReaction,
   },
   delete: {
-    /** 댓글 리액션 삭제 key */
-    key: (body: DeleteCommentReactionRequest) => [
+    /** 답글 리액션 삭제 key */
+    key: (body: DeleteRecommentReactionRequest) => [
       "delete",
       body.userId,
       "post",
       body.postId,
       "comment",
       body.commentId,
+      "recomment",
+      body.recommentId,
       "reaction",
       body.reactionId,
     ],
-    /** 댓글 리액션 삭제 함수 */
+    /** 답글 리액션 삭제 함수 */
     fn: deleteCommentReaction,
   },
 };

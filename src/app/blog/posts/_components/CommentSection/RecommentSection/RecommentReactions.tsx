@@ -1,4 +1,3 @@
-import React from "react";
 import type { Enums } from "#/@types/supabase";
 import { reactionToImojiMap } from "#/libs";
 
@@ -6,7 +5,7 @@ interface Props {
   reactions: Enums<"reaction_type">[];
 }
 
-const CommentReactions: React.FC<Props> = ({ reactions }) => {
+const RecommentReactions: React.FC<Props> = ({ reactions }) => {
   const reactionCounts = reactions.reduce(
     (acc, reaction) => {
       acc[reaction] = (acc[reaction] || 0) + 1;
@@ -37,4 +36,4 @@ const CommentReactions: React.FC<Props> = ({ reactions }) => {
   );
 };
 
-export default React.memo(CommentReactions);
+export default RecommentReactions;
