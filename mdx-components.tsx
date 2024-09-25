@@ -116,7 +116,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     hr: () => null,
     /** 문장 사이의 간격 지정 */
     p: (props) => (
-      <p {...props} className={twMerge(props.className, "mt- !mb-3")} />
+      <p
+        {...props}
+        className={twMerge(props.className, "!mb-3 [blockquote_&]:!mb-0")}
+      />
     ),
     ...components,
   };

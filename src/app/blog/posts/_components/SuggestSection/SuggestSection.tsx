@@ -1,7 +1,9 @@
+import { useMemo } from "react";
+
 import { getAllPosts } from "#/libs/server";
+import Blockquote from "#/components/mdx/Blockquote";
 
 import ListView from "#/app/blog/_components/organisms/ListView";
-import { useMemo } from "react";
 
 interface Props {
   baseURL: string;
@@ -29,10 +31,28 @@ const SuggestSection: React.FC<Props> = ({ baseURL }) => {
     [baseURL],
   );
 
+  const hasRelatedPosts = relatedPosts.length > 0;
+
+  const randomPosts = useMemo(
+    () => allPosts.sort(() => Math.random() - 0.5).slice(0, 2),
+    [],
+  );
+
   return (
     <section>
-      <h6 className="mb-4 text-xl font-semibold">연관된 포스트</h6>
-      <ListView posts={relatedPosts} />
+      {hasRelatedPosts ? (
+        <>
+          <h6 className="mb-4 text-xl font-semibold">연관된 포스트</h6>
+          <ListView posts={relatedPosts} />
+        </>
+      ) : (
+        <>
+          <Blockquote type="success" className="mb-6">
+            연관된 포스트가 없어서 랜덤한 포스트로 대체합니다.
+          </Blockquote>
+          <ListView posts={randomPosts} />
+        </>
+      )}
     </section>
   );
 };

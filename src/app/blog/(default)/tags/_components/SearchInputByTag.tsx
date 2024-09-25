@@ -102,7 +102,7 @@ const SearchInputByTag: React.FC<Props> = ({ tags }) => {
       <ul
         ref={suggestionRef}
         className={twMerge(
-          "absolute right-0 z-10 mt-2 w-80 overflow-hidden rounded-lg bg-white p-1.5 shadow-[4px_4px_50px_0px_rgba(0,0,0,0.3)] transition-all duration-300 ease-in-out dark:bg-slate-700",
+          "absolute left-0 z-10 mt-2 w-80 overflow-hidden rounded-lg bg-white p-1.5 shadow-[4px_4px_50px_0px_rgba(0,0,0,0.3)] transition-all duration-300 ease-in-out dark:bg-slate-700",
           isVisible
             ? "translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-2 opacity-0",

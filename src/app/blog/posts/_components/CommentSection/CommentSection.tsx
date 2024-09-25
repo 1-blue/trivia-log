@@ -37,6 +37,8 @@ const CommentSection: React.FC<Props> = async ({ postId }) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
+      <div id="post-comment-section" />
+
       <CommentTitle postId={postId} />
 
       <Comments user={user} postId={postId} />

@@ -15,7 +15,7 @@ const Navigation: React.FC = () => {
   const pathname = usePathname();
 
   return (
-    <ul className="mx-auto my-8 flex max-w-7xl gap-4 border-b">
+    <ul className="mx-auto my-8 flex max-w-7xl border-b">
       {NAV_ROUTES.map(({ path, label, Outline, Solid }) => {
         const isCurrentPath = pathname === path;
 
