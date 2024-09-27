@@ -1,4 +1,4 @@
-import CodeBlockClipBoardButton from "./CodeBlockClipBoardButton";
+import CodeBlockClipBoardButton from "#/components/mdx/CodeBlockClipBoardButton";
 
 interface Props extends React.HTMLAttributes<HTMLPreElement> {}
 

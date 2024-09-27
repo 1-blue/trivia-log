@@ -23,14 +23,16 @@ const CommentReactions: React.FC<Props> = ({ reactions }) => {
   );
 
   return (
-    <ul className="flex items-center gap-2">
+    <ul className="flex flex-wrap items-center gap-2">
       {reactionCountArray.map(({ reaction, count }) => (
         <li
           key={reaction}
-          className="badge badge-outline badge-lg flex items-center gap-1 py-3.5"
+          className="badge badge-outline badge-lg flex items-center gap-1 px-1.5 py-2.5 sm:px-2.5 sm:py-3.5"
         >
-          <span className="text-lg">{reactionToImojiMap[reaction]}</span>
-          <span className="text-sm">{count}</span>
+          <span className="text-xs sm:text-sm">
+            {reactionToImojiMap[reaction]}
+          </span>
+          <span className="text-xs sm:text-sm">{count}</span>
         </li>
       ))}
     </ul>

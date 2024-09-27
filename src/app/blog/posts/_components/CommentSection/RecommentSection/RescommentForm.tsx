@@ -69,7 +69,7 @@ const RecommentForm: React.FC<Props> = ({ me, postId, commentId }) => {
         name="content"
         className="max-h-[200px] flex-1"
         rows={3}
-        placeholder="ex) 게시글 출처만 링크로 남겨주시면 마음대로 사용해도 됩니다 .. !"
+        placeholder="ex) 게시글 출처만 링크로 남겨주시면 마음대로 사용해도 됩니다!"
       />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">

@@ -72,6 +72,19 @@ const Comment: React.FC<Props> = ({ me, postId, comment }) => {
         )}
       </div>
       <p className="whitespace-pre-wrap">{comment.content}</p>
+      <div className="flex items-center gap-3">
+        {isLoggedIn && (
+          <CommentReactionButton
+            isLoggedIn={isLoggedIn}
+            userId={me.id}
+            postId={postId}
+            commentId={comment.id}
+          />
+        )}
+        <CommentReactions
+          reactions={comment.reactions.map((reaction) => reaction.reaction)}
+        />
+      </div>
       <div className="flex items-center gap-4">
         {hasRecomments && (
           <button
@@ -85,17 +98,6 @@ const Comment: React.FC<Props> = ({ me, postId, comment }) => {
             <span>{comment.recomments[0].count}</span>
           </button>
         )}
-        {isLoggedIn && (
-          <CommentReactionButton
-            isLoggedIn={isLoggedIn}
-            userId={me.id}
-            postId={postId}
-            commentId={comment.id}
-          />
-        )}
-        <CommentReactions
-          reactions={comment.reactions.map((reaction) => reaction.reaction)}
-        />
         <button
           type="button"
           className="btn btn-outline btn-sm ml-auto gap-1"

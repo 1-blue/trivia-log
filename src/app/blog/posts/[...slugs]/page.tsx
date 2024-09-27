@@ -12,7 +12,6 @@ import SideSection from "#/app/blog/posts/_components/SideSection/SideSection";
 import TopTOCSection from "#/app/blog/posts/_components/TopSection/TopTOCSection";
 import ButtomSection from "#/app/blog/posts/_components/BottomSection/BottomSection";
 import SuggestSection from "#/app/blog/posts/_components/SuggestSection/SuggestSection";
-import CommentSection from "#/app/blog/posts/_components/CommentSection/CommentSection";
 
 interface Props {
   params: {
@@ -63,7 +62,7 @@ const Page: NextPage<Props> = ({ params: { slugs } }) => {
       <div className="divider my-6" />
 
       <TopTOCSection tableOfContents={tableOfContents} />
-      <SideSection tableOfContents={tableOfContents} />
+      <SideSection tableOfContents={tableOfContents} postId={targetPost.id} />
 
       <div className="divider my-6" />
 
@@ -76,10 +75,6 @@ const Page: NextPage<Props> = ({ params: { slugs } }) => {
       <div className="divider my-6" />
 
       <SuggestSection baseURL={baseURL} />
-
-      <div className="divider my-6" />
-
-      <CommentSection postId={targetPost.id} />
     </div>
   );
 };

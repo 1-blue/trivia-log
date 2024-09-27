@@ -1,6 +1,6 @@
 "use client";
 
-import usePostCommentCount from "../../_hooks/usePostCommentCount";
+import usePostCommentCount from "#/app/blog/posts/_hooks/usePostCommentCount";
 
 interface Props {
   postId: string;

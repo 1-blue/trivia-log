@@ -12,10 +12,12 @@ import type { IPostWithETC } from "#/types";
 
 import CopyLinkButton from "#/app/blog/posts/_components/CopyLinkButton";
 import ScrollBottomButton from "#/app/blog/posts/_components/ScrollBottomButton";
+import CommentDrawerButton from "#/app/blog/posts/_components/CommentDrawerButton";
 
 interface Props extends IPostWithETC {}
 
 const TopSection: React.FC<Props> = ({
+  id,
   title,
   description,
   date,
@@ -79,6 +81,7 @@ const TopSection: React.FC<Props> = ({
         <div className="flex gap-1.5 self-start">
           <CopyLinkButton />
           <ScrollBottomButton />
+          <CommentDrawerButton postId={id} />
         </div>
       </div>
     </section>

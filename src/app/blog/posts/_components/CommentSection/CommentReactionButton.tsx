@@ -146,31 +146,29 @@ const CommentReactionButton: React.FC<Props> = ({
   };
 
   return (
-    <div>
-      <div className="dropdown dropdown-hover">
-        <div
-          tabIndex={0}
-          role="button"
-          className="btn btn-circle btn-outline btn-sm"
-        >
-          <CursorArrowRaysIcon className="h-5 w-5" />
-        </div>
-        <ul
-          tabIndex={0}
-          className="menu dropdown-content z-[1] mt-2 grid w-40 grid-cols-4 gap-2 rounded-box bg-base-100 p-2 shadow dark:bg-base-300"
-        >
-          {REACTIONS.map((reaction) => (
-            <li
-              key={reaction}
-              role="button"
-              className="btn btn-circle btn-sm flex items-center justify-center"
-              onClick={() => onClickReaction(reaction)}
-            >
-              {reactionToImojiMap[reaction]}
-            </li>
-          ))}
-        </ul>
+    <div className="dropdown dropdown-hover place-self-start">
+      <div
+        tabIndex={0}
+        role="button"
+        className="btn btn-circle btn-outline btn-sm"
+      >
+        <CursorArrowRaysIcon className="h-5 w-5" />
       </div>
+      <ul
+        tabIndex={0}
+        className="menu dropdown-content z-[1] mt-2 grid w-40 grid-cols-4 gap-2 rounded-box bg-base-100 p-2 shadow dark:bg-base-300"
+      >
+        {REACTIONS.map((reaction) => (
+          <li
+            key={reaction}
+            role="button"
+            className="btn btn-circle btn-sm flex items-center justify-center"
+            onClick={() => onClickReaction(reaction)}
+          >
+            {reactionToImojiMap[reaction]}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

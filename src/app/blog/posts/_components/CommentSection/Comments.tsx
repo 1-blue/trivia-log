@@ -29,7 +29,11 @@ const Comments: React.FC<Props> = ({ user, postId }) => {
       </ul>
     );
   }
-  if (!comments || comments.length === 0) return null;
+  if (!comments || comments.length === 0) {
+    return (
+      <span className="text-base-content/50">첫번째 댓글을 달아주세요!</span>
+    );
+  }
 
   const me = user && {
     id: user.id,
