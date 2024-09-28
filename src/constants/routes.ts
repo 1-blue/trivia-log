@@ -20,9 +20,9 @@ import {
 import type { IRoute, ISitemap } from "#/types";
 
 const DEFAULT_SITEMAP: ISitemap = {
-  priority: 0.7,
+  priority: 1,
   lastmod: new Date().toISOString(),
-  changefreq: "weekly",
+  changefreq: "daily",
 };
 
 /** 전체 경로 */
