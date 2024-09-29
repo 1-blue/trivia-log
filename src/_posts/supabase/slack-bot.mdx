@@ -1,0 +1,120 @@
+---
+title: slack bot 만들기
+description: slack과 supabase를 이용한 알림 기능 구현한 방법에 대한 게시글
+tags: [supabase, slack, bot, function, trigger]
+icon: ''
+thumbnail: '/images/posts/supabase/slack-bot/00-thumbnail.gif'
+date: 2024-09-29 14:25:00
+sitemap:
+  lastmod: 2024-09-29 14:25:00
+  changefreq: weekly
+  priority: 0.5
+draft: false
+---
+
+> `slack`과 `supabase`에 대해서는 알고 있다고 가정하고 설명하겠습니다.<br />
+> 블로그 게시글에 댓글/답글이 추가되면 `slack`으로 알림이 오도록 구현한 방법에 대한 가이드입니다.
+
+## 💣 slack 세팅
+### workspace 생성
+1. [slack](https://slack.com/intl/ko-kr)에서 `workspace` 생성
+
+### slack app 만들기
+![01-slack-app](/images/posts/supabase/slack-bot/01-slack-app.png)
+
+1. [slack api](https://api.slack.com/apps)에 접근
+2. `Create New App` 선택
+3. `From scratch` 선택
+4. 데이터 폼에 맞게 입력
+
+### slack bot 설정
+![02-slack-bot](/images/posts/supabase/slack-bot/02-slack-bot.png)
+
+1. `OAuth & Permissions` 이동
+2. `Scopes` > `Bot Token Scopes` > `Add an OAuth Scope`
+    1. `chat:write` 추가
+    2. `channels:read` 추가
+4. `Install App` 이동
+5. `Reinstall to "Your Workspace"` 클릭
+
+### web hook 설정
+![03-slack-web-hook](/images/posts/supabase/slack-bot/03-slack-web-hook.png)
+
+1. `Incomming Webhook` 이동
+2. 활성화
+3. `Add New Webhook to Workspace` 클릭
+4. 채널 선택
+5. `Webhook URL` 복사
+
+## 🧨 supabase 세팅
+> 아래와 같은 테이블이 있다고 가정하고 설명하겠습니다.
+
+![04-comments-table](/images/posts/supabase/slack-bot/04-comments-table.png)
+
+```sql
+create table
+  public.comments (
+    id uuid not null default gen_random_uuid (),
+    content text not null,
+    created_at timestamp with time zone not null default now(),
+    user_id uuid not null,
+    post_id uuid not null,
+    constraint comments_pkey primary key (id),
+    constraint comments_post_id_fkey foreign key (post_id) references posts (id) on update cascade on delete cascade,
+    constraint comments_user_id_fkey foreign key (user_id) references users (id) on update cascade on delete cascade
+  ) tablespace pg_default;
+```
+
+### Extensions 설치
+> `pg_net`은 서버리스 함수에서 API 요청을 하기 위해서 사용하는 `Extension`입니다.
+
+![05-supabase-extension](/images/posts/supabase/slack-bot/05-supabase-extension.png)
+
+1. `Extensions` 이동
+2. `pg_net` 설치
+
+### Function 생성
+> `Function`은 `supabase`에서 제공하는 서버리스 함수입니다.<br />
+> `plpgsql`라는 언어를 사용합니다.
+
+![06-supabase-function](/images/posts/supabase/slack-bot/06-supabase-function.png)
+
+1. `Database` > `Functions` 이동
+2. `Create a new Function` 클릭
+    1. `Schema`: `public`
+    2. `Return Type`: `trigger`
+    3. `Definition`: `plpgsql` 문법의 코드 입력 ( 아래 코드 입력 )
+1. `DECLARE`: 변수 설정
+2. `BEGIN` ~ `END`: 함수 실행 부분
+2. `NEW`: `trigger`가 발생한 데이터
+
+```sql
+-- 실제 코드는 더 복잡해서 단순화한 코드입니다
+DECLARE
+  payload JSONB;
+  slack_webhook_url TEXT := '아까 복사한 webhook url';
+BEGIN
+  payload := json_build_object(
+    'text',
+    format('댓글 내용: %s', NEW.content)
+  );
+
+  PERFORM net.http_post(
+    url := slack_webhook_url,
+    body := payload,
+    headers := '{"Content-Type": "application/json"}'::jsonb
+  );
+
+  RETURN NEW;
+END;
+```
+
+### Trigger 생성
+> `Trigger`는 설정한 이벤트가 발생하면 설정한 `Function`을 실행하게 해줍니다.
+
+![07-supabase-trigger](/images/posts/supabase/slack-bot/07-supabase-trigger.png)
+
+1. `Table`: 원하는 테이블 선택
+2. `Events`: 원하는 이벤트 선택 ( 필자는 `Insert` 선택 )
+3. `Orientation`: `Row`로 변경 ( 변경하지 않으면 `Function`의 `NEW`에 데이터가 들어오지 않음 )
+4. `Function to trigger`: 아까 생성한 `Function` 선택

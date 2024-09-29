@@ -85,7 +85,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     /** 리스트 */
     ol: ({ children, ...restProps }) => (
-      <ol {...restProps} className="mb-2 mt-4 list-decimal space-y-1 pl-10">
+      <ol
+        {...restProps}
+        className="mb-2 mt-4 list-decimal space-y-1 pl-10 [ol_&]:mt-1"
+      >
         {children}
       </ol>
     ),
