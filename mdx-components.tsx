@@ -1,11 +1,12 @@
 import Link from "next/link";
-import Image, { type ImageProps } from "next/image";
+import type { ImageProps } from "next/image";
 import type { MDXComponents } from "mdx/types";
 import { twMerge } from "tailwind-merge";
 
 import Pre from "#/components/mdx/Pre";
 import Blockquote from "#/components/mdx/Blockquote";
 import Heading from "#/components/mdx/Heading";
+import Image from "#/components/mdx/Image";
 
 /** 모든 `.mdx`에 적용 ( `next.js`에서 약속된 이름 ) */
 export function useMDXComponents(components: MDXComponents): MDXComponents {
@@ -58,13 +59,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       />
     ),
     img: (props) => (
-      <figure className="relative my-2 aspect-video rounded-md object-contain">
-        <Image
-          {...(props as ImageProps)}
-          fill
-          alt={props.alt || "블로그 이미지"}
-        />
-      </figure>
+      <Image
+        {...(props as ImageProps)}
+        fill
+        alt={props.alt || "블로그 이미지"}
+        layoutId={props.src as string}
+      />
     ),
     /** 코드 블럭 */
     pre: (props) => (
