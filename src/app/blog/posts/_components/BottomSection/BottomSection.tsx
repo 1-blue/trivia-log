@@ -5,13 +5,12 @@ import { ME } from "#/constants";
 
 import CopyLinkButton from "#/app/blog/posts/_components/CopyLinkButton";
 import ScrollTopButton from "#/app/blog/posts/_components/ScrollTopButton";
-import CommentDrawerButton from "#/app/blog/posts/_components/CommentDrawerButton";
 
 import Tag from "#/app/blog/_components/atoms/Tag";
 
 interface Props extends IPostWithETC {}
 
-const ButtomSection: React.FC<Props> = ({ id, tags }) => {
+const ButtomSection: React.FC<Props> = ({ tags }) => {
   return (
     <article className="space-y-10">
       <ul className="flex flex-wrap gap-3 self-start text-sm font-semibold">
@@ -39,7 +38,6 @@ const ButtomSection: React.FC<Props> = ({ id, tags }) => {
         <div className="flex gap-1.5 self-start">
           <CopyLinkButton />
           <ScrollTopButton />
-          <CommentDrawerButton postId={id} />
         </div>
       </div>
     </article>

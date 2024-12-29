@@ -13,3 +13,52 @@ sitemap:
 draft: true
 ---
 
+### 0. 폴더 분리
+/apps
+/packages
+/shared
+/pnpm-workspace.yaml
+/tsconfig.json ( 공통설정 및 절대경로 처리 )
+
+### 1. next 세팅
+```bash
+npx create next-app@latest
+```
+
+### 2. nest 세팅
+```bash
+npx nest new nest-project
+```
+
+### 3. tsconfig.json 설정
+`fe`/`be` 폴더의 `tsconfig.json` 파일 가져와서 넣기
+
+### 4. prisma 설정
+해당 블로그 내용 참고
+
+pnpm prisma init
+
+### 5. BE 각 라이브러리 설치
+1. zod
+2. class-validator
+3. uuid
+4. @trpc/server@next
+
+### 6. FE 각 라이브러리 설치
+1. @trpc/react-query@next
+2. @trpc/client@next
+3. @tanstack/react-query
+4. @trpc/server@next
+
+### 
+Error: P1001: Can't reach database server at `db:5432`
+
+host.docker.internal
+
+.env는 왜 제외가 안되는가
+
+`pnpm-workspace.yaml` 이 파일이 있어야 최상위에서 pnpm install 해야 모두 설치됨
+
+
+###
+docker volume이 연결되어 있으면 .dockerignore에 추가해도 이후에 동기화됨

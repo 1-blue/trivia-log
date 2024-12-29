@@ -1,7 +1,5 @@
 import type { Metadata, NextPage } from "next";
 
-import Skills from "./_components/Skills";
-
 import { getSharedMetadata } from "#/libs";
 
 export const metadata: Metadata = getSharedMetadata({
@@ -12,7 +10,7 @@ export const metadata: Metadata = getSharedMetadata({
 const Page: NextPage = () => {
   return (
     <>
-      <Skills />
+      <h6>오픈 예정</h6>
     </>
   );
 };

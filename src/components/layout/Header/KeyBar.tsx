@@ -19,20 +19,18 @@ import "react-cmdk/dist/cmdk.css";
 
 import { ME, ROUTES, THEMES } from "#/constants";
 import type { IPost } from "#/types";
-import { createClientFromClient } from "#/supabase/client";
 import useToastStore from "#/store/toast";
 
 type KeyBarPost = Pick<IPost, "title" | "path">;
 
 interface Props {
-  isLoggedIn: boolean;
   keyBarPosts: KeyBarPost[];
 }
 
 /** 초기 게시글 개수 */
 const INITIAL_POST_LIMIT = 5;
 
-const KeyBar: React.FC<Props> = ({ isLoggedIn, keyBarPosts }) => {
+const KeyBar: React.FC<Props> = ({ keyBarPosts }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { setTheme } = useTheme();
@@ -65,31 +63,6 @@ const KeyBar: React.FC<Props> = ({ isLoggedIn, keyBarPosts }) => {
   };
 
   const githubLinkRef = useRef<null | HTMLAnchorElement>(null);
-
-  const supabase = createClientFromClient();
-  const { openToast } = useToastStore();
-  const onLogIn = async (provider: "github" | "google" | "kakao") => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/auth/callback?next=${pathname}`,
-      },
-    });
-
-    if (error) return openToast({ type: "error", message: error.message });
-
-    openToast({
-      type: "info",
-      message: `"${provider[0].toUpperCase()}${provider.slice(1)}" 로그인 요청중입니다.\n잠시만 기다려주세요!`,
-    });
-  };
-  const onLogOut = async () => {
-    const { error } = await supabase.auth.signOut();
-
-    if (error) return openToast({ type: "error", message: error.message });
-
-    openToast({ type: "success", message: "로그아웃 되었습니다." });
-  };
 
   const filteredItems = useMemo(
     () =>
@@ -153,44 +126,10 @@ const KeyBar: React.FC<Props> = ({ isLoggedIn, keyBarPosts }) => {
               },
             ],
           },
-          // 옵션
-          {
-            id: "option",
-            heading: "옵션",
-            items: isLoggedIn
-              ? [
-                  {
-                    id: "logout",
-                    children: "로그아웃",
-                    icon: "ArrowRightOnRectangleIcon",
-                    onClick: onLogOut,
-                  },
-                ]
-              : [
-                  {
-                    id: "github-login",
-                    children: "깃헙 로그인",
-                    icon: "ArrowLeftOnRectangleIcon",
-                    onClick: () => onLogIn("github"),
-                  },
-                  {
-                    id: "google-login",
-                    children: "구글 로그인",
-                    icon: "ArrowLeftOnRectangleIcon",
-                    onClick: () => onLogIn("google"),
-                  },
-                  {
-                    id: "kakao-login",
-                    children: "카카오 로그인",
-                    icon: "ArrowLeftOnRectangleIcon",
-                    onClick: () => onLogIn("kakao"),
-                  },
-                ],
-          },
         ],
         search,
       ),
-    [posts, search, pathname, isLoggedIn],
+    [posts, search, pathname],
   );
 
   return (

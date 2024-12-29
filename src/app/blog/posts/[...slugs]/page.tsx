@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata, NextPage } from "next";
 import dynamic from "next/dynamic";
 
-import { getAllPosts, getTableOfContents } from "#/libs/server";
+import { getAllPosts, getTableOfContents } from "#/libs";
 import { getSharedMetadata } from "#/libs";
 
 import Thumbnail from "#/app/blog/posts/_components/Thumbnail";
@@ -62,7 +62,7 @@ const Page: NextPage<Props> = ({ params: { slugs } }) => {
       <div className="divider my-6" />
 
       <TopTOCSection tableOfContents={tableOfContents} />
-      <SideSection tableOfContents={tableOfContents} postId={targetPost.id} />
+      <SideSection tableOfContents={tableOfContents} />
 
       <div className="divider my-6" />
 

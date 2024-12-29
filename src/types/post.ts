@@ -29,8 +29,6 @@ export interface ISitemap {
 
 /** 게시글 메타 데이터 */
 export interface IPost {
-  /** 게시글 아이디 */
-  id: string;
   /** 게시글 제목 */
   title: string;
   /** 게시글 내용 */

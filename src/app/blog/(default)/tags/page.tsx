@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { redirect } from "next/navigation";
 import type { Metadata, NextPage } from "next";
 
-import { getAllPosts } from "#/libs/server";
+import { getAllPosts } from "#/libs";
 import { getSharedMetadata } from "#/libs";
 
 import PostList from "#/app/blog/_components/molecules/PostList";

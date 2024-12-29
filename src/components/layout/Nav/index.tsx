@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { twMerge } from "tailwind-merge";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 
 import { ROUTES } from "#/constants";

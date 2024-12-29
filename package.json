@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run supabase:gen-types && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "supabase:gen-types": "dotenv -e .env -- supabase gen types --lang=typescript --project-id \"$SUPABASE_PROJECT_ID\" --schema public > ./src/@types/supabase.d.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@fontsource-variable/noto-sans": "^5.0.5",

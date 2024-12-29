@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { getAllPosts } from "#/libs/server";
+import { getAllPosts } from "#/libs";
 import Blockquote from "#/components/mdx/Blockquote";
 
 import ListView from "#/app/blog/_components/organisms/ListView";

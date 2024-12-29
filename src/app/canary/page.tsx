@@ -1,7 +1,6 @@
 import type { Metadata, NextPage } from "next";
 
 import { getSharedMetadata } from "#/libs";
-import { createClientFromServer } from "#/supabase/server";
 
 export const metadata: Metadata = getSharedMetadata({
   title: "실험적",
@@ -9,14 +8,9 @@ export const metadata: Metadata = getSharedMetadata({
 });
 
 const Page: NextPage = async () => {
-  const supabase = createClientFromServer();
-
-  let { data: comments } = await supabase.from("comments").select();
-
   return (
     <>
-      <h1 className="text-2xl font-bold">Canary Page !!</h1>
-      <pre>{JSON.stringify(comments, null, 2)}</pre>
+      <h6>오픈 예정</h6>
     </>
   );
 };

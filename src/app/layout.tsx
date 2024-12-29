@@ -7,24 +7,18 @@ import "dayjs/locale/ko";
 import "@fontsource-variable/noto-sans";
 import "#/css/tailwind.css";
 
-import { ReactQueryClientProvider } from "#/providers/ReactQueryClientProvider";
 import CustomThemeProvider from "#/providers/CustomThemeProvider";
 import ToastProvider from "#/providers/ToastProvider";
 import { getSharedMetadata } from "#/libs";
-import { getAllPosts } from "#/libs/server";
 
 import Header from "#/components/layout/Header";
 import ScrollProgressbar from "#/components/layout/ScrollProgressbar";
-import GenerateButton from "#/components/layout/GenerateButton";
-import LogInDialog from "#/components/molecules/LogInDialog";
 
 dayjs.locale("ko");
 
 export const metadata: Metadata = getSharedMetadata();
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const allPosts = getAllPosts();
-
   return (
     <html lang="ko" className="scroll-smooth">
       <head>
@@ -52,26 +46,20 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         />
       </head>
       <body className="scroll-smooth p-4">
-        <ReactQueryClientProvider>
-          <ScrollProgressbar />
+        <ScrollProgressbar />
 
-          <CustomThemeProvider>
-            <ToastProvider>
-              <LogInDialog />
-              <Header />
-              <main>{children}</main>
-              {process.env.NODE_ENV === "development" && (
-                <GenerateButton allPosts={allPosts} />
-              )}
-            </ToastProvider>
-          </CustomThemeProvider>
+        <CustomThemeProvider>
+          <ToastProvider>
+            <Header />
+            <main>{children}</main>
+          </ToastProvider>
+        </CustomThemeProvider>
 
-          {/* 토스트 포탈 */}
-          <aside
-            id="toast-root"
-            className="fixed left-1/2 top-0 z-[999] my-4 flex -translate-x-1/2 flex-col gap-4"
-          />
-        </ReactQueryClientProvider>
+        {/* 토스트 포탈 */}
+        <aside
+          id="toast-root"
+          className="fixed left-1/2 top-0 z-[999] my-4 flex -translate-x-1/2 flex-col gap-4"
+        />
       </body>
     </html>
   );

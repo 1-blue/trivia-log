@@ -1,6 +1,6 @@
 import type { Metadata, NextPage } from "next";
 
-import { getAllPosts } from "#/libs/server";
+import { getAllPosts } from "#/libs";
 import { getSharedMetadata } from "#/libs";
 
 import SeriesAccordion from "#/app/blog/(default)/series/_components/SeriesAccordion";
