@@ -27,7 +27,7 @@ const getTargetPost = cache((baseURL: string) =>
 export const generateMetadata = async ({
   params: { slugs },
 }: Props): Promise<Metadata> => {
-  const baseURL = `${slugs.join("/")}`;
+  const baseURL = decodeURIComponent(slugs.join("/"));
   const targetPost = getTargetPost(baseURL);
   if (!targetPost) return notFound();
 
@@ -42,7 +42,7 @@ export const generateMetadata = async ({
 };
 
 const Page: NextPage<Props> = ({ params: { slugs } }) => {
-  const baseURL = `${slugs.join("/")}`;
+  const baseURL = decodeURIComponent(slugs.join("/"));
   const targetPost = getTargetPost(baseURL);
   if (!targetPost) return notFound();
 
