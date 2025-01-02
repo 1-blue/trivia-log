@@ -36,7 +36,7 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         {/* 구글 애널리틱스 */}
         <meta
           name="google-site-verification"
-          content="ZsUkDIeJbE8ELv4H-4HzPfxOSutkq_1_0dtGv6JqW1k"
+          content="p2Ms1Y47Y1AAQkm2jbrRv3JQW7JklbdW5ua9MGjI7SU"
         />
 
         {/* 네이버 웹마스터 */}
