@@ -1,4 +1,5 @@
 import type { Metadata, NextPage } from "next";
+import { redirect } from "next/navigation";
 
 import { getSharedMetadata } from "#/libs";
 
@@ -8,11 +9,7 @@ export const metadata: Metadata = getSharedMetadata({
 });
 
 const Page: NextPage = () => {
-  return (
-    <>
-      <h6>오픈 예정</h6>
-    </>
-  );
+  return redirect("/blog");
 };
 
 export default Page;

@@ -1,6 +1,7 @@
 import type { Metadata, NextPage } from "next";
 
 import { getSharedMetadata } from "#/libs";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = getSharedMetadata({
   title: "FE 개발자 | 잡학일지",
@@ -8,11 +9,7 @@ export const metadata: Metadata = getSharedMetadata({
 });
 
 const Home: NextPage = () => {
-  return (
-    <main className="">
-      <h1>메인</h1>
-    </main>
-  );
+  return redirect("/blog");
 };
 
 export default Home;
